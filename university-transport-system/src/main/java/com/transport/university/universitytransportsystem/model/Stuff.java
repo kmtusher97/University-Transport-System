@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 public class Stuff implements Serializable {
 
@@ -19,4 +18,8 @@ public class Stuff implements Serializable {
 
     @Column(columnDefinition = "integer default 0")
     private Integer rating;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private User user;
 }

@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 public class FeedBack implements Serializable {
     @Id
@@ -20,4 +19,8 @@ public class FeedBack implements Serializable {
 
     @Column(columnDefinition = "boolean default true")
     private Boolean feedbackType;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
+    private User user;
 }

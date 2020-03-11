@@ -21,4 +21,8 @@ public class Driver implements Serializable {
 
     @Column(columnDefinition = "integer default 0")
     private Integer rating;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private User user;
 }
