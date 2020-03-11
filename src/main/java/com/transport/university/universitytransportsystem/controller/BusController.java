@@ -33,4 +33,19 @@ public class BusController {
     public Bus addNewBus(@RequestBody Bus bus) {
         return busServices.addNewBus(bus);
     }
+
+    @DeleteMapping("/deleteById/{busId}")
+    public void deleteBusByBusId(@PathVariable("busId") Integer busId) {
+        busServices.deleteBusByBusId(busId);
+    }
+
+    @DeleteMapping("/deleteByNumber/{number}")
+    public void deleteBusByBusId(@PathVariable("number") String busNumber) {
+        busServices.deleteBusByBusNumber(busNumber);
+    }
+
+    @PostMapping("/update")
+    public Bus updateBusInfo(@RequestBody Bus bus) {
+        return busServices.updateBus(bus);
+    }
 }

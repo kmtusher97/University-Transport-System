@@ -39,4 +39,28 @@ public class BusServices {
         }
         return busRepo.save(bus);
     }
+
+    public void deleteBusByBusId(Integer busId) {
+        if (!busRepo.existsById(busId)) {
+            return;
+        }
+        busRepo.deleteById(busId);
+    }
+
+    public void deleteBusByBusNumber(String busNumber) {
+        if (busRepo.findByNumber(busNumber) == null) {
+            return;
+        }
+        busRepo.deleteByNumber(busNumber);
+    }
+
+    public Bus updateBus(Bus bus) {
+        if (bus.getBusId() == null || !busRepo.existsById(bus.getBusId())) {
+            return null;
+        }
+        if (bus.getNumber().equals(busRepo.getOne(bus.getBusId()).getNumber()) == false) {
+            return null;
+        }
+        return busRepo.save(bus);
+    }
 }
