@@ -22,4 +22,22 @@ public class UserServices {
     public User getUserByUserId(Integer userId) {
         return userRepo.getOne(userId);
     }
+
+    public User blockUser(Integer userId) {
+        if (userRepo.existsById(userId)) {
+            User user = userRepo.getOne(userId);
+            user.setIsBlocked(true);
+            return userRepo.save(user);
+        }
+        return null;
+    }
+
+    public User unblockUser(Integer userId) {
+        if (userRepo.existsById(userId)) {
+            User user = userRepo.getOne(userId);
+            user.setIsBlocked(false);
+            return userRepo.save(user);
+        }
+        return null;
+    }
 }

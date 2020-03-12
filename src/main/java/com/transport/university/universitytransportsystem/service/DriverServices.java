@@ -40,4 +40,24 @@ public class DriverServices {
         driver.setIsInService(true);
         return driverRepo.save(driver);
     }
+
+    public Driver removeDriver(Integer driverId) {
+        if (!driverRepo.existsById(driverId)) {
+            return null;
+        }
+        Driver driver = driverRepo.getOne(driverId);
+        driver.setIsInService(false);
+        userServices.blockUser(driver.getUser().getUserId());
+        return driverRepo.save(driver);
+    }
+
+    public Driver reEmployDriver(Integer driverId) {
+        if (driverRepo.existsById(driverId)) {
+            Driver driver = driverRepo.getOne(driverId);
+            driver.setIsInService(true);
+            userServices.unblockUser(driver.getUser().getUserId());
+            return driverRepo.save(driver);
+        }
+        return null;
+    }
 }

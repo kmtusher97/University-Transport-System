@@ -29,4 +29,14 @@ public class DriverController {
     public Driver addNewDriver(@PathVariable("userId") Integer userId) {
         return driverServices.addNewDriver(userId);
     }
+
+    @GetMapping("/remove/{driverId}")
+    public Driver removeDriver(@PathVariable("driverId") Integer driverId) {
+        return driverServices.removeDriver(driverId);
+    }
+
+    @GetMapping("/reEmploy/{driverId}")
+    public Driver reEmployDriver(@PathVariable("driverId") Integer driverId) {
+        return driverServices.reEmployDriver(driverId);
+    }
 }
