@@ -27,4 +27,6 @@ public class User implements Serializable {
     @Column(length = 100)
     private String lastName;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isBlocked;
 }
