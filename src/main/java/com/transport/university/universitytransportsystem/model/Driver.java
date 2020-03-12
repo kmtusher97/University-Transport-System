@@ -25,4 +25,7 @@ public class Driver implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
+
+    @Column(columnDefinition = "boolean default true")
+    private Boolean isInService;
 }
