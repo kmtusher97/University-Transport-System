@@ -23,7 +23,7 @@ public class Driver implements Serializable {
     private Integer rating;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId", unique = true)
     private User user;
 
     @Column(columnDefinition = "boolean default true")
