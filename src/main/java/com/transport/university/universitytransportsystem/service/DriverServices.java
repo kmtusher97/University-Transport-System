@@ -19,6 +19,10 @@ public class DriverServices {
     @Autowired
     private UserServices userServices;
 
+    @Autowired
+    private StuffServices stuffServices;
+
+
     public List<Driver> getAllDriversInService() {
         return driverRepo.findAllInServiceDrivers();
     }
@@ -31,11 +35,13 @@ public class DriverServices {
         if (!userServices.isValidUser(userId)) {
             return null;
         }
+        User user = userServices.getUserByUserId(userId);
+        stuffServices.removerStuffByUser(user);
         if (driverRepo.existsByUser(userServices.getUserByUserId(userId))) {
-            return null;
+            return reEmployDriver(driverRepo.findByUser(user).getDriverId());
         }
         Driver driver = new Driver();
-        driver.setUser(userServices.getUserByUserId(userId));
+        driver.setUser(user);
         driver.setRating(0);
         driver.setIsInService(true);
         return driverRepo.save(driver);
@@ -47,15 +53,21 @@ public class DriverServices {
         }
         Driver driver = driverRepo.getOne(driverId);
         driver.setIsInService(false);
-        userServices.blockUser(driver.getUser().getUserId());
         return driverRepo.save(driver);
+    }
+
+    public Driver removerDriverByUser(User user) {
+        if (driverRepo.existsByUser(user)) {
+            Driver driver = driverRepo.findByUser(user);
+            return removeDriver(driver.getDriverId());
+        }
+        return null;
     }
 
     public Driver reEmployDriver(Integer driverId) {
         if (driverRepo.existsById(driverId)) {
             Driver driver = driverRepo.getOne(driverId);
             driver.setIsInService(true);
-            userServices.unblockUser(driver.getUser().getUserId());
             return driverRepo.save(driver);
         }
         return null;

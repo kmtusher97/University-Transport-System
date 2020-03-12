@@ -16,4 +16,6 @@ public interface DriverRepo extends JpaRepository<Driver, Integer> {
     List<Driver> findAllExServiceDrivers();
 
     Boolean existsByUser(User user);
+
+    Driver findByUser(User user);
 }

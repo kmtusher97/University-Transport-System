@@ -16,4 +16,6 @@ public interface StuffRepo extends JpaRepository<Stuff, Integer> {
     List<Stuff> findAllExServiceStuffs();
 
     Boolean existsByUser(User user);
+
+    Stuff findByUser(User user);
 }
