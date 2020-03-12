@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 
 @Getter
@@ -17,9 +18,14 @@ public class Assignment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long assignmentId;
 
+    @Column(nullable = false)
     private Date date;
 
-    private String shift;
+    @Column(nullable = false)
+    private Time departureTime;
+
+    @Column(nullable = false)
+    private Time duration;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bus_id", referencedColumnName = "busId", nullable = false)
