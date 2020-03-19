@@ -4,4 +4,8 @@ import com.transport.university.universitytransportsystem.model.Stoppage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StoppageRepo extends JpaRepository<Stoppage, Integer> {
+
+    Stoppage findByStoppageName(String stoppageName);
+
+    Boolean existsByStoppageName(String stoppageName);
 }
