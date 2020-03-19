@@ -28,6 +28,7 @@ public class AssignmentController {
 
     @PostMapping("/allByDate")
     public List<Assignment> getAllByDateRange(@RequestBody List<Date> dates) {
+        if (dates == null || dates.size() != 2) return null;
         Date startDate = dates.get(0);
         Date endDate = dates.get(1);
         if (startDate.compareTo(endDate) == 1) return null;
