@@ -6,6 +6,7 @@ import com.transport.university.universitytransportsystem.service.AssignmentServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -23,5 +24,13 @@ public class AssignmentController {
     @GetMapping("/all")
     public List<Assignment> getAll() {
         return assignmentServices.getAll();
+    }
+
+    @PostMapping("/allByDate")
+    public List<Assignment> getAllByDateRange(@RequestBody List<Date> dates) {
+        Date startDate = dates.get(0);
+        Date endDate = dates.get(1);
+        if (startDate.compareTo(endDate) == 1) return null;
+        return assignmentServices.getAllByDateRange(startDate, endDate);
     }
 }
