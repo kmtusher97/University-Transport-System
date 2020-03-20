@@ -1,7 +1,6 @@
 package com.transport.university.universitytransportsystem.controller;
 
 import com.transport.university.universitytransportsystem.model.Assignment;
-import com.transport.university.universitytransportsystem.model.AssignmentForm;
 import com.transport.university.universitytransportsystem.service.AssignmentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +16,13 @@ public class AssignmentController {
     private AssignmentServices assignmentServices;
 
     @PostMapping("/add")
-    public Assignment addAssignment(@RequestBody AssignmentForm assignmentForm) {
-        return assignmentServices.addAssignment(assignmentForm);
+    public Assignment addAssignment(@RequestBody Assignment assignment) {
+        return assignmentServices.addAssignment(assignment);
     }
 
-    @GetMapping("/all")
-    public List<Assignment> getAll() {
-        return assignmentServices.getAll();
+    @GetMapping("/getSchedules/{n}")
+    public List<Assignment> getNth30SchedulesFromLast(@PathVariable("n") Long n) {
+        return assignmentServices.getNth30SchedulesFromLast(n);
     }
 
     @PostMapping("/allByDate")
