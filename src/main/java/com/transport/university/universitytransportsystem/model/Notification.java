@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -18,7 +19,9 @@ public class Notification implements Serializable {
 
     private String notification;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    private Date date;
+
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
     private User user;
 }
