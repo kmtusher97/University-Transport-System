@@ -1,12 +1,12 @@
 package com.transport.university.universitytransportsystem.service;
 
 import com.transport.university.universitytransportsystem.model.Assignment;
-import com.transport.university.universitytransportsystem.model.AssignmentForm;
 import com.transport.university.universitytransportsystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,49 +29,51 @@ public class AssignmentServices {
     private RouteRepo routeRepo;
 
 
-    public Boolean isValidAssignment(AssignmentForm assignmentForm) {
-        if (assignmentForm.getDate() == null) return false;
-        if (assignmentForm.getDepartureTime() == null) return false;
-        if (assignmentForm.getDuration() == null) return false;
-        if (assignmentForm.getBusId() == null) return false;
-        if (assignmentForm.getDriverId() == null) return false;
-        if (assignmentForm.getRouteId() == null) return false;
-        if (!busRepo.existsById(assignmentForm.getBusId())) return false;
-        if (!driverRepo.existsById(assignmentForm.getDriverId())) return false;
-        if (!routeRepo.existsById(assignmentForm.getRouteId())) return false;
-        if (assignmentForm.getStuff1Id() != null &&
-                !stuffRepo.existsById(assignmentForm.getStuff1Id())) return false;
-        if (assignmentForm.getStuff2Id() != null &&
-                !stuffRepo.existsById(assignmentForm.getStuff2Id())) return false;
+    public Boolean isValidAssignment(Assignment assignment) {
+        if (assignment.getDate() == null) return false;
+        if (assignment.getDepartureTime() == null) return false;
+        if (assignment.getDuration() == null) return false;
+        if (assignment.getBus() == null) return false;
+        if (assignment.getDriver() == null) return false;
+        if (assignment.getRoute() == null) return false;
+        if (assignment.getBus().getBusId() == null) return false;
+        if (assignment.getDriver().getDriverId() == null) return false;
+        if (assignment.getRoute().getRouteId() == null) return false;
+        if (!busRepo.existsById(assignment.getBus().getBusId())) return false;
+        if (!driverRepo.existsById(assignment.getDriver().getDriverId())) return false;
+        if (!routeRepo.existsById(assignment.getRoute().getRouteId())) return false;
+        if (assignment.getStuff1() != null &&
+                assignment.getStuff1().getStuffId() != null &&
+                !stuffRepo.existsById(assignment.getStuff1().getStuffId())) return false;
+        if (assignment.getStuff2() != null &&
+                assignment.getStuff2().getStuffId() != null &&
+                !stuffRepo.existsById(assignment.getStuff2().getStuffId())) return false;
         return true;
     }
 
-    public Assignment addAssignment(AssignmentForm assignmentForm) {
-        if (isValidAssignment(assignmentForm)) {
-            Assignment assignment = new Assignment();
-            assignment.setDate(assignmentForm.getDate());
-            assignment.setDepartureTime(assignmentForm.getDepartureTime());
-            assignment.setDuration(assignmentForm.getDuration());
-            assignment.setBus(busRepo.getOne(assignmentForm.getBusId()));
-            assignment.setDriver(driverRepo.getOne(assignmentForm.getDriverId()));
-            assignment.setRoute(routeRepo.getOne(assignmentForm.getRouteId()));
-            if (assignmentForm.getStuff1Id() != null) {
-                assignment.setStuff1(stuffRepo.getOne(assignmentForm.getStuff1Id()));
+    public Assignment addAssignment(Assignment assignment) {
+        if (isValidAssignment(assignment)) {
+            assignment.setBus(busRepo.getOne(assignment.getBus().getBusId()));
+            assignment.setDriver(driverRepo.getOne(assignment.getDriver().getDriverId()));
+            assignment.setRoute(routeRepo.getOne(assignment.getRoute().getRouteId()));
+            if (assignment.getStuff1() != null) {
+                assignment.setStuff1(stuffRepo.getOne(assignment.getStuff1().getStuffId()));
             }
-            if (assignmentForm.getStuff2Id() != null) {
-                assignment.setStuff2(stuffRepo.getOne(assignmentForm.getStuff2Id()));
+            if (assignment.getStuff2() != null) {
+                assignment.setStuff2(stuffRepo.getOne(assignment.getStuff2().getStuffId()));
             }
             return assignmentRepo.save(assignment);
         }
         return null;
     }
 
-    public List<Assignment> getAll() {
-        return assignmentRepo.findAll();
-    }
-
-
     public List<Assignment> getAllByDateRange(Date startDate, Date endDate) {
         return assignmentRepo.getAllByDateRange(startDate, endDate);
+    }
+
+    public List<Assignment> getNth30SchedulesFromLast(Long n) {
+        Long scheduleCount = assignmentRepo.count();
+        if (scheduleCount == 0 || n <= 0 ) return new ArrayList<>();
+        return assignmentRepo.getNth30SchedulesFromLast(Math.max(0, scheduleCount - (n * 30)));
     }
 }

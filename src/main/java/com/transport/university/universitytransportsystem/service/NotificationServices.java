@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,13 +53,13 @@ public class NotificationServices {
 
     public List<Notification> getLatestNotifications() {
         Long notificationCount = notificationRepo.count();
-        if (notificationCount == 0) return null;
+        if (notificationCount == 0) return new ArrayList<>();
         return notificationRepo.get10Notifications(Math.max(0, notificationCount - 10));
     }
 
     public List<Notification> getNth10Notifications(Long n) {
         Long notificationCount = notificationRepo.count();
-        if (notificationCount == 0 || n == 0) return null;
+        if (notificationCount == 0 || n <= 0) return new ArrayList<>();
         return notificationRepo.get10Notifications(Math.max(0, notificationCount - (n * 10)));
     }
 }
