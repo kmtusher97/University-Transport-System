@@ -2,10 +2,7 @@ package com.transport.university.universitytransportsystem.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
@@ -19,6 +16,7 @@ public class Stoppage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer stoppageId;
 
+    @Column(nullable = false, unique = true)
     private String stoppageName;
 
     private Double latitude;

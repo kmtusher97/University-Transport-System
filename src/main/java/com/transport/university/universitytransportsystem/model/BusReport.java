@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -16,13 +17,15 @@ public class BusReport implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long busReportId;
 
+    private Date date;
+
     private String report;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "bus_id", referencedColumnName = "busId", nullable = false)
     private Bus bus;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "driver_id", referencedColumnName = "driverId", nullable = false)
     private Driver driver;
 }
