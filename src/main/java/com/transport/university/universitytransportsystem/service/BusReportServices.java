@@ -29,6 +29,8 @@ public class BusReportServices {
     private Boolean isValid(BusReport busReport) {
         if (busReport.getDate() == null) return false;
         if (busReport.getReport() == null) return false;
+        if (busReport.getBus() == null) return false;
+        if (busReport.getDriver() == null) return false;
         if (busReport.getBus().getBusId() == null) return false;
         if (busReport.getDriver().getDriverId() == null) return false;
         if (!busRepo.existsById(busReport.getBus().getBusId())) return false;
