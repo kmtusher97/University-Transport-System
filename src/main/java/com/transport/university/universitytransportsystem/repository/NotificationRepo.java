@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface NotificationRepo extends JpaRepository<Notification, Long> {
 
-    @Query(value = "SELECT * FROM notification LIMIT 10 OFFSET ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM notification LIMIT 30 OFFSET ?1", nativeQuery = true)
     List<Notification> get10Notifications(Long fromRow);
 }
