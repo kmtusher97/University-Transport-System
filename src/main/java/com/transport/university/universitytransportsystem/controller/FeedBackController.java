@@ -15,12 +15,12 @@ public class FeedBackController {
     @Autowired
     private FeedBackServices feedBackServices;
 
-    @PostMapping("/add")
+    @PostMapping("/GLOBAL/add")
     public FeedBack addFeedBack(@RequestBody FeedBack feedBack) {
         return feedBackServices.saveFeedBack(feedBack);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/GLOBAL/getById/{id}")
     public FeedBack getFeedBackById(@PathVariable("id") Long id) {
         return feedBackServices.getFeedBackById(id);
     }
@@ -31,7 +31,7 @@ public class FeedBackController {
         feedBackServices.deleteFeedbackId(id);
     }
 
-    @GetMapping("/getAll/{n}")
+    @GetMapping("/GLOBAL/getAll/{n}")
     public List<FeedBack> getNth30FeeBacks(@PathVariable("n") Long n) {
         return feedBackServices.getNth30FeeBacks(n);
     }

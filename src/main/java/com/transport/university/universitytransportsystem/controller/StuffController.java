@@ -15,7 +15,7 @@ public class StuffController {
     @Autowired
     private StuffServices stuffServices;
 
-    @GetMapping("/GLOBAL/getById/{id}")
+    @GetMapping("/getById/{id}")
     public Stuff getStuffById(@PathVariable("id") Integer id) {
         return stuffServices.getStuffById(id);
     }
