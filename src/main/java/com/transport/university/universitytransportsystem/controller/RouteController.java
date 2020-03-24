@@ -1,6 +1,7 @@
 package com.transport.university.universitytransportsystem.controller;
 
 import com.transport.university.universitytransportsystem.model.Route;
+import com.transport.university.universitytransportsystem.model.Stoppage;
 import com.transport.university.universitytransportsystem.service.RouteServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +38,11 @@ public class RouteController {
     @DeleteMapping("/delete/{routeId}")
     public void deleteRouteById(@PathVariable("routeId") Integer routeId) {
         routeServices.deleteRouteById(routeId);
+    }
+
+
+    @GetMapping("/get/{routeId}/detail")
+    public List<Stoppage> getDetailRouteByRouteId(@PathVariable("routeId") Integer routeId) {
+        return routeServices.getDetailRouteByRouteId(routeId);
     }
 }
