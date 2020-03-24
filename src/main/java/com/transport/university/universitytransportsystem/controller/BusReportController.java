@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "/api/busReport")
 public class BusReportController {
@@ -20,7 +21,7 @@ public class BusReportController {
         return busReportServices.getAllBusReport();
     }
 
-    @PostMapping("/add")
+    @PostMapping("/DRIVER/add")
     public BusReport addBusReport(@RequestBody BusReport busReport) {
         return busReportServices.addBusReport(busReport);
     }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "api/stoppage")
 public class StoppageController {
@@ -19,17 +20,17 @@ public class StoppageController {
         return stoppageServices.save(stoppage);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/GLOBAL/getAll")
     public List<Stoppage> getAllStoppage() {
         return stoppageServices.getAllStoppage();
     }
 
-    @GetMapping("/get/{stoppageId}")
+    @GetMapping("/GLOBAL/get/{stoppageId}")
     public Stoppage getStoppageById(@PathVariable("stoppageId") Integer stoppageId) {
         return stoppageServices.getStoppageById(stoppageId);
     }
 
-    @GetMapping("/getByName/{stoppageName}")
+    @GetMapping("/GLOBAL/getByName/{stoppageName}")
     public Stoppage getStoppageByName(@PathVariable("stoppageName") String stoppageName) {
         return stoppageServices.getStoppageByName(stoppageName);
     }

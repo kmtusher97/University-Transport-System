@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "api/bus")
 public class BusController {
@@ -19,12 +20,12 @@ public class BusController {
         return busServices.getAllBuses();
     }
 
-    @GetMapping("/getById/{busId}")
+    @GetMapping("/GLOBAL/getById/{busId}")
     public Bus getBusByBusId(@PathVariable("busId") Integer busId) {
         return busServices.getBusByBusId(busId);
     }
 
-    @GetMapping("/getByNumber/{number}")
+    @GetMapping("/GLOBAL/getByNumber/{number}")
     public Bus getBusByBusNumber(@PathVariable("number") String busNumber) {
         return busServices.getBusByBusNumber(busNumber);
     }
@@ -47,5 +48,13 @@ public class BusController {
     @PostMapping("/update")
     public Bus updateBusInfo(@RequestBody Bus bus) {
         return busServices.updateBus(bus);
+    }
+
+    @GetMapping("/DRIVER/trip/finished/{busId}/{driverId}")
+    public Bus markBusAsFinishedTrip(
+            @PathVariable("busId") Integer busId,
+            @PathVariable("driverId") Integer driverId
+    ) {
+        return busServices.markBusAsFinishedTrip(busId, driverId);
     }
 }

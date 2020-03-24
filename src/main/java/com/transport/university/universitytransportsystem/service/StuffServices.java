@@ -72,4 +72,9 @@ public class StuffServices {
         }
         return null;
     }
+
+    public Stuff getStuffById(Integer id) {
+        if (!stuffRepo.existsById(id)) return null;
+        return stuffRepo.getOne(id);
+    }
 }

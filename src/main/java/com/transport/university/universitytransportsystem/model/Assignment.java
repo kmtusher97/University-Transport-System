@@ -27,23 +27,23 @@ public class Assignment implements Serializable {
     @Column(nullable = false)
     private Time duration;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "bus_id", referencedColumnName = "busId", nullable = false)
     private Bus bus;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "driver_id", referencedColumnName = "driverId", nullable = false)
     private Driver driver;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "stuff1_id", referencedColumnName = "stuffId", nullable = true)
     private Stuff stuff1;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "stuff2_id", referencedColumnName = "stuffId", nullable = true)
     private Stuff stuff2;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "route_id", referencedColumnName = "routeId", nullable = false)
     private Route route;
 }
