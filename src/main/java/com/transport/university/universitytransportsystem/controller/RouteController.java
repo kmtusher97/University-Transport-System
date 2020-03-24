@@ -16,12 +16,12 @@ public class RouteController {
     @Autowired
     private RouteServices routeServices;
 
-    @GetMapping("/getAll")
+    @GetMapping("/GLOBAL/getAll")
     public List<Route> getAllRoutes() {
         return routeServices.getAllRoutes();
     }
 
-    @GetMapping("/get/{routeId}")
+    @GetMapping("/GLOBAL/get/{routeId}")
     public Route getRouteById(@PathVariable("routeId") Integer routeId) {
         return routeServices.getRouteById(routeId);
     }
@@ -42,7 +42,7 @@ public class RouteController {
     }
 
 
-    @GetMapping("/get/{routeId}/detail")
+    @GetMapping("/GLOBAL/get/{routeId}/detail")
     public List<Stoppage> getDetailRouteByRouteId(@PathVariable("routeId") Integer routeId) {
         return routeServices.getDetailRouteByRouteId(routeId);
     }

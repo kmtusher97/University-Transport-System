@@ -67,13 +67,25 @@ public class AssignmentServices {
         return null;
     }
 
+    public Assignment updateAssignment(Assignment assignment) {
+        if (assignment.getAssignmentId() == null) return null;
+        if (!assignmentRepo.existsById(assignment.getAssignmentId())) return null;
+        return addAssignment(assignment);
+    }
+
     public List<Assignment> getAllByDateRange(Date startDate, Date endDate) {
         return assignmentRepo.getAllByDateRange(startDate, endDate);
     }
 
     public List<Assignment> getNth30SchedulesFromLast(Long n) {
         Long scheduleCount = assignmentRepo.count();
-        if (scheduleCount == 0 || n <= 0 ) return new ArrayList<>();
+        if (scheduleCount == 0 || n <= 0) return new ArrayList<>();
         return assignmentRepo.getNth30SchedulesFromLast(Math.max(0, scheduleCount - (n * 30)));
+    }
+
+    public void deleteAssignmentById(Long id) {
+        if (assignmentRepo.existsById(id)) {
+            assignmentRepo.deleteById(id);
+        }
     }
 }

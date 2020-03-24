@@ -21,7 +21,7 @@ public class BusReportController {
         return busReportServices.getAllBusReport();
     }
 
-    @PostMapping("/add")
+    @PostMapping("/DRIVER/add")
     public BusReport addBusReport(@RequestBody BusReport busReport) {
         return busReportServices.addBusReport(busReport);
     }

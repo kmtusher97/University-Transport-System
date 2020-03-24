@@ -21,12 +21,22 @@ public class AssignmentController {
         return assignmentServices.addAssignment(assignment);
     }
 
-    @GetMapping("/getSchedules/{n}")
+    @PostMapping("/update")
+    public Assignment updateAssignment(@RequestBody Assignment assignment) {
+        return assignmentServices.updateAssignment(assignment);
+    }
+
+    @DeleteMapping("/deleteById/{id}")
+    public void deleteAssignmentById(@PathVariable("id") Long id) {
+        assignmentServices.deleteAssignmentById(id);
+    }
+
+    @GetMapping("/GLOBAL/getSchedules/{n}")
     public List<Assignment> getNth30SchedulesFromLast(@PathVariable("n") Long n) {
         return assignmentServices.getNth30SchedulesFromLast(n);
     }
 
-    @PostMapping("/allByDate")
+    @PostMapping("/GLOBAL/allByDate")
     public List<Assignment> getAllByDateRange(@RequestBody List<Date> dates) {
         if (dates == null || dates.size() != 2) return null;
         Date startDate = dates.get(0);
