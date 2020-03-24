@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "/api/busReport")
 public class BusReportController {
