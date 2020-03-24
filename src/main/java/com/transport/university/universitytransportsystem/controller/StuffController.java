@@ -15,6 +15,11 @@ public class StuffController {
     @Autowired
     private StuffServices stuffServices;
 
+    @GetMapping("/GLOBAL/getById/{id}")
+    public Stuff getStuffById(@PathVariable("id") Integer id) {
+        return stuffServices.getStuffById(id);
+    }
+
     @GetMapping("/inService/all")
     public List<Stuff> getAllStuffsInService() {
         return stuffServices.getAllStuffsInService();
