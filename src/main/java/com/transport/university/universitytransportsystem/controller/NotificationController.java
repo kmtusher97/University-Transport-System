@@ -39,8 +39,8 @@ public class NotificationController {
         return notificationServices.getLatestNotifications();
     }
 
-    @GetMapping("/get/{n}")
-    public List<Notification> getNth10Notifications(@PathVariable("n") Long n) {
-        return notificationServices.getNth10Notifications(n);
+    @GetMapping("/getAll/{n}")
+    public List<Notification> getNth30Notifications(@PathVariable("n") Long n) {
+        return notificationServices.getNth30Notifications(n);
     }
 }

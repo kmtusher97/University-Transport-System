@@ -54,12 +54,12 @@ public class NotificationServices {
     public List<Notification> getLatestNotifications() {
         Long notificationCount = notificationRepo.count();
         if (notificationCount == 0) return new ArrayList<>();
-        return notificationRepo.get10Notifications(Math.max(0, notificationCount - 10));
+        return notificationRepo.get10Notifications(Math.max(0, notificationCount - 30));
     }
 
-    public List<Notification> getNth10Notifications(Long n) {
+    public List<Notification> getNth30Notifications(Long n) {
         Long notificationCount = notificationRepo.count();
         if (notificationCount == 0 || n <= 0) return new ArrayList<>();
-        return notificationRepo.get10Notifications(Math.max(0, notificationCount - (n * 10)));
+        return notificationRepo.get10Notifications(Math.max(0, notificationCount - (n * 30)));
     }
 }

@@ -20,7 +20,7 @@ public class FeedBack implements Serializable {
     @Column(columnDefinition = "boolean default true")
     private Boolean feedbackType;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
     private User user;
 }

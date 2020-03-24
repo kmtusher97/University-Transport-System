@@ -5,6 +5,8 @@ import com.transport.university.universitytransportsystem.service.AnnouncementSe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "api/announcement")
 public class AnnouncementController {
@@ -25,6 +27,11 @@ public class AnnouncementController {
     @GetMapping("/get/{id}")
     public Announcement getAnnouncementById(@PathVariable("id") Long id) {
         return announcementServices.getAnnouncementById(id);
+    }
+
+    @GetMapping("/getAll/{n}")
+    public List<Announcement> getNth30AnnouncementsFromBack(@PathVariable("n") Long n) {
+        return announcementServices.getNth30AnnouncementsFromBack(n);
     }
 
     @DeleteMapping("/delete/{id}")

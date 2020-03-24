@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class AnnouncementServices {
@@ -21,7 +24,7 @@ public class AnnouncementServices {
 
     public Announcement updateAnnouncement(Announcement announcement) {
         if (announcement.getAnnouncementId() == null ||
-                !announcementRepo.existsById(announcement.getAnnouncementId()))return null;
+                !announcementRepo.existsById(announcement.getAnnouncementId())) return null;
         return addAnnouncement(announcement);
     }
 
@@ -36,5 +39,12 @@ public class AnnouncementServices {
         if (announcementRepo.existsById(id)) {
             announcementRepo.deleteById(id);
         }
+    }
+
+    public List<Announcement> getNth30AnnouncementsFromBack(Long n) {
+        Long announcementCount = announcementRepo.count();
+        if (announcementCount == 0 || n <= 0) return new ArrayList<>();
+        return announcementRepo.getNth30AnnouncementsFromBack(Math.max(0, announcementCount - (n * 30)));
+
     }
 }
