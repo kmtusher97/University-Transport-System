@@ -11,21 +11,23 @@ class SideNavbar extends Component {
   render() {
     return (
       <Nav
-        defaultActiveKey={"/" + this.state.pathnameComponents[1]}
+        defaultActiveKey={
+          this.state.pathnameComponents[1] === ""
+            ? "/schedule"
+            : "/" + this.state.pathnameComponents[1]
+        }
         variant="pills"
         className="flex-column"
-        style={{ padding: "10px" }}
+        style={{
+          padding: "10px",
+          border: "1px solid gray",
+          borderRadius: "5px"
+        }}
       >
         <Nav.Link href="/schedule">Schedule</Nav.Link>
-        <Nav.Link href="/bus" eventKey="/bus">
-          Bus
-        </Nav.Link>
-        <Nav.Link href="/feedback" eventKey="/feedback">
-          Feedback
-        </Nav.Link>
-        <Nav.Link href="/notice" eventKey="/notice">
-          Notice
-        </Nav.Link>
+        <Nav.Link href="/bus">Bus</Nav.Link>
+        <Nav.Link href="/feedback">Feedback</Nav.Link>
+        <Nav.Link href="/notice">Notice</Nav.Link>
       </Nav>
     );
   }
