@@ -26,6 +26,7 @@ class SideNavbar extends Component {
       >
         <Nav.Link href="/schedule">Schedule</Nav.Link>
         <Nav.Link href="/bus">Bus</Nav.Link>
+        <Nav.Link href="/route">Route</Nav.Link>
         <Nav.Link href="/feedback">Feedback</Nav.Link>
         <Nav.Link href="/notice">Notice</Nav.Link>
       </Nav>
