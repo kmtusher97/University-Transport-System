@@ -2,11 +2,9 @@ package com.transport.university.universitytransportsystem.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,4 +17,7 @@ public class Route implements Serializable {
     private Integer routeId;
 
     private String route;
+
+    @Transient
+    private List<Stoppage> routeDetail;
 }
