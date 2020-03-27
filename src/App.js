@@ -7,6 +7,7 @@ import { Container, Row, Col } from "react-bootstrap";
 /**Componnts */
 import SideNavbar from "./component/SideNavbar";
 import Schedule from "./component/Schedule";
+import Bus from "./component/Bus";
 
 function App() {
   return (
@@ -40,7 +41,10 @@ function App() {
                 <Route path="/schedule" exact={true}>
                   <Schedule />
                 </Route>
-                <Route path="/bus" exact={true} />
+                <Route path="/bus" exact={true}>
+                  <Bus />
+                </Route>
+                <Route path="/bus/edit/:busId" exact={true}></Route>
                 <Route path="/feedback" exact={true} />
                 <Route path="/notice" exact={true} />
               </Switch>
