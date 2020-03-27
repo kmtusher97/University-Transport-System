@@ -22,12 +22,19 @@ public class RouteServices {
     private StoppageRepo stoppageRepo;
 
     public List<Route> getAllRoutes() {
-        return routeRepo.findAll();
+        List<Route> routeList = routeRepo.findAll();
+        if (routeList == null) routeList = new ArrayList<>();
+        for (Route route : routeList) {
+            route.setRouteDetail(getDetailRouteByRouteId(route.getRouteId()));
+        }
+        return routeList;
     }
 
     public Route getRouteById(Integer routeId) {
         if (!routeRepo.existsById(routeId)) return null;
-        return routeRepo.getOne(routeId);
+        Route route = routeRepo.getOne(routeId);
+        route.setRouteDetail(getDetailRouteByRouteId(routeId));
+        return route;
     }
 
     private Boolean isValidRoute(String route) {
