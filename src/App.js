@@ -2,13 +2,14 @@ import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 
 /**Componnts */
 import SideNavbar from "./component/SideNavbar";
 import Schedule from "./component/Schedule";
 import Bus from "./component/Bus";
 import BusRoute from "./component/BusRoute";
+import AddSchedule from "./component/AddSchedule";
 
 function App() {
   return (
@@ -34,13 +35,16 @@ function App() {
               height: "1200px"
             }}
           >
-            <Container role="main">
+            <div role="main">
               <Switch>
                 <Route path="/" exact={true}>
                   <Schedule />
                 </Route>
                 <Route path="/schedule" exact={true}>
                   <Schedule />
+                </Route>
+                <Route path="/schedule/add" exact={true}>
+                  <AddSchedule scheduleData={{ scheduleId: null }} />
                 </Route>
                 <Route path="/bus" exact={true}>
                   <Bus />
@@ -52,7 +56,7 @@ function App() {
                 <Route path="/feedback" exact={true} />
                 <Route path="/notice" exact={true} />
               </Switch>
-            </Container>
+            </div>
           </Col>
         </Row>
       </div>

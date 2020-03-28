@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 
 import AppData from "./AppData";
 import Axios from "axios";
+import { Link } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 
 class Schedule extends Component {
   constructor(props) {
@@ -37,49 +39,71 @@ class Schedule extends Component {
 
   render() {
     return (
-      <div style={{ paddingTop: "10px" }}>
-        <Table size="sm" bordered striped hover>
-          <thead style={{ textAlign: "center" }}>
-            <tr>
-              <th>SL</th>
-              <th>Date</th>
-              <th>Departure Time</th>
-              <th>Duration</th>
-              <th>Route</th>
-              <th>Bus</th>
-              <th>Driver</th>
-              <th>Stuff1</th>
-              <th>Stuff2</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.scheduleList.map((schedule, idx) => (
-              <tr key={idx} style={{ fontSize: "11px" }}>
-                <td style={{ textAlign: "center" }}>{schedule.assignmentId}</td>
-                <td>{this.showDate(schedule.date)}</td>
-                <td style={{ textAlign: "center" }}>
-                  {schedule.departureTime}
-                </td>
-                <td style={{ textAlign: "center" }}>{schedule.duration}</td>
-                <td style={{ textAlign: "center" }}>
-                  {schedule.route.routeId}
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  {this.showBus(schedule.bus)}
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  {schedule.driver.driverId}
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  {schedule.stuff1 === null ? "" : schedule.stuff1.stuffId}
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  {schedule.stuff2 === null ? "" : schedule.stuff2.stuffId}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+      <div>
+        <Row>
+          <Col md={3} style={{ padding: "5px", paddingLeft: "15px" }}>
+            <Link to={"/schedule/add"}>
+              <Button size="sm" variant="outline-primary">
+                Add Schedule
+              </Button>
+            </Link>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12}>
+            <Table size="sm" bordered striped hover>
+              <thead style={{ textAlign: "center" }}>
+                <tr>
+                  <th>SL</th>
+                  <th>Date</th>
+                  <th>Departure Time</th>
+                  <th>Duration</th>
+                  <th>Route No</th>
+                  <th>Bus</th>
+                  <th>Driver</th>
+                  <th>Stuff1</th>
+                  <th>Stuff2</th>
+                  <th colSpan={2}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.scheduleList.map((schedule, idx) => (
+                  <tr key={idx} style={{ fontSize: "11px" }}>
+                    <td style={{ textAlign: "center" }}>
+                      {schedule.assignmentId}
+                    </td>
+                    <td>{this.showDate(schedule.date)}</td>
+                    <td style={{ textAlign: "center" }}>
+                      {schedule.departureTime}
+                    </td>
+                    <td style={{ textAlign: "center" }}>{schedule.duration}</td>
+                    <td style={{ textAlign: "center" }}>
+                      {schedule.route.routeId}
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      {this.showBus(schedule.bus)}
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      {schedule.driver.driverId}
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      {schedule.stuff1 === null ? "" : schedule.stuff1.stuffId}
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      {schedule.stuff2 === null ? "" : schedule.stuff2.stuffId}
+                    </td>
+                    <td>
+                      <Link to={"/schedule/edit/" + schedule.assignmentId}>
+                        Edit
+                      </Link>
+                    </td>
+                    <td>Delete</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
       </div>
     );
   }
