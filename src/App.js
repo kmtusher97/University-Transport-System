@@ -44,7 +44,10 @@ function App() {
                   <Schedule />
                 </Route>
                 <Route path="/schedule/add" exact={true}>
-                  <AddSchedule scheduleData={{ scheduleId: null }} />
+                  <AddSchedule />
+                </Route>
+                <Route path="/schedule/edit/:scheduleId" exact={true}>
+                  <AddSchedule />
                 </Route>
                 <Route path="/bus" exact={true}>
                   <Bus />

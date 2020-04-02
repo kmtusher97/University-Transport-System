@@ -6,6 +6,9 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+
 class Schedule extends Component {
   constructor(props) {
     super(props);
@@ -68,7 +71,7 @@ class Schedule extends Component {
               </thead>
               <tbody>
                 {this.state.scheduleList.map((schedule, idx) => (
-                  <tr key={idx} style={{ fontSize: "11px" }}>
+                  <tr key={idx}>
                     <td style={{ textAlign: "center" }}>
                       {schedule.assignmentId}
                     </td>
@@ -93,10 +96,16 @@ class Schedule extends Component {
                     </td>
                     <td>
                       <Link to={"/schedule/edit/" + schedule.assignmentId}>
-                        Edit
+                        <Button size="sm" variant="outline-success">
+                          <FontAwesomeIcon icon={faPen} />
+                        </Button>
                       </Link>
                     </td>
-                    <td>Delete</td>
+                    <td>
+                      <Button size="sm" variant="outline-danger">
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

@@ -13,7 +13,7 @@ class AddSchedule extends Component {
       driverList: [],
       stuffList: [],
       assignment: {
-        assignmentId: this.props.scheduleData.scheduleId,
+        assignmentId: null,
         date: null,
         departureTime: null,
         duration: null,
@@ -28,7 +28,8 @@ class AddSchedule extends Component {
         route: {
           routeId: null
         }
-      }
+      },
+      pathComponents: null
     };
   }
 
@@ -58,11 +59,32 @@ class AddSchedule extends Component {
                 url = `${AppData.restApiBaseUrl}/stuff/inService/all`;
                 Axios.get(url)
                   .then(response => response.data)
-                  .then(data =>
+                  .then(data => {
                     this.setState({
                       stuffList: data
-                    })
-                  );
+                    });
+
+                    this.setState({
+                      pathComponents: window.location.pathname.split("/")
+                    });
+
+                    if (
+                      this.state.pathComponents[2] === "edit" &&
+                      this.state.pathComponents[3] !== undefined &&
+                      this.state.pathComponents[3] !== null
+                    ) {
+                      url = `${AppData.restApiBaseUrl}/schedule/getById/${this.state.pathComponents[3]}`;
+                      Axios.get(url)
+                        .then(response => response.data)
+                        .then(data => {
+                          if (data !== null && data !== undefined) {
+                            this.setState({
+                              assignment: data
+                            });
+                          }
+                        });
+                    }
+                  });
               });
           });
       });
@@ -148,7 +170,6 @@ class AddSchedule extends Component {
       alert("Select Departure Time!!!");
       return false;
     }
-
     if (this.state.assignment.route.routeId === null) {
       alert("Select Route!!!");
       return false;
@@ -167,10 +188,43 @@ class AddSchedule extends Component {
   addSchedule = event => {
     event.preventDefault();
     if (this.checkForm()) {
-      let url = `${AppData.restApiBaseUrl}/schedule/add`;
-      Axios.post(url, this.state.assignment);
-      window.location.replace("/schedule");
+      if (this.state.pathComponents[2] === "add") {
+        let url = `${AppData.restApiBaseUrl}/schedule/add`;
+        Axios.post(url, this.state.assignment)
+          .then(response => response.data)
+          .then(data => {
+            if (data === null) {
+              alert("Error!!!! Failed to add.");
+            } else {
+              window.location.replace("/schedule");
+            }
+          });
+      } else if (this.state.pathComponents[2] === "edit") {
+        let url = `${AppData.restApiBaseUrl}/schedule/update`;
+        Axios.post(url, this.state.assignment)
+          .then(response => response.data)
+          .then(data => {
+            if (data === null) {
+              alert("Error!!!! Failed to edit.");
+            } else {
+              window.location.replace("/schedule");
+            }
+          });
+      }
     }
+  };
+
+  getDateForInout = tmpDate => {
+    let date = new Date(tmpDate);
+    return String(
+      date.getFullYear() +
+        "-" +
+        (date.getMonth() + 1 < 10 ? "0" : "") +
+        (date.getMonth() + 1) +
+        "-" +
+        (date.getDate() < 10 ? "0" : "") +
+        date.getDate()
+    );
   };
 
   render() {
@@ -184,6 +238,11 @@ class AddSchedule extends Component {
                 <Form.Control
                   type="date"
                   required
+                  value={
+                    this.state.assignment.date !== null
+                      ? this.getDateForInout(this.state.assignment.date)
+                      : ""
+                  }
                   onChange={this.onChangeHandlerDate}
                 />
               </Form.Group>
@@ -194,6 +253,11 @@ class AddSchedule extends Component {
                 <Form.Control
                   type="time"
                   required
+                  value={
+                    this.state.assignment.departureTime !== null
+                      ? this.state.assignment.departureTime
+                      : ""
+                  }
                   onChange={this.onChangeHandlerDepartureTime}
                 />
               </Form.Group>
@@ -207,6 +271,11 @@ class AddSchedule extends Component {
                   as="select"
                   custom
                   required
+                  value={
+                    this.state.assignment.route.routeId !== null
+                      ? this.state.assignment.route.routeId
+                      : ""
+                  }
                   onChange={this.onChangeHandlerRoute}
                   style={{ fontSize: "12px" }}
                 >
@@ -235,6 +304,11 @@ class AddSchedule extends Component {
                   as="select"
                   custom
                   required
+                  value={
+                    this.state.assignment.bus.busId !== null
+                      ? this.state.assignment.bus.busId
+                      : ""
+                  }
                   onChange={this.onChangeHandlerBus}
                   style={{ fontSize: "12px" }}
                 >
@@ -259,6 +333,11 @@ class AddSchedule extends Component {
                   as="select"
                   custom
                   required
+                  value={
+                    this.state.assignment.driver.driverId !== null
+                      ? this.state.assignment.driver.driverId
+                      : ""
+                  }
                   onChange={this.onChangeHandlerDriver}
                   style={{ fontSize: "12px" }}
                 >
@@ -288,6 +367,11 @@ class AddSchedule extends Component {
                 <Form.Control
                   as="select"
                   custom
+                  value={
+                    this.state.assignment.stuff1 !== null
+                      ? this.state.assignment.stuff1.stuffId
+                      : ""
+                  }
                   onChange={this.onChangeHandlerStuff1}
                   style={{ fontSize: "12px" }}
                 >
@@ -317,6 +401,11 @@ class AddSchedule extends Component {
                 <Form.Control
                   as="select"
                   custom
+                  value={
+                    this.state.assignment.stuff2 !== null
+                      ? this.state.assignment.stuff2.stuffId
+                      : ""
+                  }
                   onChange={this.onChangeHandlerStuff2}
                   style={{ fontSize: "12px" }}
                 >
