@@ -88,4 +88,9 @@ public class AssignmentServices {
             assignmentRepo.deleteById(id);
         }
     }
+
+    public Assignment getById(Long id) {
+        if (!assignmentRepo.existsById(id)) return null;
+        return assignmentRepo.getOne(id);
+    }
 }

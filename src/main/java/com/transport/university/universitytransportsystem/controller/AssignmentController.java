@@ -31,12 +31,17 @@ public class AssignmentController {
         assignmentServices.deleteAssignmentById(id);
     }
 
+    @GetMapping("/getById/{id}")
+    public Assignment getAssignmentById(@PathVariable("id") Long id) {
+        return assignmentServices.getById(id);
+    }
+
     @GetMapping("/GLOBAL/getSchedules/{n}")
     public List<Assignment> getNth30SchedulesFromLast(@PathVariable("n") Long n) {
         return assignmentServices.getNth30SchedulesFromLast(n);
     }
 
-    @PostMapping("/GLOBAL/allByDate")
+    @PostMapping("/GLOBAL/getAllByDate")
     public List<Assignment> getAllByDateRange(@RequestBody List<Date> dates) {
         if (dates == null || dates.size() != 2) return null;
         Date startDate = dates.get(0);
