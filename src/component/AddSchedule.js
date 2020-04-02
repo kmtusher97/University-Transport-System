@@ -3,7 +3,6 @@ import { Container, Form, Button, Row, Col } from "react-bootstrap";
 
 import AppData from "./AppData";
 import Axios from "axios";
-import { Redirect } from "react-router-dom";
 
 class AddSchedule extends Component {
   constructor(props) {
@@ -95,14 +94,6 @@ class AddSchedule extends Component {
     });
   };
 
-  onChangeHandlerDuration = event => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.duration = String(event.target.value) + ":00";
-    this.setState({
-      assignment: tmpAssgnment
-    });
-  };
-
   onChangeHandlerRoute = event => {
     let tmpAssgnment = this.state.assignment;
     tmpAssgnment.route = { routeId: event.target.value };
@@ -144,6 +135,11 @@ class AddSchedule extends Component {
   };
 
   checkForm = () => {
+    let tmpAssgnment = this.state.assignment;
+    tmpAssgnment.duration = "01:00:00";
+    this.setState({
+      assignment: tmpAssgnment
+    });
     if (this.state.assignment.date === null) {
       alert("Select Date!!!");
       return false;
@@ -152,10 +148,7 @@ class AddSchedule extends Component {
       alert("Select Departure Time!!!");
       return false;
     }
-    if (this.state.assignment.duration === null) {
-      alert("Select Duration!!!");
-      return false;
-    }
+
     if (this.state.assignment.route.routeId === null) {
       alert("Select Route!!!");
       return false;
@@ -202,16 +195,6 @@ class AddSchedule extends Component {
                   type="time"
                   required
                   onChange={this.onChangeHandlerDepartureTime}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Duration</Form.Label>
-                <Form.Control
-                  type="time"
-                  required
-                  onChange={this.onChangeHandlerDuration}
                 />
               </Form.Group>
             </Col>

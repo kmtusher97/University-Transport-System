@@ -57,7 +57,7 @@ class Schedule extends Component {
                   <th>SL</th>
                   <th>Date</th>
                   <th>Departure Time</th>
-                  <th>Duration</th>
+
                   <th>Route No</th>
                   <th>Bus</th>
                   <th>Driver</th>
@@ -76,11 +76,10 @@ class Schedule extends Component {
                     <td style={{ textAlign: "center" }}>
                       {schedule.departureTime}
                     </td>
-                    <td style={{ textAlign: "center" }}>{schedule.duration}</td>
                     <td style={{ textAlign: "center" }}>
                       {schedule.route.routeId}
                     </td>
-                    <td style={{ textAlign: "center" }}>
+                    <td style={{ textAlign: "left" }}>
                       {this.showBus(schedule.bus)}
                     </td>
                     <td style={{ textAlign: "center" }}>
