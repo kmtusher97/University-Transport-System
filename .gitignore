@@ -28,4 +28,8 @@ target/
 build/
 
 ### VS Code ###
+<<<<<<< HEAD
 .vscode/
+=======
+.vscode/
+>>>>>>> service

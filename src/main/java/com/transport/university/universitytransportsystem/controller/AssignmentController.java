@@ -5,6 +5,7 @@ import com.transport.university.universitytransportsystem.service.AssignmentServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,9 @@ public class AssignmentController {
 
     @GetMapping("/GLOBAL/getSchedules/{n}")
     public List<Assignment> getNth30SchedulesFromLast(@PathVariable("n") Long n) {
-        return assignmentServices.getNth30SchedulesFromLast(n);
+        List<Assignment> assignmentList = assignmentServices.getNth30SchedulesFromLast(n);
+        Collections.reverse(assignmentList);
+        return assignmentList;
     }
 
     @PostMapping("/GLOBAL/getAllByDate")
