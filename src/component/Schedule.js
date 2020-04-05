@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, ButtonGroup, Popover, Overlay } from "react-bootstrap";
 
 import AppData from "./AppData";
 import Axios from "axios";
@@ -14,8 +14,12 @@ class Schedule extends Component {
     super(props);
     this.state = {
       scheduleList: [],
-      n: 1
+      n: 1,
+      target: null,
+      show: false,
+      deleteId: -1
     };
+    this.ref1 = React.createRef();
   }
 
   componentDidMount = () => {
@@ -40,6 +44,35 @@ class Schedule extends Component {
     return busDetailString;
   };
 
+  deleteScheduleConfirmation = (event, assignmentId) => {
+    this.setState({
+      target: event.target,
+      show: true,
+      deleteId: assignmentId
+    });
+  };
+
+  deleteSchedule = event => {
+    if (this.state.deleteId !== -1) {
+      let url = `${AppData.restApiBaseUrl}/schedule/deleteById/${this.state.deleteId}`;
+      Axios.delete(url);
+      window.location.reload();
+    }
+    this.setState({
+      target: null,
+      show: false,
+      deleteId: -1
+    });
+  };
+
+  abortDelete = event => {
+    this.setState({
+      target: null,
+      show: false,
+      deleteId: -1
+    });
+  };
+
   render() {
     return (
       <div>
@@ -53,7 +86,7 @@ class Schedule extends Component {
           </Col>
         </Row>
         <Row>
-          <Col md={12}>
+          <Col md={12} ref={this.ref1}>
             <Table size="sm" bordered striped hover>
               <thead style={{ textAlign: "center" }}>
                 <tr>
@@ -72,9 +105,7 @@ class Schedule extends Component {
               <tbody>
                 {this.state.scheduleList.map((schedule, idx) => (
                   <tr key={idx}>
-                    <td style={{ textAlign: "center" }}>
-                      {schedule.assignmentId}
-                    </td>
+                    <td style={{ textAlign: "center" }}>{idx + 1}</td>
                     <td>{this.showDate(schedule.date)}</td>
                     <td style={{ textAlign: "center" }}>
                       {schedule.departureTime}
@@ -94,17 +125,53 @@ class Schedule extends Component {
                     <td style={{ textAlign: "center" }}>
                       {schedule.stuff2 === null ? "" : schedule.stuff2.stuffId}
                     </td>
-                    <td>
+                    <td style={{ textAlign: "center" }}>
                       <Link to={"/schedule/edit/" + schedule.assignmentId}>
                         <Button size="sm" variant="outline-success">
                           <FontAwesomeIcon icon={faPen} />
                         </Button>
                       </Link>
                     </td>
-                    <td>
-                      <Button size="sm" variant="outline-danger">
+                    <td style={{ textAlign: "center" }}>
+                      <Button
+                        size="sm"
+                        variant="outline-danger"
+                        onClick={event =>
+                          this.deleteScheduleConfirmation(
+                            event,
+                            schedule.assignmentId
+                          )
+                        }
+                      >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
+                      <Overlay
+                        show={this.state.show}
+                        target={this.state.target}
+                        placement="left"
+                        container={this.ref1.current}
+                        containerPadding={20}
+                      >
+                        <Popover id="deleteScheduleConfirmation">
+                          <Popover.Title>Are you sure??</Popover.Title>
+                          <Popover.Content>
+                            <ButtonGroup size="sm">
+                              <Button
+                                variant="outline-danger"
+                                onClick={this.deleteSchedule}
+                              >
+                                Yes
+                              </Button>
+                              <Button
+                                variant="outline-success"
+                                onClick={this.abortDelete}
+                              >
+                                No
+                              </Button>
+                            </ButtonGroup>
+                          </Popover.Content>
+                        </Popover>
+                      </Overlay>
                     </td>
                   </tr>
                 ))}
