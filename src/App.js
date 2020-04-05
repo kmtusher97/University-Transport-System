@@ -20,7 +20,7 @@ function App() {
           paddingTop: "10px",
           paddingLeft: "20px",
           paddingRight: "20px",
-          paddingBottom: "10px"
+          paddingBottom: "10px",
         }}
       >
         <Row>
@@ -32,7 +32,7 @@ function App() {
             style={{
               border: "1px solid gray",
               borderRadius: "5px",
-              height: "1200px"
+              height: "1350px",
             }}
           >
             <div role="main">
