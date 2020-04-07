@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
 
-import Appdata from "./AppData";
+import Appdata from "../AppData";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 
