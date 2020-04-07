@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 
-import AppData from "./AppData";
+import AppData from "../AppData";
 import Axios from "axios";
 
 class AddSchedule extends Component {

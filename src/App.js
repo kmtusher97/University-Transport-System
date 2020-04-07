@@ -9,7 +9,7 @@ import SideNavbar from "./component/SideNavbar";
 import Schedule from "./component/schedule/Schedule";
 import Bus from "./component/Bus";
 import BusRoute from "./component/BusRoute";
-import AddSchedule from "./component/AddSchedule";
+import AddSchedule from "./component/schedule/AddSchedule";
 
 function App() {
   return (
