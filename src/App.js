@@ -20,7 +20,7 @@ function App() {
           paddingTop: "10px",
           paddingLeft: "20px",
           paddingRight: "20px",
-          paddingBottom: "10px",
+          paddingBottom: "10px"
         }}
       >
         <Row>
@@ -32,7 +32,7 @@ function App() {
             style={{
               border: "1px solid gray",
               borderRadius: "5px",
-              height: "1350px",
+              height: "1350px"
             }}
           >
             <div role="main">
@@ -40,12 +40,19 @@ function App() {
                 <Route path="/" exact={true}>
                   <Schedule />
                 </Route>
-                <Route path="/schedule" exact={true}>
-                  <Schedule />
-                </Route>
+                <Route
+                  exact
+                  path="/schedule"
+                  component={Schedule}
+                />
                 <Route path="/schedule/add" exact={true}>
                   <AddSchedule />
                 </Route>
+                <Route
+                  exact
+                  path="/schedule/page/:pageNo"
+                  component={Schedule}
+                />
                 <Route path="/schedule/edit/:scheduleId" exact={true}>
                   <AddSchedule />
                 </Route>

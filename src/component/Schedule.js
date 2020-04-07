@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button, ButtonGroup, Popover, Overlay } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 
 import AppData from "./AppData";
 import Axios from "axios";
@@ -7,19 +7,33 @@ import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+
+import ScheduleTopMenuBar from "./ScheduleTopMenuBar";
+import ScheduleTableActionMenuBar from "./ScheduleTableActionMenuBar";
 
 class Schedule extends Component {
   constructor(props) {
     super(props);
+    const pathNameComponents = window.location.pathname.split("/");
+    let tmpN = 1;
+    if (pathNameComponents.length === 4) {
+      tmpN = parseInt(pathNameComponents[3]);
+    }
+
     this.state = {
       scheduleList: [],
-      n: 1,
+      n: tmpN,
+      totalPageCount: 0,
       target: null,
       show: false,
       deleteId: -1
     };
+
     this.ref1 = React.createRef();
+
+    this.deleteSchedule = this.deleteSchedule.bind(this);
+    this.abortDelete = this.abortDelete.bind(this);
   }
 
   componentDidMount = () => {
@@ -29,6 +43,15 @@ class Schedule extends Component {
       .then(data => {
         this.setState({
           scheduleList: data
+        });
+      });
+
+    url = `${AppData.restApiBaseUrl}/schedule/totalCount`;
+    Axios.get(url)
+      .then(response => response.data)
+      .then(data => {
+        this.setState({
+          totalPageCount: parseInt(data / 30) + (data % 30 !== 0 ? 1 : 0)
         });
       });
   };
@@ -76,15 +99,12 @@ class Schedule extends Component {
   render() {
     return (
       <div>
-        <Row>
-          <Col md={3} style={{ padding: "5px", paddingLeft: "15px" }}>
-            <Link to={"/schedule/add"}>
-              <Button size="sm" variant="outline-primary">
-                Add Schedule
-              </Button>
-            </Link>
-          </Col>
-        </Row>
+        <ScheduleTopMenuBar
+          data={{
+            pageNo: this.state.n,
+            pageCount: this.state.pageCount
+          }}
+        />
         <Row>
           <Col md={12} ref={this.ref1}>
             <Table size="sm" bordered striped hover>
@@ -93,7 +113,6 @@ class Schedule extends Component {
                   <th>SL</th>
                   <th>Date</th>
                   <th>Departure Time</th>
-
                   <th>Route No</th>
                   <th>Bus</th>
                   <th>Driver</th>
@@ -105,7 +124,9 @@ class Schedule extends Component {
               <tbody>
                 {this.state.scheduleList.map((schedule, idx) => (
                   <tr key={idx}>
-                    <td style={{ textAlign: "center" }}>{idx + 1}</td>
+                    <td style={{ textAlign: "center" }}>
+                      {(this.state.n - 1) * 30 + idx + 1}
+                    </td>
                     <td>{this.showDate(schedule.date)}</td>
                     <td style={{ textAlign: "center" }}>
                       {schedule.departureTime}
@@ -133,45 +154,16 @@ class Schedule extends Component {
                       </Link>
                     </td>
                     <td style={{ textAlign: "center" }}>
-                      <Button
-                        size="sm"
-                        variant="outline-danger"
-                        onClick={event =>
-                          this.deleteScheduleConfirmation(
-                            event,
-                            schedule.assignmentId
-                          )
-                        }
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </Button>
-                      <Overlay
-                        show={this.state.show}
-                        target={this.state.target}
-                        placement="left"
-                        container={this.ref1.current}
-                        containerPadding={20}
-                      >
-                        <Popover id="deleteScheduleConfirmation">
-                          <Popover.Title>Are you sure??</Popover.Title>
-                          <Popover.Content>
-                            <ButtonGroup size="sm">
-                              <Button
-                                variant="outline-danger"
-                                onClick={this.deleteSchedule}
-                              >
-                                Yes
-                              </Button>
-                              <Button
-                                variant="outline-success"
-                                onClick={this.abortDelete}
-                              >
-                                No
-                              </Button>
-                            </ButtonGroup>
-                          </Popover.Content>
-                        </Popover>
-                      </Overlay>
+                      <ScheduleTableActionMenuBar
+                        data={{
+                          show: this.state.show,
+                          target: this.state.target,
+                          schedule: schedule
+                        }}
+                        ref1={this.ref1}
+                        deleteSchedule={this.deleteSchedule}
+                        abortDelete={this.abortDelete}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -185,3 +177,10 @@ class Schedule extends Component {
 }
 
 export default Schedule;
+
+// <ButtonGroup size="sm">
+//   {this.state.totalPageCount <= 5 ?
+//     this.showNextButtonList1(this.state.totalPageCount) :
+//     this.showNextButtonList2(this.state.totalPageCount)
+//   }
+// </ButtonGroup>
