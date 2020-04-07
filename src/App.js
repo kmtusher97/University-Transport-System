@@ -37,34 +37,53 @@ function App() {
           >
             <div role="main">
               <Switch>
-                <Route path="/" exact={true}>
-                  <Schedule />
-                </Route>
+                <Route
+                  exact
+                  path="/"
+                  component={Schedule}
+                />
                 <Route
                   exact
                   path="/schedule"
                   component={Schedule}
                 />
-                <Route path="/schedule/add" exact={true}>
-                  <AddSchedule />
-                </Route>
+                <Route
+                  exact
+                  path="/schedule/add"
+                  component={AddSchedule}
+                />
                 <Route
                   exact
                   path="/schedule/page/:pageNo"
                   component={Schedule}
                 />
-                <Route path="/schedule/edit/:scheduleId" exact={true}>
-                  <AddSchedule />
-                </Route>
-                <Route path="/bus" exact={true}>
-                  <Bus />
-                </Route>
-                <Route path="/route" exact={true}>
-                  <BusRoute />
-                </Route>
-                <Route path="/bus/edit/:busId" exact={true}></Route>
-                <Route path="/feedback" exact={true} />
-                <Route path="/notice" exact={true} />
+                <Route
+                  exact
+                  path="/schedule/edit/:scheduleId"
+                  component={AddSchedule}
+                />
+                <Route
+                  exact
+                  path="/bus"
+                  component={Bus}
+                />
+                <Route
+                  exact
+                  path="/route"
+                  component={BusRoute}
+                />
+                <Route
+                  exact
+                  path="/bus/edit/:busId"
+                />
+                <Route
+                  exact
+                  path="/feedback"
+                />
+                <Route
+                  exact
+                  path="/notice"
+                />
               </Switch>
             </div>
           </Col>

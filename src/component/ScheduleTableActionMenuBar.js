@@ -12,9 +12,9 @@ class ScheduleTableActionMenuBar extends Component {
           size="sm"
           variant="outline-danger"
           onClick={event =>
-            this.deleteScheduleConfirmation(
+            this.props.deleteScheduleConfirmation(
               event,
-              this.props.schedule.assignmentId
+              this.props.data.schedule.assignmentId
             )
           }
         >

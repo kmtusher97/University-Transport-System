@@ -1,20 +1,81 @@
 import React, { Component } from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 class ScheduleTopMenuBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pageNo: this.props.data.pageNo,
-      pageCount: this.props.data.pageCount
-    };
-  }
+  goToPageNo = (event, pageNo) => {
+    window.location.replace(`/schedule/page/${pageNo}`);
+  };
 
   render() {
+    const maxButtons = 5;
+    const buttons = [];
+    if (this.props.data.pageNo - 1 > 0) {
+      buttons.push(
+        <Button
+          key={this.props.data.pageNo - 1}
+          size="sm"
+          variant="outline-primary"
+          onClick={event => this.goToPageNo(event, this.props.data.pageNo - 1)}
+        >
+          {this.props.data.pageNo - 1}
+        </Button>
+      );
+    }
+    buttons.push(
+      <Button
+        key={this.props.data.pageNo}
+        size="sm"
+        variant="primary"
+        onClick={event => this.goToPageNo(event, this.props.data.pageNo)}
+      >
+        {this.props.data.pageNo}
+      </Button>
+    );
+    for (
+      let i = this.props.data.pageNo + 1;
+      i <= Math.min(
+        this.props.data.pageCount - 1,
+        this.props.data.pageNo + maxButtons
+      ); i++
+    ) {
+      buttons.push(
+        <Button
+          key={i}
+          size="sm"
+          variant="outline-primary"
+          onClick={event => this.goToPageNo(event, i)}
+        >
+          {i}
+        </Button>
+      );
+    }
+    if (this.props.data.pageCount - this.props.data.pageNo + 1 > maxButtons) {
+      buttons.push(
+        <Button
+          key={0}
+          size="sm"
+          variant="outline-primary"
+          disabled
+        >
+          <strong>......</strong>
+        </Button>
+      );
+    }
+    if (this.props.data.pageCount - this.props.data.pageNo + 1 > 1) {
+      buttons.push(
+        <Button
+          key={this.props.data.pageCount}
+          size="sm"
+          variant="outline-primary"
+          onClick={event => this.goToPageNo(event, this.props.data.pageCount)}
+        >
+          {this.props.data.pageCount}
+        </Button>
+      );
+    }
+
     return (
       <Row>
         <Col md={3} style={{ padding: "5px", paddingLeft: "15px" }}>
@@ -24,20 +85,10 @@ class ScheduleTopMenuBar extends Component {
             </Button>
           </Link>
         </Col>
-        <Col md={7} style={{ padding: "5px" }}>
-
-        </Col>
-        <Col md={2} style={{ padding: "5px", paddingRight: "15px" }}>
-          <Link to={{
-            pathname: `/schedule/page/${this.state.pageCount + 1}`
-          }}>
-            <Button
-              size="sm"
-              variant="info"
-              style={{ float: "right" }}>
-              <FontAwesomeIcon icon={faArrowRight} />
-            </Button>
-          </Link>
+        <Col md={9} style={{ padding: "5px", paddingRight: "15px" }}>
+          <ButtonGroup size="sm" style={{ float: "right" }}>
+            {buttons}
+          </ButtonGroup>
         </Col>
       </Row>
     )

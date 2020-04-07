@@ -34,6 +34,7 @@ class Schedule extends Component {
 
     this.deleteSchedule = this.deleteSchedule.bind(this);
     this.abortDelete = this.abortDelete.bind(this);
+    this.deleteScheduleConfirmation = this.deleteScheduleConfirmation.bind(this);
   }
 
   componentDidMount = () => {
@@ -50,6 +51,7 @@ class Schedule extends Component {
     Axios.get(url)
       .then(response => response.data)
       .then(data => {
+        console.log(data);
         this.setState({
           totalPageCount: parseInt(data / 30) + (data % 30 !== 0 ? 1 : 0)
         });
@@ -102,7 +104,7 @@ class Schedule extends Component {
         <ScheduleTopMenuBar
           data={{
             pageNo: this.state.n,
-            pageCount: this.state.pageCount
+            pageCount: this.state.totalPageCount
           }}
         />
         <Row>
@@ -161,6 +163,7 @@ class Schedule extends Component {
                           schedule: schedule
                         }}
                         ref1={this.ref1}
+                        deleteScheduleConfirmation={this.deleteScheduleConfirmation}
                         deleteSchedule={this.deleteSchedule}
                         abortDelete={this.abortDelete}
                       />
@@ -177,10 +180,3 @@ class Schedule extends Component {
 }
 
 export default Schedule;
-
-// <ButtonGroup size="sm">
-//   {this.state.totalPageCount <= 5 ?
-//     this.showNextButtonList1(this.state.totalPageCount) :
-//     this.showNextButtonList2(this.state.totalPageCount)
-//   }
-// </ButtonGroup>
