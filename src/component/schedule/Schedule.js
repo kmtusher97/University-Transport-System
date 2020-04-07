@@ -148,7 +148,12 @@ class Schedule extends Component {
                       {schedule.stuff2 === null ? "" : schedule.stuff2.stuffId}
                     </td>
                     <td style={{ textAlign: "center" }}>
-                      <Link to={"/schedule/edit/" + schedule.assignmentId}>
+                      <Link
+                        to={{
+                          pathname: `/schedule/edit/${schedule.assignmentId}`,
+                          returnLocation: window.location.pathname
+                        }}
+                      >
                         <Button size="sm" variant="outline-success">
                           <FontAwesomeIcon icon={faPen} />
                         </Button>
