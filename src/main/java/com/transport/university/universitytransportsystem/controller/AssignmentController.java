@@ -32,6 +32,11 @@ public class AssignmentController {
         assignmentServices.deleteAssignmentById(id);
     }
 
+    @GetMapping("/totalCount")
+    public Long getTotalCount() {
+        return assignmentServices.getTotalCount();
+    }
+
     @GetMapping("/getById/{id}")
     public Assignment getAssignmentById(@PathVariable("id") Long id) {
         return assignmentServices.getById(id);
