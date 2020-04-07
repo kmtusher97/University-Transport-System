@@ -93,4 +93,8 @@ public class AssignmentServices {
         if (!assignmentRepo.existsById(id)) return null;
         return assignmentRepo.getOne(id);
     }
+
+    public Long getTotalCount() {
+        return assignmentRepo.count();
+    }
 }
