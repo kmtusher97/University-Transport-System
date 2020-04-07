@@ -29,7 +29,11 @@ class AddSchedule extends Component {
           routeId: null
         }
       },
-      pathComponents: null
+      pathComponents: null,
+      returnLocation: (
+        this.props.location.returnLocation === null ||
+        this.props.location.returnLocation === undefined
+      ) ? "/" : this.props.location.returnLocation
     };
   }
 
@@ -207,7 +211,7 @@ class AddSchedule extends Component {
             if (data === null) {
               alert("Error!!!! Failed to edit.");
             } else {
-              window.location.replace("/schedule");
+              window.location.replace(this.state.returnLocation);
             }
           });
       }
