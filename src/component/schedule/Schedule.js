@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table, Button } from "react-bootstrap";
 
-import AppData from "./AppData";
+import AppData from "../AppData";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
@@ -51,7 +51,6 @@ class Schedule extends Component {
     Axios.get(url)
       .then(response => response.data)
       .then(data => {
-        console.log(data);
         this.setState({
           totalPageCount: parseInt(data / 30) + (data % 30 !== 0 ? 1 : 0)
         });
