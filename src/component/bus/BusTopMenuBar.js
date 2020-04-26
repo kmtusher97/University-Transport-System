@@ -7,7 +7,12 @@ class BusTopMenuBar extends Component {
     return (
       <React.Fragment>
         <Col md={3} style={{ padding: "5px", paddingLeft: "15px" }}>
-          <Link to={"/bus/add"}>
+          <Link
+            to={{
+              pathname: "/bus/add",
+              busId: null
+            }}
+          >
             <Button size="sm" variant="outline-primary">
               Add Bus
             </Button>

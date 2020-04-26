@@ -10,6 +10,7 @@ import Schedule from "./component/schedule/Schedule";
 import Bus from "./component/bus/Bus";
 import BusRoute from "./component/BusRoute";
 import AddSchedule from "./component/schedule/AddSchedule";
+import AddBus from "./component/bus/AddBus";
 
 function App() {
   return (
@@ -66,6 +67,11 @@ function App() {
                   exact
                   path="/bus"
                   component={Bus}
+                />
+                <Route
+                  exact
+                  path="/bus/add"
+                  component={AddBus}
                 />
                 <Route
                   exact
