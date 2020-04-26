@@ -81,6 +81,7 @@ function App() {
                 <Route
                   exact
                   path="/bus/edit/:busId"
+                  component={AddBus}
                 />
                 <Route
                   exact

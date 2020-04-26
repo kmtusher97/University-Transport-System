@@ -65,9 +65,14 @@ class Bus extends Component {
                   <td>{bus.oilInTank}</td>
                   <td>{bus.gasCylinderCapacity}</td>
                   <td>{bus.gasInCylinder}</td>
-                  <td>{bus.isAvailable === "true" ? "YES" : "NO"}</td>
+                  <td>{bus.isAvailable === true ? "YES" : "NO"}</td>
                   <td>
-                    <Link to={"/bus/edit/" + bus.busId}>
+                    <Link
+                      to={{
+                        pathname: "/bus/edit/" + bus.busId,
+                        busId: bus.busId
+                      }}
+                    >
                       <Button
                         size="sm"
                         variant="outline-success"

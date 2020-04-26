@@ -39,7 +39,7 @@ class AddBus extends Component {
     ) {
       let url = `${AppData.restApiBaseUrl}/bus/GLOBAL/getById/${this.state.bus.busId}`;
       Axios.get(url)
-        .then(response => response.date)
+        .then(response => response.data)
         .then(data => {
           if (data !== null) {
             this.setState({
@@ -73,22 +73,23 @@ class AddBus extends Component {
           }
         });
     }
-    // else if (this.state.formType === "edit") {
-    //   let url = `${AppData.restApiBaseUrl}/bus/update`;
-    //   Axios.post(url, this.state.bus)
-    //     .then(response => response.data)
-    //     .then(data => {
-    //       if (data === null || data === undefined) {
-    //         alert("Edit Failed!!!");
-    //       }
-    //       else {
-    //         window.location.replace("/bus");
-    //       }
-    //     });
-    // }
-    // else {
-    //   alert("An Unexpected Error Occured!!!");
-    // }
+    else if (this.state.formType === "edit") {
+      let url = `${AppData.restApiBaseUrl}/bus/update`;
+      alert(this.state.bus.isAvailable);
+      Axios.post(url, this.state.bus)
+        .then(response => response.data)
+        .then(data => {
+          if (data === null || data === undefined) {
+            alert("Edit Failed!!!");
+          }
+          else {
+            window.location.replace("/bus");
+          }
+        });
+    }
+    else {
+      alert("An Unexpected Error Occured!!!");
+    }
   };
 
   render() {
