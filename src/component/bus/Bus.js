@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Table } from "react-bootstrap";
+import { Row, Col, Table, Button } from "react-bootstrap";
 
 import Appdata from "../AppData";
 import Axios from "axios";
 
 import BusTopMenuBar from "./BusTopMenuBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 
 class Bus extends Component {
@@ -27,6 +29,15 @@ class Bus extends Component {
       });
   };
 
+  deleteBus = busId => {
+    let url = `${Appdata.restApiBaseUrl}/bus/deleteById/${busId}`;
+    Axios.delete(url, null)
+      .then(response => response.data)
+      .then(data => {
+        window.location.reload();
+      });
+  };
+
   render() {
     return (
       <Row>
@@ -45,7 +56,7 @@ class Bus extends Component {
                 <th colSpan={2}>Action</th>
               </tr>
             </thead>
-            <tbody style={{ textAlign: "center", fontSize: "12px" }}>
+            <tbody style={{ textAlign: "center" }}>
               {this.state.busList.map((bus, idx) => (
                 <tr key={idx}>
                   <td>{bus.busId}</td>
@@ -56,9 +67,24 @@ class Bus extends Component {
                   <td>{bus.gasInCylinder}</td>
                   <td>{bus.isAvailable === "true" ? "YES" : "NO"}</td>
                   <td>
-                    <Link to={"/bus/edit/" + bus.busId}>Edit</Link>
+                    <Link to={"/bus/edit/" + bus.busId}>
+                      <Button
+                        size="sm"
+                        variant="outline-success"
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </Button>
+                    </Link>
                   </td>
-                  <td>Delete</td>
+                  <td>
+                    <Button
+                      size="sm"
+                      variant="outline-danger"
+                      onClick={() => this.deleteBus(bus.busId)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
