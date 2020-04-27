@@ -50,7 +50,15 @@ class BusRoute extends Component {
     Axios.delete(url, null)
       .then(response => response.data)
       .then(data => {
-        window.location.reload();
+        url = `${AppData.restApiBaseUrl}/route/GLOBAL/getAll`;
+        Axios.get(url)
+          .then(response => response.data)
+          .then(data => {
+            this.setState({
+              routeList: data
+            });
+          });
+
       });
   };
 
