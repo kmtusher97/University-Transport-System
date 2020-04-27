@@ -51,27 +51,44 @@ class Bus extends Component {
     Axios.delete(url, null)
       .then(response => response.data)
       .then(data => {
-        window.location.reload();
+        url = `${Appdata.restApiBaseUrl}/bus/all`;
+        Axios.get(url)
+          .then(response => response.data)
+          .then(data => {
+            this.setState({
+              busList: data
+            });
+            if (
+              this.state.pageNo <= 0 ||
+              this.state.pageNo * 30 - this.state.busList.length > 30
+            ) {
+              this.setState({
+                busList: []
+              });
+            }
+          });
       });
   };
 
   render() {
-    const upperBound = this.state.pageNo * 30;
-    const lowerBound = (this.state.pageNo - 1) * 30 + (this.state.pageNo > 1 ? 1 : 0);
+    const rowsPerPage = 30;
+    const upperBound = this.state.pageNo * rowsPerPage;
+    const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
 
     return (
       <Row>
         <BusTopMenuBar
           data={{
             pageNo: this.state.pageNo,
-            pageCount: parseInt(this.state.busList.length / 30) +
-              (this.state.busList.length % 30 > 0 ? 1 : 0)
+            pageCount: parseInt(this.state.busList.length / rowsPerPage) +
+              (this.state.busList.length % rowsPerPage > 0 ? 1 : 0)
           }}
         />
         <Col md={12} style={{ paddingTop: "10px" }}>
           <Table size="sm" bordered hover striped>
             <thead style={{ textAlign: "center", fontSize: "12px" }}>
               <tr>
+                <th>SL</th>
                 <th>Bus Id</th>
                 <th>Number</th>
                 <th>Oil Tank Capacity</th>
@@ -86,6 +103,7 @@ class Bus extends Component {
               {this.state.busList.map((bus, idx) => (
                 (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
                   <tr key={idx}>
+                    <td>{idx + 1}</td>
                     <td>{bus.busId}</td>
                     <td>{bus.number}</td>
                     <td>{bus.oilTankCapacity}</td>
