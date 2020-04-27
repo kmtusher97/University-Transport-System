@@ -16,7 +16,7 @@ public class Stoppage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer stoppageId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String stoppageName;
 
     private Double latitude;
