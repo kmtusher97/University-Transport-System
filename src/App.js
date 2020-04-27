@@ -11,6 +11,7 @@ import Bus from "./component/bus/Bus";
 import BusRoute from "./component/route/BusRoute";
 import AddSchedule from "./component/schedule/AddSchedule";
 import AddBus from "./component/bus/AddBus";
+import AddBusRoute from "./component/route/AddBusRoute";
 
 function App() {
   return (
@@ -82,6 +83,21 @@ function App() {
                   exact
                   path="/route"
                   component={BusRoute}
+                />
+                <Route
+                  exact
+                  path="/route/page/:pageNo"
+                  component={BusRoute}
+                />
+                <Route
+                  exact
+                  path="/route/add"
+                  component={AddBusRoute}
+                />
+                <Route
+                  exact
+                  path="/route/edit/:routeId"
+                  component={AddBusRoute}
                 />
                 <Route
                   exact

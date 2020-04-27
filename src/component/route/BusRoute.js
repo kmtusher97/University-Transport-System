@@ -1,14 +1,25 @@
 import React, { Component } from "react";
-import { Table, Col, Row } from "react-bootstrap";
+import { Table, Col, Row, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AppData from "../AppData";
 import Axios from "axios";
+import BusRouteTopMenuBar from "./BusRouteTopMenuBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 class BusRoute extends Component {
   constructor() {
     super();
+
+    let tmpPageNo = 1;
+    const pathNameComponents = window.location.pathname.split("/");
+    if (pathNameComponents.length === 4) {
+      tmpPageNo = parseInt(pathNameComponents[3]);
+    }
+
     this.state = {
-      routeList: []
+      routeList: [],
+      pageNo: tmpPageNo
     };
   }
 
@@ -34,10 +45,29 @@ class BusRoute extends Component {
     return routeString;
   };
 
+  deleteRoute = routeId => {
+    let url = `${AppData.restApiBaseUrl}//delete/${routeId}`;
+    Axios.delete(url, null)
+      .then(response => response.data)
+      .then(data => {
+        window.location.reload();
+      });
+  };
+
   render() {
+    const rowsPerPage = 30;
+    const upperBound = this.state.pageNo * rowsPerPage;
+    const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
+
     return (
       <Row>
-
+        <BusRouteTopMenuBar
+          data={{
+            pageNo: this.state.pageNo,
+            pageCount: parseInt(this.state.routeList.length / rowsPerPage) +
+              (this.state.routeList.length % rowsPerPage > 0 ? 1 : 0)
+          }}
+        />
         <Col md={12} style={{ paddingTop: "10px" }}>
           <Table
             size="sm"
@@ -55,16 +85,39 @@ class BusRoute extends Component {
             </thead>
             <tbody>
               {this.state.routeList.map((route, idx) => (
-                <tr key={idx}>
-                  <td>{route.routeId}</td>
-                  <td style={{ textAlign: "left" }}>
-                    {this.showRoute(route.routeDetail)}
-                  </td>
-                  <td>
-                    <Link to={"/route/edit/" + route.routeId}>Edit</Link>
-                  </td>
-                  <td>Delete</td>
-                </tr>
+                (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
+                  <tr key={idx}>
+                    <td>{idx + 1}</td>
+                    <td style={{ textAlign: "left" }}>
+                      {this.showRoute(route.routeDetail)}
+                    </td>
+                    <td>
+                      <Link
+                        to={{
+                          pathname: "/route/edit/" + route.routeId,
+                          routeId: route.routeId,
+                          returnLink: window.location.pathname
+                        }}
+                      >
+                        <Button
+                          size="sm"
+                          variant="outline-success"
+                        >
+                          <FontAwesomeIcon icon={faPen} />
+                        </Button>
+                      </Link>
+                    </td>
+                    <td>
+                      <Button
+                        size="sm"
+                        variant="outline-danger"
+                        onClick={() => this.deleteRoute(route.routeId)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
+                    </td>
+                  </tr>
+                ) : null
               ))}
             </tbody>
           </Table>
