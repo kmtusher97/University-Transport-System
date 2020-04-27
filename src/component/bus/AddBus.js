@@ -65,17 +65,15 @@ class AddBus extends Component {
       Axios.post(url, this.state.bus)
         .then(response => response.data)
         .then(data => {
-          console.log(data);
           if (data === null || data === undefined) {
             alert("Add Failed!!! Network error or this bus number already exists!!!");
           } else {
-            window.location.replace("/bus");
+            window.location.replace(this.props.location.returnLink);
           }
         });
     }
     else if (this.state.formType === "edit") {
       let url = `${AppData.restApiBaseUrl}/bus/update`;
-      alert(this.state.bus.isAvailable);
       Axios.post(url, this.state.bus)
         .then(response => response.data)
         .then(data => {
@@ -83,7 +81,7 @@ class AddBus extends Component {
             alert("Edit Failed!!!");
           }
           else {
-            window.location.replace("/bus");
+            window.location.replace(this.props.location.returnLink);
           }
         });
     }

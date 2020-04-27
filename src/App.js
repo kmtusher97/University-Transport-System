@@ -70,6 +70,11 @@ function App() {
                 />
                 <Route
                   exact
+                  path="/bus/page/:pageNo"
+                  component={Bus}
+                />
+                <Route
+                  exact
                   path="/bus/add"
                   component={AddBus}
                 />

@@ -13,8 +13,16 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 class Bus extends Component {
   constructor() {
     super();
+
+    let tmpPageNo = 1;
+    const pathNameComponents = window.location.pathname.split("/");
+    if (pathNameComponents.length === 4) {
+      tmpPageNo = parseInt(pathNameComponents[3]);
+    }
+
     this.state = {
-      busList: []
+      busList: [],
+      pageNo: tmpPageNo
     };
   }
 
@@ -26,7 +34,16 @@ class Bus extends Component {
         this.setState({
           busList: data
         });
+        if (
+          this.state.pageNo <= 0 ||
+          this.state.pageNo * 30 - this.state.busList.length > 30
+        ) {
+          this.setState({
+            busList: []
+          });
+        }
       });
+
   };
 
   deleteBus = busId => {
@@ -39,9 +56,18 @@ class Bus extends Component {
   };
 
   render() {
+    const upperBound = this.state.pageNo * 30;
+    const lowerBound = (this.state.pageNo - 1) * 30 + (this.state.pageNo > 1 ? 1 : 0);
+
     return (
       <Row>
-        <BusTopMenuBar />
+        <BusTopMenuBar
+          data={{
+            pageNo: this.state.pageNo,
+            pageCount: parseInt(this.state.busList.length / 30) +
+              (this.state.busList.length % 30 > 0 ? 1 : 0)
+          }}
+        />
         <Col md={12} style={{ paddingTop: "10px" }}>
           <Table size="sm" bordered hover striped>
             <thead style={{ textAlign: "center", fontSize: "12px" }}>
@@ -58,39 +84,42 @@ class Bus extends Component {
             </thead>
             <tbody style={{ textAlign: "center" }}>
               {this.state.busList.map((bus, idx) => (
-                <tr key={idx}>
-                  <td>{bus.busId}</td>
-                  <td>{bus.number}</td>
-                  <td>{bus.oilTankCapacity}</td>
-                  <td>{bus.oilInTank}</td>
-                  <td>{bus.gasCylinderCapacity}</td>
-                  <td>{bus.gasInCylinder}</td>
-                  <td>{bus.isAvailable === true ? "YES" : "NO"}</td>
-                  <td>
-                    <Link
-                      to={{
-                        pathname: "/bus/edit/" + bus.busId,
-                        busId: bus.busId
-                      }}
-                    >
+                (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
+                  <tr key={idx}>
+                    <td>{bus.busId}</td>
+                    <td>{bus.number}</td>
+                    <td>{bus.oilTankCapacity}</td>
+                    <td>{bus.oilInTank}</td>
+                    <td>{bus.gasCylinderCapacity}</td>
+                    <td>{bus.gasInCylinder}</td>
+                    <td>{bus.isAvailable === true ? "YES" : "NO"}</td>
+                    <td>
+                      <Link
+                        to={{
+                          pathname: "/bus/edit/" + bus.busId,
+                          busId: bus.busId,
+                          returnLink: window.location.pathname
+                        }}
+                      >
+                        <Button
+                          size="sm"
+                          variant="outline-success"
+                        >
+                          <FontAwesomeIcon icon={faPen} />
+                        </Button>
+                      </Link>
+                    </td>
+                    <td>
                       <Button
                         size="sm"
-                        variant="outline-success"
+                        variant="outline-danger"
+                        onClick={() => this.deleteBus(bus.busId)}
                       >
-                        <FontAwesomeIcon icon={faPen} />
+                        <FontAwesomeIcon icon={faTrash} />
                       </Button>
-                    </Link>
-                  </td>
-                  <td>
-                    <Button
-                      size="sm"
-                      variant="outline-danger"
-                      onClick={() => this.deleteBus(bus.busId)}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                ) : null
               ))}
             </tbody>
           </Table>
