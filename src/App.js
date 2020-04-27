@@ -8,7 +8,7 @@ import { Row, Col } from "react-bootstrap";
 import SideNavbar from "./component/SideNavbar";
 import Schedule from "./component/schedule/Schedule";
 import Bus from "./component/bus/Bus";
-import BusRoute from "./component/BusRoute";
+import BusRoute from "./component/route/BusRoute";
 import AddSchedule from "./component/schedule/AddSchedule";
 import AddBus from "./component/bus/AddBus";
 
