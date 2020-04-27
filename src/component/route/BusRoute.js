@@ -46,7 +46,7 @@ class BusRoute extends Component {
   };
 
   deleteRoute = routeId => {
-    let url = `${AppData.restApiBaseUrl}//delete/${routeId}`;
+    let url = `${AppData.restApiBaseUrl}/route/delete/${routeId}`;
     Axios.delete(url, null)
       .then(response => response.data)
       .then(data => {
@@ -55,7 +55,7 @@ class BusRoute extends Component {
   };
 
   render() {
-    const rowsPerPage = 30;
+    const rowsPerPage = 20;
     const upperBound = this.state.pageNo * rowsPerPage;
     const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
 
@@ -78,7 +78,8 @@ class BusRoute extends Component {
           >
             <thead>
               <tr>
-                <th>Route Id</th>
+                <th>SL</th>
+                <th>Route No</th>
                 <th>Route</th>
                 <th colSpan={2}>Action</th>
               </tr>
@@ -88,6 +89,7 @@ class BusRoute extends Component {
                 (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
                   <tr key={idx}>
                     <td>{idx + 1}</td>
+                    <td>{route.routeId}</td>
                     <td style={{ textAlign: "left" }}>
                       {this.showRoute(route.routeDetail)}
                     </td>
