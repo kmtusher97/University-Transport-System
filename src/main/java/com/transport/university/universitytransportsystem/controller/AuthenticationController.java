@@ -3,7 +3,7 @@ package com.transport.university.universitytransportsystem.controller;
 import com.transport.university.universitytransportsystem.model.jwt.AuthenticationRequest;
 import com.transport.university.universitytransportsystem.model.jwt.AuthenticationResponse;
 import com.transport.university.universitytransportsystem.security.JWTUtility;
-import com.transport.university.universitytransportsystem.service.CustomUserDetailsService;
+import com.transport.university.universitytransportsystem.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

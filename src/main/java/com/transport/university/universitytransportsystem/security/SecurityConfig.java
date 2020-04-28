@@ -1,6 +1,5 @@
 package com.transport.university.universitytransportsystem.security;
 
-import com.transport.university.universitytransportsystem.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

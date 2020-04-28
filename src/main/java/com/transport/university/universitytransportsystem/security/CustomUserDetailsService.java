@@ -1,4 +1,4 @@
-package com.transport.university.universitytransportsystem.service;
+package com.transport.university.universitytransportsystem.security;
 
 import com.transport.university.universitytransportsystem.model.Role;
 import com.transport.university.universitytransportsystem.model.User;
