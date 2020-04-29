@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -30,18 +29,4 @@ public class User implements Serializable {
 
     @Column(columnDefinition = "boolean default false")
     private Boolean isBlocked;
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id",
-                    referencedColumnName = "userId"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id",
-                    referencedColumnName = "roleId"
-            )
-    )
-    private Collection<Role> roles;
 }

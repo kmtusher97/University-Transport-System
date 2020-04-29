@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -22,6 +21,4 @@ public class Role implements Serializable {
 
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
 }
