@@ -1,8 +1,9 @@
 package com.transport.university.universitytransportsystem.security;
 
-import com.transport.university.universitytransportsystem.model.Role;
 import com.transport.university.universitytransportsystem.model.User;
+import com.transport.university.universitytransportsystem.model.UserRoles;
 import com.transport.university.universitytransportsystem.repository.UserRepo;
+import com.transport.university.universitytransportsystem.repository.UserRolesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,15 +23,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private UserRolesRepo userRolesRepo;
+
+
     @Transactional
     private User getUserByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
+    private Collection<? extends GrantedAuthority> getAuthorities(List<UserRoles> userRolesList) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        for (UserRoles userRoles : userRolesList) {
+            authorities.add(new SimpleGrantedAuthority(userRoles.getRole().getRoleName()));
         }
         return authorities;
     }
@@ -48,7 +53,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 true,
-                getAuthorities(userFromDB.getRoles())
+                getAuthorities(userRolesRepo.findByUser(userFromDB))
         );
 
     }
