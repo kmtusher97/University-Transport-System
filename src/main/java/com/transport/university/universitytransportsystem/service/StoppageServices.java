@@ -38,9 +38,4 @@ public class StoppageServices {
         if (!stoppageRepo.existsById(stoppageId)) return;
         stoppageRepo.deleteById(stoppageId);
     }
-
-    public Stoppage updateStoppage(Stoppage stoppage) {
-        if (stoppage.getStoppageId() == null || !stoppageRepo.existsById(stoppage.getStoppageId())) return null;
-        return stoppageRepo.save(stoppage);
-    }
 }
