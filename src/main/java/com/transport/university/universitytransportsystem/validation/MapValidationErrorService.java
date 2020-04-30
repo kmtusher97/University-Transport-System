@@ -22,4 +22,10 @@ public class MapValidationErrorService {
         }
         return null;
     }
+
+    public ResponseEntity<?> mapNullIdErrorService(String idName) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put(idName, idName + " is required while updating.");
+        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+    }
 }

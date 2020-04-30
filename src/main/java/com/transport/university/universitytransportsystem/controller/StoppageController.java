@@ -55,6 +55,7 @@ public class StoppageController {
 
     @PostMapping("/update")
     public ResponseEntity<?> updateStoppage(@Valid @RequestBody Stoppage stoppage, BindingResult result) {
+        if (stoppage.getStoppageId() == null) return mapValidationErrorService.mapNullIdErrorService("stoppageId");
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
         if (errorMap != null) return errorMap;
         return new ResponseEntity<>(stoppageServices.save(stoppage), HttpStatus.CREATED);
