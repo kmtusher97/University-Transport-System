@@ -39,8 +39,8 @@ public class StoppageController {
     }
 
     @GetMapping("/GLOBAL/get/{stoppageId}")
-    public Stoppage getStoppageById(@PathVariable("stoppageId") Integer stoppageId) {
-        return stoppageServices.getStoppageById(stoppageId);
+    public ResponseEntity<?> getStoppageById(@PathVariable("stoppageId") Integer stoppageId) {
+        return new ResponseEntity<>(stoppageServices.getStoppageById(stoppageId), HttpStatus.OK);
     }
 
     @GetMapping("/GLOBAL/getByName/{stoppageName}")

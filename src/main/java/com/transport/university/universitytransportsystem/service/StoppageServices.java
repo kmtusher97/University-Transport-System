@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
+import com.transport.university.universitytransportsystem.exceptions.StoppageIdException;
 import com.transport.university.universitytransportsystem.model.Stoppage;
 import com.transport.university.universitytransportsystem.repository.StoppageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,9 @@ public class StoppageServices {
     }
 
     public Stoppage getStoppageById(Integer stoppageId) {
-        if (stoppageId == null) return null;
+        if (!stoppageRepo.existsById(stoppageId)) {
+            throw new StoppageIdException("Stoppage ID " + stoppageId + " does not exist");
+        }
         return stoppageRepo.getOne(stoppageId);
     }
 
