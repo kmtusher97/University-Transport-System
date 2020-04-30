@@ -55,7 +55,21 @@ public class StoppageController {
     }
 
     @PostMapping("/update")
-    public Stoppage updateStoppage(@RequestBody Stoppage stoppage) {
-        return stoppageServices.updateStoppage(stoppage);
+    public ResponseEntity<?> updateStoppage(@Valid @RequestBody Stoppage stoppage, BindingResult result) {
+        if (result.hasErrors() || stoppage.getStoppageId() == null) {
+            Map<String, String> errorMap = new HashMap<>();
+            if (stoppage.getStoppageId() == null) {
+                errorMap.put("stoppageId", "Stoppage Id can't be null");
+            }
+            for (FieldError error : result.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        }
+        Stoppage updatedStoppage = stoppageServices.updateStoppage(stoppage);
+        if (updatedStoppage == null) {
+            return new ResponseEntity<>("Failed to update.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updatedStoppage, HttpStatus.CREATED);
     }
 }
