@@ -49,8 +49,9 @@ public class StoppageController {
     }
 
     @DeleteMapping("/delete/{stoppageId}")
-    public void deleteStoppage(@PathVariable("stoppageId") Integer stoppageId) {
+    public ResponseEntity<?> deleteStoppage(@PathVariable("stoppageId") Integer stoppageId) {
         stoppageServices.deleteStoppageById(stoppageId);
+        return new ResponseEntity<>("Stoppage with stoppageId: " + stoppageId + " was deleted.", HttpStatus.OK);
     }
 
     @PostMapping("/update")

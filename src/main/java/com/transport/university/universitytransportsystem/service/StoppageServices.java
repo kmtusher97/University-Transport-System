@@ -31,14 +31,15 @@ public class StoppageServices {
 
     public Stoppage getStoppageById(Integer stoppageId) {
         if (!stoppageRepo.existsById(stoppageId)) {
-            throw new StoppageIdException("Stoppage ID " + stoppageId + " does not exist");
+            throw new StoppageIdException("Stoppage ID " + stoppageId + " does not exist.");
         }
         return stoppageRepo.getOne(stoppageId);
     }
 
     public void deleteStoppageById(Integer stoppageId) {
-        if (stoppageId == null) return;
-        if (!stoppageRepo.existsById(stoppageId)) return;
+        if (!stoppageRepo.existsById(stoppageId)) {
+            throw new StoppageIdException("Cannot delete Stoppage with stoppageId: " + stoppageId + ". This Stoppage does not exist.");
+        }
         stoppageRepo.deleteById(stoppageId);
     }
 }
