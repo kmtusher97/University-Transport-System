@@ -3,9 +3,16 @@ package com.transport.university.universitytransportsystem.controller;
 import com.transport.university.universitytransportsystem.model.Stoppage;
 import com.transport.university.universitytransportsystem.service.StoppageServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -16,8 +23,15 @@ public class StoppageController {
     private StoppageServices stoppageServices;
 
     @PostMapping("/add")
-    public Stoppage addStoppage(@RequestBody Stoppage stoppage) {
-        return stoppageServices.save(stoppage);
+    public ResponseEntity<?> addStoppage(@Valid @RequestBody Stoppage stoppage, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(stoppageServices.save(stoppage), HttpStatus.CREATED);
     }
 
     @GetMapping("/GLOBAL/getAll")
