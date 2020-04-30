@@ -14,16 +14,7 @@ public class StoppageServices {
     @Autowired
     private StoppageRepo stoppageRepo;
 
-    public Boolean isValid(Stoppage stoppage) {
-        if (stoppage.getStoppageName() == null) return false;
-        if (stoppage.getLatitude() == null) return false;
-        if (stoppage.getLongitude() == null) return false;
-        return true;
-    }
-
     public Stoppage save(Stoppage stoppage) {
-        if (!isValid(stoppage)) return null;
-        if (stoppageRepo.existsByStoppageName(stoppage.getStoppageName())) return null;
         return stoppageRepo.save(stoppage);
     }
 
@@ -49,14 +40,7 @@ public class StoppageServices {
     }
 
     public Stoppage updateStoppage(Stoppage stoppage) {
-        if (stoppage.getStoppageId() == null ||
-                !stoppageRepo.existsById(stoppage.getStoppageId())) return null;
-        if (!isValid(stoppage)) return null;
-        Stoppage tmpStoppage = stoppageRepo.getOne(stoppage.getStoppageId());
-        if (stoppage.getStoppageName().equals(tmpStoppage.getStoppageName())) {
-            return stoppageRepo.save(stoppage);
-        }
-        stoppageRepo.save(tmpStoppage);
-        return null;
+        if (stoppage.getStoppageId() == null || !stoppageRepo.existsById(stoppage.getStoppageId())) return null;
+        return stoppageRepo.save(stoppage);
     }
 }
