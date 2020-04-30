@@ -2,6 +2,7 @@ package com.transport.university.universitytransportsystem.controller;
 
 import com.transport.university.universitytransportsystem.model.Stoppage;
 import com.transport.university.universitytransportsystem.service.StoppageServices;
+import com.transport.university.universitytransportsystem.validation.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +23,13 @@ public class StoppageController {
     @Autowired
     private StoppageServices stoppageServices;
 
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
+
     @PostMapping("/add")
     public ResponseEntity<?> addStoppage(@Valid @RequestBody Stoppage stoppage, BindingResult result) {
-        if (result.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            for (FieldError error : result.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
-        }
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
         return new ResponseEntity<>(stoppageServices.save(stoppage), HttpStatus.CREATED);
     }
 
@@ -56,20 +55,8 @@ public class StoppageController {
 
     @PostMapping("/update")
     public ResponseEntity<?> updateStoppage(@Valid @RequestBody Stoppage stoppage, BindingResult result) {
-        if (result.hasErrors() || stoppage.getStoppageId() == null) {
-            Map<String, String> errorMap = new HashMap<>();
-            if (stoppage.getStoppageId() == null) {
-                errorMap.put("stoppageId", "Stoppage Id can't be null");
-            }
-            for (FieldError error : result.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
-        }
-        Stoppage updatedStoppage = stoppageServices.updateStoppage(stoppage);
-        if (updatedStoppage == null) {
-            return new ResponseEntity<>("Failed to update.", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(updatedStoppage, HttpStatus.CREATED);
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+        return new ResponseEntity<>(stoppageServices.save(stoppage), HttpStatus.CREATED);
     }
 }
