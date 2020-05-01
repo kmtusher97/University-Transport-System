@@ -40,7 +40,7 @@ class AddStoppage extends Component {
       latitude: this.state.latitude,
       longitude: this.state.longitude
     };
-    this.props.addStoppage(newStoppage, this.props.history);
+    this.props.addStoppage(newStoppage, "add", this.props.history);
   }
 
   render() {
@@ -90,7 +90,7 @@ class AddStoppage extends Component {
                   value={this.state.latitude}
                   onChange={this.onChangeHandler}
                 />
-                {errors.stoppageName && (
+                {errors.latitude && (
                   <div className="invalid-feedback">
                     {errors.latitude}
                   </div>
@@ -110,7 +110,7 @@ class AddStoppage extends Component {
                   value={this.state.longitude}
                   onChange={this.onChangeHandler}
                 />
-                {errors.stoppageName && (
+                {errors.longitude && (
                   <div className="invalid-feedback">
                     {errors.longitude}
                   </div>
