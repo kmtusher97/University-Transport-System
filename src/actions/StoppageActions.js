@@ -4,7 +4,7 @@ import { GET_ERRORS, GET_STOPPAGES, GET_STOPPAGE, DELETE_STOPPAGE } from "./type
 
 export const addStoppage = (stoppage, reqType, history) => async dispatch => {
   try {
-    await Axios.post(`http://localhost:8081/api/stoppage/${reqType}`, stoppage
+    await Axios.post(`/api/stoppage/${reqType}`, stoppage
     );
     history.push("/stoppage");
     dispatch({
@@ -22,7 +22,7 @@ export const addStoppage = (stoppage, reqType, history) => async dispatch => {
 
 
 export const getAllStoppages = () => async dispatch => {
-  const res = await Axios.get(`http://localhost:8081/api/stoppage/GLOBAL/getAll`);
+  const res = await Axios.get(`/api/stoppage/GLOBAL/getAll`);
   dispatch({
     type: GET_STOPPAGES,
     payload: res.data
@@ -32,7 +32,7 @@ export const getAllStoppages = () => async dispatch => {
 
 export const getStoppageById = (stoppageId, history) => async dispatch => {
   try {
-    const res = await Axios.get(`http://localhost:8081/api/stoppage/GLOBAL/get/${stoppageId}`);
+    const res = await Axios.get(`/api/stoppage/GLOBAL/get/${stoppageId}`);
     dispatch({
       type: GET_STOPPAGE,
       payload: res.data
@@ -49,7 +49,7 @@ export const deleteStoppage = (stoppageId, history) => async dispatch => {
     window.confirm("Are you sure?")
   ) {
     try {
-      await Axios.delete(`http://localhost:8081/api/stoppage/delete/${stoppageId}`);
+      await Axios.delete(`/api/stoppage/delete/${stoppageId}`);
       dispatch({
         type: DELETE_STOPPAGE,
         payload: stoppageId
