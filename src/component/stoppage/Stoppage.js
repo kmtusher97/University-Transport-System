@@ -17,7 +17,6 @@ class Stoppage extends Component {
     if (pathNameComponents.length === 4) {
       tmpPageNo = parseInt(pathNameComponents[3]);
     }
-
     this.state = {
       pageNo: tmpPageNo
     };
@@ -86,13 +85,7 @@ class Stoppage extends Component {
                     <td>{stoppage.latitude}</td>
                     <td>{stoppage.longitude}</td>
                     <td>
-                      <Link
-                        to={{
-                          pathname: "/stoppage/edit/" + stoppage.stoppageId,
-                          stoppageId: stoppage.stoppageId,
-                          returnLink: window.location.pathname
-                        }}
-                      >
+                      <Link to={`/stoppage/edit/${stoppage.stoppageId}`}>
                         <Button
                           size="sm"
                           variant="outline-success"
