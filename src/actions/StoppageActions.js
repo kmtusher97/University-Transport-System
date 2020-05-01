@@ -45,13 +45,17 @@ export const getStoppageById = (stoppageId, history) => async dispatch => {
 
 
 export const deleteStoppage = (stoppageId, history) => async dispatch => {
-  try {
-    await Axios.delete(`http://localhost:8081/api/stoppage/delete/${stoppageId}`);
-    dispatch({
-      type: DELETE_STOPPAGE,
-      payload: stoppageId
-    });
-  } catch (err) {
-    history.push("/schedule");
+  if (
+    window.confirm("Are you sure?")
+  ) {
+    try {
+      await Axios.delete(`http://localhost:8081/api/stoppage/delete/${stoppageId}`);
+      dispatch({
+        type: DELETE_STOPPAGE,
+        payload: stoppageId
+      });
+    } catch (err) {
+      history.push("/schedule");
+    }
   }
 };
