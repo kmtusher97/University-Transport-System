@@ -1,38 +1,34 @@
 import React, { Component } from 'react'
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
-import Axios from 'axios';
-import AppData from "../AppData";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addStoppage } from "../../actions/StoppageActions";
+
+import classnames from "classnames";
 
 class AddStoppage extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     const pathNameComponents = window.location.pathname.split("/");
     this.state = {
       stoppage: {
-        stoppageId: this.props.location.stoppageId,
+        stoppageId: "",
         stoppageName: "",
         latitude: "",
         longitude: ""
       },
+      errors: {},
       formType: pathNameComponents[2]
     };
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
 
-  componentDidMount = () => {
-    if (
-      this.state.stoppage.stoppageId !== null &&
-      this.state.stoppage.stoppageId !== undefined
-    ) {
-      let url1 = `${AppData.restApiBaseUrl}/stoppage/GLOBAL/get/${this.state.stoppage.stoppageId}`;
-      Axios.get(url1)
-        .then(response => response.data)
-        .then(data => {
-          if (data !== null) {
-            this.setState({
-              stoppage: data
-            });
-          }
-        });
+  //life cycle hooks
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
     }
   };
 
@@ -46,54 +42,21 @@ class AddStoppage extends Component {
 
   onSubmitHandler = event => {
     event.preventDefault();
-    if (
-      this.state.stoppage.stoppageName === "" ||
-      this.state.stoppage.stoppageName === null
-    ) {
-      alert("Stoppage Name Required!!!");
-      return;
-    }
-    if (
-      this.state.stoppage.latitude === "" ||
-      this.state.stoppage.latitude === null
-    ) {
-      alert("Latitude Required!!!");
-      return;
-    }
-    if (
-      this.state.stoppage.longitude === "" ||
-      this.state.stoppage.longitude === null
-    ) {
-      alert("Longitude Required!!!");
-      return;
-    }
-
-    let url = "";
-    if (this.state.formType === "add") {
-      url = `${AppData.restApiBaseUrl}/stoppage/add`
-    }
-    else if (this.state.formType === "edit") {
-      url = `${AppData.restApiBaseUrl}/stoppage/update`
-    }
-    else {
-      alert("An unexpected error occured!!");
-    }
-    Axios.post(url, this.state.stoppage)
-      .then(response => response.data)
-      .then(data => {
-        if (data === null || data === undefined) {
-          alert("Failed!!!!");
-        }
-        else {
-          window.location.replace(this.props.location.returnLink);
-        }
-      });
+    const newStoppage = {
+      stoppageId: this.state.stoppage.stoppageId,
+      stoppageName: this.state.stoppage.stoppageName,
+      latitude: this.state.stoppage.latitude,
+      longitude: this.state.stoppage.longitude
+    };
+    this.props.addStoppage(newStoppage, this.props.history);
   }
 
   render() {
+    const { errors } = this.state;
+
     return (
       <Container style={{ padding: "5px" }}>
-        <Form>
+        <Form onSubmit={this.onSubmitHandler}>
           <Row style={{ padding: "5px" }}>
             <Col md={12}>
               <strong>
@@ -107,13 +70,21 @@ class AddStoppage extends Component {
             <Col md={12}>
               <Form.Group>
                 <Form.Label>Stoppage Name</Form.Label>
-                <Form.Control
+                <input
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.stoppageName }
+                  )}
                   name="stoppageName"
                   type="text"
-                  required
                   value={this.state.stoppage.stoppageName}
                   onChange={this.onChangeHandler}
                 />
+                {errors.stoppageName && (
+                  <div className="invalid-feedback">
+                    {errors.stoppageName}
+                  </div>
+                )}
               </Form.Group>
             </Col>
           </Row>
@@ -121,25 +92,41 @@ class AddStoppage extends Component {
             <Col md={6}>
               <Form.Group>
                 <Form.Label>Latitude</Form.Label>
-                <Form.Control
+                <input
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.latitude }
+                  )}
                   name="latitude"
                   type="text"
-                  required
                   value={this.state.stoppage.latitude}
                   onChange={this.onChangeHandler}
                 />
+                {errors.stoppageName && (
+                  <div className="invalid-feedback">
+                    {errors.latitude}
+                  </div>
+                )}
               </Form.Group>
             </Col>
             <Col md={6}>
               <Form.Group>
                 <Form.Label>Longitude</Form.Label>
-                <Form.Control
+                <input
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.longitude }
+                  )}
                   name="longitude"
                   type="text"
-                  required
                   value={this.state.stoppage.longitude}
                   onChange={this.onChangeHandler}
                 />
+                {errors.stoppageName && (
+                  <div className="invalid-feedback">
+                    {errors.longitude}
+                  </div>
+                )}
               </Form.Group>
             </Col>
           </Row>
@@ -149,7 +136,6 @@ class AddStoppage extends Component {
                 size="sm"
                 type="submit"
                 variant="primary"
-                onClick={this.onSubmitHandler}
               >
                 Submit
               </Button>
@@ -161,4 +147,11 @@ class AddStoppage extends Component {
   }
 }
 
-export default AddStoppage;
+AddStoppage.propTypes = {
+  addStoppage: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({ errors: state.errors });
+
+export default connect(mapStateToProps, { addStoppage })(AddStoppage);
