@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Row, Col, Table, Button } from 'react-bootstrap';
 import StoppageTopMenubar from './StoppageTopMenubar';
-import Axios from 'axios';
-import AppData from "../AppData";
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+
+import { connect } from "react-redux";
+import { getAllStoppages } from "../../actions/StoppageActions";
+import PropTypes from "prop-types";
 
 class Stoppage extends Component {
   constructor() {
@@ -17,50 +19,43 @@ class Stoppage extends Component {
     }
 
     this.state = {
-      stoppageList: [],
       pageNo: tmpPageNo
     };
   }
 
   componentDidMount = () => {
-    let url = `${AppData.restApiBaseUrl}/stoppage/GLOBAL/getAll`;
-    Axios.get(url)
-      .then(response => response.data)
-      .then(data => {
-        this.setState({
-          stoppageList: data
-        });
-      });
+    this.props.getAllStoppages();
   };
 
   deletestoppage = stoppageId => {
-    let url = `${AppData.restApiBaseUrl}/stoppage/delete/${stoppageId}`;
-    Axios.delete(url, null)
-      .then(response => response.data)
-      .then(data => {
-        url = `${AppData.restApiBaseUrl}/stoppage/GLOBAL/getAll`;
-        Axios.get(url)
-          .then(response => response.data)
-          .then(data => {
-            this.setState({
-              stoppageList: data
-            });
-          });
-      });
+    // let url = `${AppData.restApiBaseUrl}/stoppage/delete/${stoppageId}`;
+    // Axios.delete(url, null)
+    //   .then(response => response.data)
+    //   .then(data => {
+    //     url = `${AppData.restApiBaseUrl}/stoppage/GLOBAL/getAll`;
+    //     Axios.get(url)
+    //       .then(response => response.data)
+    //       .then(data => {
+    //         this.setState({
+    //           stoppageList: data
+    //         });
+    //       });
+    //   });
   };
 
   render() {
     const rowsPerPage = 30;
     const upperBound = this.state.pageNo * rowsPerPage;
     const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
+    const { stoppage } = this.props;
 
     return (
       <Row>
         <StoppageTopMenubar
           data={{
             pageNo: this.state.pageNo,
-            pageCount: parseInt(this.state.stoppageList.length / rowsPerPage) +
-              (this.state.stoppageList.length % rowsPerPage > 0 ? 1 : 0)
+            pageCount: parseInt(stoppage.stoppages.length / rowsPerPage) +
+              (stoppage.stoppages.length % rowsPerPage > 0 ? 1 : 0)
           }}
         />
         <Col md={12} style={{ paddingTop: "10px" }}>
@@ -82,7 +77,7 @@ class Stoppage extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.stoppageList.map((stoppage, idx) => (
+              {stoppage.stoppages.map((stoppage, idx) => (
                 (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
                   <tr key={idx}>
                     <td>{idx + 1}</td>
@@ -126,4 +121,11 @@ class Stoppage extends Component {
   }
 }
 
-export default Stoppage;
+Stoppage.propTypes = {
+  stoppage: PropTypes.object.isRequired,
+  getAllStoppages: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({ stoppage: state.stoppage });
+
+export default connect(mapStateToProps, { getAllStoppages })(Stoppage);
