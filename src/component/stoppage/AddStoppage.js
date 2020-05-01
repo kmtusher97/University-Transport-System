@@ -10,16 +10,12 @@ import classnames from "classnames";
 class AddStoppage extends Component {
   constructor() {
     super();
-    const pathNameComponents = window.location.pathname.split("/");
     this.state = {
-      stoppage: {
-        stoppageId: "",
-        stoppageName: "",
-        latitude: "",
-        longitude: ""
-      },
-      errors: {},
-      formType: pathNameComponents[2]
+      stoppageId: "",
+      stoppageName: "",
+      latitude: "",
+      longitude: "",
+      errors: {}
     };
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -33,20 +29,16 @@ class AddStoppage extends Component {
   };
 
   onChangeHandler = event => {
-    let tmpStoppage = this.state.stoppage;
-    tmpStoppage[event.target.name] = event.target.value;
-    this.setState({
-      stoppage: tmpStoppage
-    });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   onSubmitHandler = event => {
     event.preventDefault();
     const newStoppage = {
-      stoppageId: this.state.stoppage.stoppageId,
-      stoppageName: this.state.stoppage.stoppageName,
-      latitude: this.state.stoppage.latitude,
-      longitude: this.state.stoppage.longitude
+      stoppageId: this.state.stoppageId,
+      stoppageName: this.state.stoppageName,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude
     };
     this.props.addStoppage(newStoppage, this.props.history);
   }
@@ -59,11 +51,7 @@ class AddStoppage extends Component {
         <Form onSubmit={this.onSubmitHandler}>
           <Row style={{ padding: "5px" }}>
             <Col md={12}>
-              <strong>
-                {(this.state.formType === "add")
-                  ? "Add New Route"
-                  : ("Edit Route " + this.state.stoppage.stoppageId)}
-              </strong>
+              <strong>{"Add New Stoppage"}</strong>
             </Col>
           </Row>
           <Row style={{ padding: "5px" }}>
@@ -77,7 +65,7 @@ class AddStoppage extends Component {
                   )}
                   name="stoppageName"
                   type="text"
-                  value={this.state.stoppage.stoppageName}
+                  value={this.state.stoppageName}
                   onChange={this.onChangeHandler}
                 />
                 {errors.stoppageName && (
@@ -99,7 +87,7 @@ class AddStoppage extends Component {
                   )}
                   name="latitude"
                   type="text"
-                  value={this.state.stoppage.latitude}
+                  value={this.state.latitude}
                   onChange={this.onChangeHandler}
                 />
                 {errors.stoppageName && (
@@ -119,7 +107,7 @@ class AddStoppage extends Component {
                   )}
                   name="longitude"
                   type="text"
-                  value={this.state.stoppage.longitude}
+                  value={this.state.longitude}
                   onChange={this.onChangeHandler}
                 />
                 {errors.stoppageName && (
