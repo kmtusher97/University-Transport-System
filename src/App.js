@@ -15,131 +15,138 @@ import AddBusRoute from "./component/route/AddBusRoute";
 import Stoppage from "./component/stoppage/Stoppage";
 import AddStoppage from "./component/stoppage/AddStoppage";
 
+/**Redux */
+import { Provider } from "react-redux";
+import store from "./Store";
+
+
 function App() {
   return (
-    <BrowserRouter>
-      <div
-        className="App"
-        style={{
-          paddingTop: "10px",
-          paddingLeft: "20px",
-          paddingRight: "20px",
-          paddingBottom: "10px"
-        }}
-      >
-        <Row>
-          <Col md={2}>
-            <SideNavbar />
-          </Col>
-          <Col
-            md={10}
-            style={{
-              border: "1px solid gray",
-              borderRadius: "5px",
-              height: "1350px"
-            }}
-          >
-            <div role="main">
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  component={Schedule}
-                />
-                <Route
-                  exact
-                  path="/schedule"
-                  component={Schedule}
-                />
-                <Route
-                  exact
-                  path="/schedule/add"
-                  component={AddSchedule}
-                />
-                <Route
-                  exact
-                  path="/schedule/page/:pageNo"
-                  component={Schedule}
-                />
-                <Route
-                  exact
-                  path="/schedule/edit/:scheduleId"
-                  component={AddSchedule}
-                />
-                <Route
-                  exact
-                  path="/bus"
-                  component={Bus}
-                />
-                <Route
-                  exact
-                  path="/bus/page/:pageNo"
-                  component={Bus}
-                />
-                <Route
-                  exact
-                  path="/bus/add"
-                  component={AddBus}
-                />
-                <Route
-                  exact
-                  path="/route"
-                  component={BusRoute}
-                />
-                <Route
-                  exact
-                  path="/route/page/:pageNo"
-                  component={BusRoute}
-                />
-                <Route
-                  exact
-                  path="/route/add"
-                  component={AddBusRoute}
-                />
-                <Route
-                  exact
-                  path="/route/edit/:routeId"
-                  component={AddBusRoute}
-                />
-                <Route
-                  exact
-                  path="/stoppage"
-                  component={Stoppage}
-                />
-                <Route
-                  exact
-                  path="/stoppage/page/:pageNo"
-                  component={Stoppage}
-                />
-                <Route
-                  exact
-                  path="/stoppage/add"
-                  component={AddStoppage}
-                />
-                <Route
-                  exact
-                  path="/stoppage/edit/:routeId"
-                  component={AddStoppage}
-                />
-                <Route
-                  exact
-                  path="/bus/edit/:busId"
-                  component={AddBus}
-                />
-                <Route
-                  exact
-                  path="/feedback"
-                />
-                <Route
-                  exact
-                  path="/notice"
-                />
-              </Switch>
-            </div>
-          </Col>
-        </Row>
-      </div>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <div
+          className="App"
+          style={{
+            paddingTop: "10px",
+            paddingLeft: "20px",
+            paddingRight: "20px",
+            paddingBottom: "10px"
+          }}
+        >
+          <Row>
+            <Col md={2}>
+              <SideNavbar />
+            </Col>
+            <Col
+              md={10}
+              style={{
+                border: "1px solid gray",
+                borderRadius: "5px",
+                height: "1350px"
+              }}
+            >
+              <div role="main">
+                <Switch>
+                  <Route
+                    exact
+                    path="/"
+                    component={Schedule}
+                  />
+                  <Route
+                    exact
+                    path="/schedule"
+                    component={Schedule}
+                  />
+                  <Route
+                    exact
+                    path="/schedule/add"
+                    component={AddSchedule}
+                  />
+                  <Route
+                    exact
+                    path="/schedule/page/:pageNo"
+                    component={Schedule}
+                  />
+                  <Route
+                    exact
+                    path="/schedule/edit/:scheduleId"
+                    component={AddSchedule}
+                  />
+                  <Route
+                    exact
+                    path="/bus"
+                    component={Bus}
+                  />
+                  <Route
+                    exact
+                    path="/bus/page/:pageNo"
+                    component={Bus}
+                  />
+                  <Route
+                    exact
+                    path="/bus/add"
+                    component={AddBus}
+                  />
+                  <Route
+                    exact
+                    path="/route"
+                    component={BusRoute}
+                  />
+                  <Route
+                    exact
+                    path="/route/page/:pageNo"
+                    component={BusRoute}
+                  />
+                  <Route
+                    exact
+                    path="/route/add"
+                    component={AddBusRoute}
+                  />
+                  <Route
+                    exact
+                    path="/route/edit/:routeId"
+                    component={AddBusRoute}
+                  />
+                  <Route
+                    exact
+                    path="/stoppage"
+                    component={Stoppage}
+                  />
+                  <Route
+                    exact
+                    path="/stoppage/page/:pageNo"
+                    component={Stoppage}
+                  />
+                  <Route
+                    exact
+                    path="/stoppage/add"
+                    component={AddStoppage}
+                  />
+                  <Route
+                    exact
+                    path="/stoppage/edit/:routeId"
+                    component={AddStoppage}
+                  />
+                  <Route
+                    exact
+                    path="/bus/edit/:busId"
+                    component={AddBus}
+                  />
+                  <Route
+                    exact
+                    path="/feedback"
+                  />
+                  <Route
+                    exact
+                    path="/notice"
+                  />
+                </Switch>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
