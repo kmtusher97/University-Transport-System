@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { connect } from "react-redux";
-import { getAllStoppages } from "../../actions/StoppageActions";
+import { getAllStoppages, deleteStoppage } from "../../actions/StoppageActions";
 import PropTypes from "prop-types";
 
 class Stoppage extends Component {
@@ -20,26 +20,15 @@ class Stoppage extends Component {
     this.state = {
       pageNo: tmpPageNo
     };
+    this.deletestoppageById = this.deletestoppageById.bind(this);
   }
 
   componentDidMount = () => {
     this.props.getAllStoppages();
   };
 
-  deletestoppage = stoppageId => {
-    // let url = `${AppData.restApiBaseUrl}/stoppage/delete/${stoppageId}`;
-    // Axios.delete(url, null)
-    //   .then(response => response.data)
-    //   .then(data => {
-    //     url = `${AppData.restApiBaseUrl}/stoppage/GLOBAL/getAll`;
-    //     Axios.get(url)
-    //       .then(response => response.data)
-    //       .then(data => {
-    //         this.setState({
-    //           stoppageList: data
-    //         });
-    //       });
-    //   });
+  deletestoppageById = stoppageId => {
+    this.props.deleteStoppage(stoppageId, this.props.history);
   };
 
   render() {
@@ -98,7 +87,7 @@ class Stoppage extends Component {
                       <Button
                         size="sm"
                         variant="outline-danger"
-                        onClick={() => this.deletestoppage(stoppage.stoppageId)}
+                        onClick={() => this.deletestoppageById(stoppage.stoppageId)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
@@ -116,9 +105,12 @@ class Stoppage extends Component {
 
 Stoppage.propTypes = {
   stoppage: PropTypes.object.isRequired,
-  getAllStoppages: PropTypes.func.isRequired
+  getAllStoppages: PropTypes.func.isRequired,
+  deleteStoppage: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({ stoppage: state.stoppage });
 
-export default connect(mapStateToProps, { getAllStoppages })(Stoppage);
+export default connect(mapStateToProps, {
+  getAllStoppages, deleteStoppage
+})(Stoppage);

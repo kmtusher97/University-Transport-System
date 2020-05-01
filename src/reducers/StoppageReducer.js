@@ -1,4 +1,4 @@
-import { GET_STOPPAGES, GET_STOPPAGE } from "../actions/types";
+import { GET_STOPPAGES, GET_STOPPAGE, DELETE_STOPPAGE } from "../actions/types";
 
 const initialState = {
   stoppages: [],
@@ -18,6 +18,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         stoppage: action.payload
+      }
+
+    case DELETE_STOPPAGE:
+      return {
+        ...state,
+        stoppages: state.stoppages.filter(
+          stoppage => stoppage.stoppageId !== action.payload
+        )
       }
 
     default:

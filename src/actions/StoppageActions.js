@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { GET_ERRORS, GET_STOPPAGES, GET_STOPPAGE } from "./types";
+import { GET_ERRORS, GET_STOPPAGES, GET_STOPPAGE, DELETE_STOPPAGE } from "./types";
 
 
 export const addStoppage = (stoppage, reqType, history) => async dispatch => {
@@ -40,5 +40,18 @@ export const getStoppageById = (stoppageId, history) => async dispatch => {
 
   } catch (err) {
     history.push("/stoppage");
+  }
+};
+
+
+export const deleteStoppage = (stoppageId, history) => async dispatch => {
+  try {
+    await Axios.delete(`http://localhost:8081/api/stoppage/delete/${stoppageId}`);
+    dispatch({
+      type: DELETE_STOPPAGE,
+      payload: stoppageId
+    });
+  } catch (err) {
+    history.push("/schedule");
   }
 };
