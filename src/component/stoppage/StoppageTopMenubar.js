@@ -82,13 +82,7 @@ class StoppageTopMenubar extends Component {
     return (
       <React.Fragment>
         <Col md={3} style={{ padding: "5px", paddingLeft: "15px" }}>
-          <Link
-            to={{
-              pathname: "/stoppage/add",
-              stoppageId: null,
-              returnLink: window.location.pathname
-            }}
-          >
+          <Link to={"/stoppage/add"}>
             <Button size="sm" variant="outline-primary">
               Add Stoppage
             </Button>
