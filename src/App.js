@@ -14,6 +14,7 @@ import AddBus from "./component/bus/AddBus";
 import AddBusRoute from "./component/route/AddBusRoute";
 import Stoppage from "./component/stoppage/Stoppage";
 import AddStoppage from "./component/stoppage/AddStoppage";
+import UpdateStoppage from "./component/stoppage/UpdateStoppage";
 
 /**Redux */
 import { Provider } from "react-redux";
@@ -124,8 +125,8 @@ function App() {
                   />
                   <Route
                     exact
-                    path="/stoppage/edit/:routeId"
-                    component={AddStoppage}
+                    path="/stoppage/edit/:stoppageId"
+                    component={UpdateStoppage}
                   />
                   <Route
                     exact
