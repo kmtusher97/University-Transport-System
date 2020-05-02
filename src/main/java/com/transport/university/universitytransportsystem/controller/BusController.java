@@ -2,9 +2,14 @@ package com.transport.university.universitytransportsystem.controller;
 
 import com.transport.university.universitytransportsystem.model.Bus;
 import com.transport.university.universitytransportsystem.service.BusServices;
+import com.transport.university.universitytransportsystem.validation.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin
@@ -14,6 +19,9 @@ public class BusController {
 
     @Autowired
     private BusServices busServices;
+
+    @Autowired
+    private MapValidationErrorService errorService;
 
     @GetMapping("/all")
     public List<Bus> getAllBuses() {
@@ -31,8 +39,10 @@ public class BusController {
     }
 
     @PostMapping("/add")
-    public Bus addNewBus(@RequestBody Bus bus) {
-        return busServices.addNewBus(bus);
+    public ResponseEntity<?> addNewBus(@Valid @RequestBody Bus bus, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+        return new ResponseEntity<>(busServices.addNewBus(bus), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteById/{busId}")

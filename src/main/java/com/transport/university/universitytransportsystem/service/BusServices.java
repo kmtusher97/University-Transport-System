@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
+import com.transport.university.universitytransportsystem.exceptions.StoppageIdException;
 import com.transport.university.universitytransportsystem.model.Bus;
 import com.transport.university.universitytransportsystem.model.Driver;
 import com.transport.university.universitytransportsystem.repository.BusRepo;
@@ -36,13 +37,12 @@ public class BusServices {
     }
 
     public Bus addNewBus(Bus bus) {
-        if (bus.getBusId() != null && busRepo.existsById(bus.getBusId())) {
-            return busRepo.getOne(bus.getBusId());
+        try {
+            bus.setNumber(bus.getNumber().toUpperCase());
+            return busRepo.save(bus);
+        } catch (Exception e) {
+            throw new StoppageIdException("Bus with number: " + bus.getNumber() + " already exists");
         }
-        if (bus.getNumber() != null && busRepo.findByNumber(bus.getNumber()) != null) {
-            return busRepo.findByNumber(bus.getNumber());
-        }
-        return busRepo.save(bus);
     }
 
     public void deleteBusByBusId(Integer busId) {
