@@ -3,6 +3,7 @@ package com.transport.university.universitytransportsystem.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Time;
@@ -22,7 +23,7 @@ public class Schedule implements Serializable {
     @NotNull(message = "Date is required")
     private Date date;
 
-    @NotNull(message = "Departure Time is required")
+    @Column(nullable = false)
     private Time departureTime;
 
     @OneToOne
