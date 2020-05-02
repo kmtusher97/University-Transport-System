@@ -56,8 +56,11 @@ public class BusController {
     }
 
     @PostMapping("/update")
-    public Bus updateBusInfo(@RequestBody Bus bus) {
-        return busServices.updateBus(bus);
+    public ResponseEntity<?> updateBusInfo(@Valid @RequestBody Bus bus, BindingResult result) {
+        if (bus.getBusId() == null) return errorService.mapNullIdErrorService("budId");
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+        return new ResponseEntity<>(busServices.addNewBus(bus), HttpStatus.CREATED);
     }
 
     @GetMapping("/DRIVER/trip/finished/{busId}/{driverId}")
