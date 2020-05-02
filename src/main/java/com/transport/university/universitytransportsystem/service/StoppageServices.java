@@ -1,6 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
-import com.transport.university.universitytransportsystem.exceptions.EntityIdentifierException;
+import com.transport.university.universitytransportsystem.exceptions.StoppageIdentifierException;
 import com.transport.university.universitytransportsystem.model.Stoppage;
 import com.transport.university.universitytransportsystem.repository.StoppageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +31,14 @@ public class StoppageServices {
 
     public Stoppage getStoppageById(Integer stoppageId) {
         if (!stoppageRepo.existsById(stoppageId)) {
-            throw new EntityIdentifierException("Stoppage ID " + stoppageId + " does not exist.");
+            throw new StoppageIdentifierException("Stoppage ID " + stoppageId + " does not exist.");
         }
         return stoppageRepo.getOne(stoppageId);
     }
 
     public void deleteStoppageById(Integer stoppageId) {
         if (!stoppageRepo.existsById(stoppageId)) {
-            throw new EntityIdentifierException("Cannot delete Stoppage with stoppageId: " + stoppageId + ". This Stoppage does not exist.");
+            throw new StoppageIdentifierException("Cannot delete Stoppage with stoppageId: " + stoppageId + ". This Stoppage does not exist.");
         }
         stoppageRepo.deleteById(stoppageId);
     }

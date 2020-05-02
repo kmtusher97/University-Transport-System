@@ -13,8 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
-    public final ResponseEntity<Object> handleStoppageIdException(EntityIdentifierException ex, WebRequest request) {
-        EntityIdentifierExceptionResponse exceptionResponse = new EntityIdentifierExceptionResponse(ex.getMessage());
+    public final ResponseEntity<Object> handleStoppageIdException(StoppageIdentifierException ex, WebRequest request) {
+        StoppageIdentifierExceptionResponse exceptionResponse = new StoppageIdentifierExceptionResponse(ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }
