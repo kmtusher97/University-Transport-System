@@ -1,6 +1,7 @@
 package com.transport.university.universitytransportsystem.service;
 
-import com.transport.university.universitytransportsystem.exceptions.stoppage.StoppageIdentifierException;
+import com.transport.university.universitytransportsystem.exceptions.bus.BusIdException;
+import com.transport.university.universitytransportsystem.exceptions.bus.BusNumberException;
 import com.transport.university.universitytransportsystem.model.Bus;
 import com.transport.university.universitytransportsystem.model.Driver;
 import com.transport.university.universitytransportsystem.repository.BusRepo;
@@ -26,7 +27,7 @@ public class BusServices {
             bus.setNumber(bus.getNumber().toUpperCase());
             return busRepo.save(bus);
         } catch (Exception e) {
-            throw new StoppageIdentifierException("Bus with number: " + bus.getNumber() + " already exists");
+            throw new BusNumberException("Bus with number: " + bus.getNumber() + " already exists");
         }
     }
 
@@ -36,21 +37,21 @@ public class BusServices {
 
     public Bus getBusByBusId(Integer busId) {
         if (!busRepo.existsById(busId)) {
-            throw new StoppageIdentifierException("Bus ID " + busId + " does not exits");
+            throw new BusIdException("Bus ID " + busId + " does not exits");
         }
         return busRepo.getOne(busId);
     }
 
     public Bus getBusByBusNumber(String busNumber) {
         if (!busRepo.existsByNumber(busNumber)) {
-            throw new StoppageIdentifierException("Bus number " + busNumber + " does not exits");
+            throw new BusNumberException("Bus number " + busNumber + " does not exits");
         }
         return busRepo.findByNumber(busNumber);
     }
 
     public void deleteBusByBusId(Integer busId) {
         if (!busRepo.existsById(busId)) {
-            throw new StoppageIdentifierException("Bus ID " + busId + " does not exits");
+            throw new BusIdException("Bus ID " + busId + " does not exits");
         }
         busRepo.deleteById(busId);
     }
