@@ -21,6 +21,15 @@ public class BusServices {
     @Autowired
     private DriverRepo driverRepo;
 
+    public Bus addNewBus(Bus bus) {
+        try {
+            bus.setNumber(bus.getNumber().toUpperCase());
+            return busRepo.save(bus);
+        } catch (Exception e) {
+            throw new EntityIdentifierException("Bus with number: " + bus.getNumber() + " already exists");
+        }
+    }
+
     public List<Bus> getAllBuses() {
         return busRepo.findAll();
     }
@@ -33,16 +42,10 @@ public class BusServices {
     }
 
     public Bus getBusByBusNumber(String busNumber) {
-        return busRepo.findByNumber(busNumber);
-    }
-
-    public Bus addNewBus(Bus bus) {
-        try {
-            bus.setNumber(bus.getNumber().toUpperCase());
-            return busRepo.save(bus);
-        } catch (Exception e) {
-            throw new EntityIdentifierException("Bus with number: " + bus.getNumber() + " already exists");
+        if (!busRepo.existsByNumber(busNumber)) {
+            throw new EntityIdentifierException("Bus number " + busNumber + " does not exits");
         }
+        return busRepo.findByNumber(busNumber);
     }
 
     public void deleteBusByBusId(Integer busId) {

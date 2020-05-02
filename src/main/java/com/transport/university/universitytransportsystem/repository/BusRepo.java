@@ -7,5 +7,5 @@ public interface BusRepo extends JpaRepository<Bus, Integer> {
 
     Bus findByNumber(String number);
 
-    void deleteByNumber(String number);
+    Boolean existsByNumber(String number);
 }

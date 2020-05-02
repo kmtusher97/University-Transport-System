@@ -23,23 +23,16 @@ public class BusController {
     @Autowired
     private MapValidationErrorService errorService;
 
-    @GetMapping("/all")
-    public List<Bus> getAllBuses() {
-        return busServices.getAllBuses();
-    }
-
-    @GetMapping("/GLOBAL/getById/{busId}")
-    public ResponseEntity<?> getBusByBusId(@PathVariable("busId") Integer busId) {
-        return new ResponseEntity<>(busServices.getBusByBusId(busId), HttpStatus.OK);
-    }
-
-    @GetMapping("/GLOBAL/getByNumber/{number}")
-    public Bus getBusByBusNumber(@PathVariable("number") String busNumber) {
-        return busServices.getBusByBusNumber(busNumber);
-    }
-
     @PostMapping("/add")
     public ResponseEntity<?> addNewBus(@Valid @RequestBody Bus bus, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+        return new ResponseEntity<>(busServices.addNewBus(bus), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateBusInfo(@Valid @RequestBody Bus bus, BindingResult result) {
+        if (bus.getBusId() == null) return errorService.mapNullIdErrorService("budId");
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);
         if (errorMap != null) return errorMap;
         return new ResponseEntity<>(busServices.addNewBus(bus), HttpStatus.CREATED);
@@ -51,14 +44,21 @@ public class BusController {
         return new ResponseEntity<>("Bus with busId: " + busId + " was deleted", HttpStatus.OK);
     }
 
-
-    @PostMapping("/update")
-    public ResponseEntity<?> updateBusInfo(@Valid @RequestBody Bus bus, BindingResult result) {
-        if (bus.getBusId() == null) return errorService.mapNullIdErrorService("budId");
-        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
-        if (errorMap != null) return errorMap;
-        return new ResponseEntity<>(busServices.addNewBus(bus), HttpStatus.CREATED);
+    @GetMapping("/all")
+    public List<Bus> getAllBuses() {
+        return busServices.getAllBuses();
     }
+
+    @GetMapping("/GLOBAL/getById/{busId}")
+    public ResponseEntity<?> getBusByBusId(@PathVariable("busId") Integer busId) {
+        return new ResponseEntity<>(busServices.getBusByBusId(busId), HttpStatus.OK);
+    }
+
+    @GetMapping("/GLOBAL/getByNumber/{number}")
+    public ResponseEntity<?> getBusByBusNumber(@PathVariable("number") String busNumber) {
+        return new ResponseEntity<>(busServices.getBusByBusNumber(busNumber.toUpperCase()), HttpStatus.OK);
+    }
+
 
     @GetMapping("/DRIVER/trip/finished/{busId}/{driverId}")
     public Bus markBusAsFinishedTrip(
