@@ -48,4 +48,6 @@ public class Schedule implements Serializable {
     @JoinColumn(name = "stuff2_id", referencedColumnName = "stuffId", nullable = true)
     private Stuff stuff2;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isComplete;
 }
