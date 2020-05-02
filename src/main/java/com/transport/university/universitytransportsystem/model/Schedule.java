@@ -3,7 +3,6 @@ package com.transport.university.universitytransportsystem.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Time;
@@ -18,13 +17,10 @@ public class Schedule implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long assignmentId;
+    private Long scheduleId;
 
     @NotNull(message = "Date is required")
     private Date date;
-
-    @Column(nullable = false)
-    private Time departureTime;
 
     @OneToOne
     @JoinColumn(name = "bus_id", referencedColumnName = "busId")
