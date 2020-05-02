@@ -27,7 +27,7 @@ public class BusServices {
 
     public Bus getBusByBusId(Integer busId) {
         if (!busRepo.existsById(busId)) {
-            return null;
+            throw new EntityIdentifierException("Bus ID " + busId + " does not exits");
         }
         return busRepo.getOne(busId);
     }
@@ -47,16 +47,9 @@ public class BusServices {
 
     public void deleteBusByBusId(Integer busId) {
         if (!busRepo.existsById(busId)) {
-            return;
+            throw new EntityIdentifierException("Bus ID " + busId + " does not exits");
         }
         busRepo.deleteById(busId);
-    }
-
-    public void deleteBusByBusNumber(String busNumber) {
-        if (busRepo.findByNumber(busNumber) == null) {
-            return;
-        }
-        busRepo.deleteByNumber(busNumber);
     }
 
     public Bus updateBus(Bus bus) {

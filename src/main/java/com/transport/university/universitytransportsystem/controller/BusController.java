@@ -29,8 +29,8 @@ public class BusController {
     }
 
     @GetMapping("/GLOBAL/getById/{busId}")
-    public Bus getBusByBusId(@PathVariable("busId") Integer busId) {
-        return busServices.getBusByBusId(busId);
+    public ResponseEntity<?> getBusByBusId(@PathVariable("busId") Integer busId) {
+        return new ResponseEntity<>(busServices.getBusByBusId(busId), HttpStatus.OK);
     }
 
     @GetMapping("/GLOBAL/getByNumber/{number}")
@@ -46,14 +46,11 @@ public class BusController {
     }
 
     @DeleteMapping("/deleteById/{busId}")
-    public void deleteBusByBusId(@PathVariable("busId") Integer busId) {
+    public ResponseEntity<?> deleteBusByBusId(@PathVariable("busId") Integer busId) {
         busServices.deleteBusByBusId(busId);
+        return new ResponseEntity<>("Bus with busId: " + busId + " was deleted", HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteByNumber/{number}")
-    public void deleteBusByBusId(@PathVariable("number") String busNumber) {
-        busServices.deleteBusByBusNumber(busNumber);
-    }
 
     @PostMapping("/update")
     public ResponseEntity<?> updateBusInfo(@Valid @RequestBody Bus bus, BindingResult result) {
