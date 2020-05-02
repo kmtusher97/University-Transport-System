@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
 /**Componnts */
@@ -47,101 +47,41 @@ function App() {
               }}
             >
               <div role="main">
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    component={Schedule}
-                  />
-                  <Route
-                    exact
-                    path="/schedule"
-                    component={Schedule}
-                  />
-                  <Route
-                    exact
-                    path="/schedule/add"
-                    component={AddSchedule}
-                  />
-                  <Route
-                    exact
-                    path="/schedule/page/:pageNo"
-                    component={Schedule}
-                  />
-                  <Route
-                    exact
-                    path="/schedule/edit/:scheduleId"
-                    component={AddSchedule}
-                  />
-                  <Route
-                    exact
-                    path="/bus"
-                    component={Bus}
-                  />
-                  <Route
-                    exact
-                    path="/bus/page/:pageNo"
-                    component={Bus}
-                  />
-                  <Route
-                    exact
-                    path="/bus/add"
-                    component={AddBus}
-                  />
-                  <Route
-                    exact
-                    path="/route"
-                    component={BusRoute}
-                  />
-                  <Route
-                    exact
-                    path="/route/page/:pageNo"
-                    component={BusRoute}
-                  />
-                  <Route
-                    exact
-                    path="/route/add"
-                    component={AddBusRoute}
-                  />
-                  <Route
-                    exact
-                    path="/route/edit/:routeId"
-                    component={AddBusRoute}
-                  />
-                  <Route
-                    exact
-                    path="/stoppage"
-                    component={Stoppage}
-                  />
-                  <Route
-                    exact
-                    path="/stoppage/page/:pageNo"
-                    component={Stoppage}
-                  />
-                  <Route
-                    exact
-                    path="/stoppage/add"
-                    component={AddStoppage}
-                  />
-                  <Route
-                    exact
-                    path="/stoppage/edit/:stoppageId"
-                    component={UpdateStoppage}
-                  />
-                  <Route
-                    exact
-                    path="/bus/edit/:busId"
-                    component={AddBus}
-                  />
-                  <Route
-                    exact
-                    path="/feedback"
-                  />
-                  <Route
-                    exact
-                    path="/notice"
-                  />
-                </Switch>
+
+                <Route exact path="/schedule" component={Schedule} />
+                <Route exact path="/schedule/add" component={AddSchedule} />
+                <Route exact path="/schedule/page/:pageNo" component={Schedule} />
+                <Route exact path="/schedule/edit/:scheduleId" component={AddSchedule} />
+                {
+                  // routes for bus
+                }
+                <Route exact path="/bus" component={Bus} />
+                <Route exact path="/bus/page/:pageNo" component={Bus} />
+                <Route exact path="/bus/add" component={AddBus} />
+                <Route exact path="/bus/edit/:busId" component={AddBus} />
+                {
+                  // routes for busRoute
+                }
+                <Route exact path="/route" component={BusRoute} />
+                <Route exact path="/route/page/:pageNo" component={BusRoute} />
+                <Route exact path="/route/add" component={AddBusRoute} />
+                <Route exact path="/route/edit/:routeId" component={AddBusRoute} />
+                {
+                  // routes for stoppage
+                }
+                <Route exact path="/stoppage" component={Stoppage} />
+                <Route exact path="/stoppage/page/:pageNo" component={Stoppage} />
+                <Route exact path="/stoppage/add" component={AddStoppage} />
+                <Route exact path="/stoppage/edit/:stoppageId" component={UpdateStoppage} />
+                {
+                  // routes for feedback
+                }
+                <Route exact path="/feedback" />
+                {
+                  // routess for notice
+                }
+                <Route exact path="/notice" />
+
               </div>
             </Col>
           </Row>
