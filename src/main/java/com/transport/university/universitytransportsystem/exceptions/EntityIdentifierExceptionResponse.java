@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoppageIdExceptionResponse {
+public class EntityIdentifierExceptionResponse {
     private String stoppageIdentifier;
 }

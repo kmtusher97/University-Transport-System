@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class StoppageIdException extends RuntimeException {
+public class EntityIdentifierException extends RuntimeException {
 
-    public StoppageIdException(String message) {
+    public EntityIdentifierException(String message) {
         super(message);
     }
 }
