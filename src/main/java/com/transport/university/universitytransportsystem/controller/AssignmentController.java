@@ -1,6 +1,6 @@
 package com.transport.university.universitytransportsystem.controller;
 
-import com.transport.university.universitytransportsystem.model.Assignment;
+import com.transport.university.universitytransportsystem.model.Schedule;
 import com.transport.university.universitytransportsystem.service.AssignmentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +18,13 @@ public class AssignmentController {
     private AssignmentServices assignmentServices;
 
     @PostMapping("/add")
-    public Assignment addAssignment(@RequestBody Assignment assignment) {
-        return assignmentServices.addAssignment(assignment);
+    public Schedule addAssignment(@RequestBody Schedule schedule) {
+        return assignmentServices.addAssignment(schedule);
     }
 
     @PostMapping("/update")
-    public Assignment updateAssignment(@RequestBody Assignment assignment) {
-        return assignmentServices.updateAssignment(assignment);
+    public Schedule updateAssignment(@RequestBody Schedule schedule) {
+        return assignmentServices.updateAssignment(schedule);
     }
 
     @DeleteMapping("/deleteById/{id}")
@@ -38,19 +38,19 @@ public class AssignmentController {
     }
 
     @GetMapping("/getById/{id}")
-    public Assignment getAssignmentById(@PathVariable("id") Long id) {
+    public Schedule getAssignmentById(@PathVariable("id") Long id) {
         return assignmentServices.getById(id);
     }
 
     @GetMapping("/GLOBAL/getSchedules/{n}")
-    public List<Assignment> getNth30SchedulesFromLast(@PathVariable("n") Long n) {
-        List<Assignment> assignmentList = assignmentServices.getNth30SchedulesFromLast(n);
-        Collections.reverse(assignmentList);
-        return assignmentList;
+    public List<Schedule> getNth30SchedulesFromLast(@PathVariable("n") Long n) {
+        List<Schedule> scheduleList = assignmentServices.getNth30SchedulesFromLast(n);
+        Collections.reverse(scheduleList);
+        return scheduleList;
     }
 
     @PostMapping("/GLOBAL/getAllByDate")
-    public List<Assignment> getAllByDateRange(@RequestBody List<Date> dates) {
+    public List<Schedule> getAllByDateRange(@RequestBody List<Date> dates) {
         if (dates == null || dates.size() != 2) return null;
         Date startDate = dates.get(0);
         Date endDate = dates.get(1);
