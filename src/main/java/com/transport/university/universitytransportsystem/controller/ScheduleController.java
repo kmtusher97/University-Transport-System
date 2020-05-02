@@ -1,7 +1,7 @@
 package com.transport.university.universitytransportsystem.controller;
 
 import com.transport.university.universitytransportsystem.model.Schedule;
-import com.transport.university.universitytransportsystem.service.AssignmentServices;
+import com.transport.university.universitytransportsystem.service.ScheduleServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,39 +12,39 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping(path = "api/schedule")
-public class AssignmentController {
+public class ScheduleController {
 
     @Autowired
-    private AssignmentServices assignmentServices;
+    private ScheduleServices scheduleServices;
 
     @PostMapping("/add")
     public Schedule addAssignment(@RequestBody Schedule schedule) {
-        return assignmentServices.addAssignment(schedule);
+        return scheduleServices.addAssignment(schedule);
     }
 
     @PostMapping("/update")
     public Schedule updateAssignment(@RequestBody Schedule schedule) {
-        return assignmentServices.updateAssignment(schedule);
+        return scheduleServices.updateAssignment(schedule);
     }
 
     @DeleteMapping("/deleteById/{id}")
     public void deleteAssignmentById(@PathVariable("id") Long id) {
-        assignmentServices.deleteAssignmentById(id);
+        scheduleServices.deleteAssignmentById(id);
     }
 
     @GetMapping("/totalCount")
     public Long getTotalCount() {
-        return assignmentServices.getTotalCount();
+        return scheduleServices.getTotalCount();
     }
 
     @GetMapping("/getById/{id}")
     public Schedule getAssignmentById(@PathVariable("id") Long id) {
-        return assignmentServices.getById(id);
+        return scheduleServices.getById(id);
     }
 
     @GetMapping("/GLOBAL/getSchedules/{n}")
     public List<Schedule> getNth30SchedulesFromLast(@PathVariable("n") Long n) {
-        List<Schedule> scheduleList = assignmentServices.getNth30SchedulesFromLast(n);
+        List<Schedule> scheduleList = scheduleServices.getNth30SchedulesFromLast(n);
         Collections.reverse(scheduleList);
         return scheduleList;
     }
@@ -55,6 +55,6 @@ public class AssignmentController {
         Date startDate = dates.get(0);
         Date endDate = dates.get(1);
         if (startDate.compareTo(endDate) == 1) return null;
-        return assignmentServices.getAllByDateRange(startDate, endDate);
+        return scheduleServices.getAllByDateRange(startDate, endDate);
     }
 }
