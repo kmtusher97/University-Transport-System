@@ -1,4 +1,4 @@
-package com.transport.university.universitytransportsystem.exceptions;
+package com.transport.university.universitytransportsystem.exceptions.stoppage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

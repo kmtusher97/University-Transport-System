@@ -1,6 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
-import com.transport.university.universitytransportsystem.exceptions.StoppageIdentifierException;
+import com.transport.university.universitytransportsystem.exceptions.stoppage.StoppageIdentifierException;
 import com.transport.university.universitytransportsystem.model.Stoppage;
 import com.transport.university.universitytransportsystem.repository.StoppageRepo;
 import org.springframework.beans.factory.annotation.Autowired;

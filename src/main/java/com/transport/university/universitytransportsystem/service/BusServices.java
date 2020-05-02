@@ -1,6 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
-import com.transport.university.universitytransportsystem.exceptions.StoppageIdentifierException;
+import com.transport.university.universitytransportsystem.exceptions.stoppage.StoppageIdentifierException;
 import com.transport.university.universitytransportsystem.model.Bus;
 import com.transport.university.universitytransportsystem.model.Driver;
 import com.transport.university.universitytransportsystem.repository.BusRepo;

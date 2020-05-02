@@ -1,4 +1,4 @@
-package com.transport.university.universitytransportsystem.exceptions;
+package com.transport.university.universitytransportsystem.exceptions.stoppage;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
