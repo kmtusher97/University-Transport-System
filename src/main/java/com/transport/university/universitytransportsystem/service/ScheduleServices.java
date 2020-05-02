@@ -12,9 +12,9 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AssignmentServices {
+public class ScheduleServices {
     @Autowired
-    private AssignmentRepo assignmentRepo;
+    private ScheduleRepo scheduleRepo;
 
     @Autowired
     private BusRepo busRepo;
@@ -62,39 +62,39 @@ public class AssignmentServices {
             if (schedule.getStuff2() != null) {
                 schedule.setStuff2(stuffRepo.getOne(schedule.getStuff2().getStuffId()));
             }
-            return assignmentRepo.save(schedule);
+            return scheduleRepo.save(schedule);
         }
         return null;
     }
 
     public Schedule updateAssignment(Schedule schedule) {
         if (schedule.getAssignmentId() == null) return null;
-        if (!assignmentRepo.existsById(schedule.getAssignmentId())) return null;
+        if (!scheduleRepo.existsById(schedule.getAssignmentId())) return null;
         return addAssignment(schedule);
     }
 
     public List<Schedule> getAllByDateRange(Date startDate, Date endDate) {
-        return assignmentRepo.getAllByDateRange(startDate, endDate);
+        return scheduleRepo.getAllByDateRange(startDate, endDate);
     }
 
     public List<Schedule> getNth30SchedulesFromLast(Long n) {
-        Long scheduleCount = assignmentRepo.count();
+        Long scheduleCount = scheduleRepo.count();
         if (scheduleCount == 0 || n <= 0) return new ArrayList<>();
-        return assignmentRepo.getNth30SchedulesFromLast(Math.max(0, scheduleCount - (n * 30)));
+        return scheduleRepo.getNth30SchedulesFromLast(Math.max(0, scheduleCount - (n * 30)));
     }
 
     public void deleteAssignmentById(Long id) {
-        if (assignmentRepo.existsById(id)) {
-            assignmentRepo.deleteById(id);
+        if (scheduleRepo.existsById(id)) {
+            scheduleRepo.deleteById(id);
         }
     }
 
     public Schedule getById(Long id) {
-        if (!assignmentRepo.existsById(id)) return null;
-        return assignmentRepo.getOne(id);
+        if (!scheduleRepo.existsById(id)) return null;
+        return scheduleRepo.getOne(id);
     }
 
     public Long getTotalCount() {
-        return assignmentRepo.count();
+        return scheduleRepo.count();
     }
 }

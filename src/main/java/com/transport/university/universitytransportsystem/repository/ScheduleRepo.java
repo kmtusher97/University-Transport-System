@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
 import java.util.List;
 
-public interface AssignmentRepo extends JpaRepository<Schedule, Long> {
+public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
 
 
     @Query("SELECT a FROM Assignment a WHERE a.date >= ?1 AND a.date <= ?2")
