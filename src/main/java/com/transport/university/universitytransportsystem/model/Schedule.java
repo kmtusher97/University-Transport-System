@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.Date;
 
 @Getter
@@ -23,26 +22,23 @@ public class Schedule implements Serializable {
     private Date date;
 
     @OneToOne
-    @JoinColumn(name = "bus_id", referencedColumnName = "busId")
-    @NotNull(message = "Bus ID is required")
+    @JoinColumn(name = "bus_id", referencedColumnName = "busId", nullable = false)
     private Bus bus;
 
     @OneToOne
-    @JoinColumn(name = "route_id", referencedColumnName = "routeId")
-    @NotNull(message = "Route is required")
+    @JoinColumn(name = "route_id", referencedColumnName = "routeId", nullable = false)
     private Route route;
 
     @OneToOne
-    @JoinColumn(name = "driver_id", referencedColumnName = "driverId")
-    @NotNull(message = "Driver ID is required")
+    @JoinColumn(name = "driver_id", referencedColumnName = "driverId", nullable = false)
     private Driver driver;
 
     @OneToOne
-    @JoinColumn(name = "stuff1_id", referencedColumnName = "stuffId", nullable = true)
+    @JoinColumn(name = "stuff1_id", referencedColumnName = "stuffId")
     private Stuff stuff1;
 
     @OneToOne
-    @JoinColumn(name = "stuff2_id", referencedColumnName = "stuffId", nullable = true)
+    @JoinColumn(name = "stuff2_id", referencedColumnName = "stuffId")
     private Stuff stuff2;
 
     @Column(columnDefinition = "boolean default false")

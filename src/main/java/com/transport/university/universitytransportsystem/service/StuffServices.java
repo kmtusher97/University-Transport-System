@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
+import com.transport.university.universitytransportsystem.exceptions.stuff.StuffIdException;
 import com.transport.university.universitytransportsystem.model.Stuff;
 import com.transport.university.universitytransportsystem.model.User;
 import com.transport.university.universitytransportsystem.repository.StuffRepo;
@@ -74,7 +75,9 @@ public class StuffServices {
     }
 
     public Stuff getStuffById(Integer id) {
-        if (!stuffRepo.existsById(id)) return null;
+        if (!stuffRepo.existsById(id)) {
+            throw new StuffIdException("Stuff with Id: " + id + " does not exist");
+        }
         return stuffRepo.getOne(id);
     }
 }

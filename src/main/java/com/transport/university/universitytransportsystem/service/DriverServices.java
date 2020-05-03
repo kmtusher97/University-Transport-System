@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
+import com.transport.university.universitytransportsystem.exceptions.driver.DriverIdException;
 import com.transport.university.universitytransportsystem.model.Driver;
 import com.transport.university.universitytransportsystem.model.User;
 import com.transport.university.universitytransportsystem.repository.DriverRepo;
@@ -71,5 +72,12 @@ public class DriverServices {
             return driverRepo.save(driver);
         }
         return null;
+    }
+
+    public Driver getDriver(Integer driverId) {
+        if (!driverRepo.existsById(driverId)) {
+            throw new DriverIdException("Driver with Id: " + driverId + " does not exist");
+        }
+        return driverRepo.getOne(driverId);
     }
 }

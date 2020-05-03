@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
+import com.transport.university.universitytransportsystem.exceptions.route.RouteIdException;
 import com.transport.university.universitytransportsystem.model.Route;
 import com.transport.university.universitytransportsystem.model.Stoppage;
 import com.transport.university.universitytransportsystem.repository.RouteRepo;
@@ -31,7 +32,9 @@ public class RouteServices {
     }
 
     public Route getRouteById(Integer routeId) {
-        if (!routeRepo.existsById(routeId)) return null;
+        if (!routeRepo.existsById(routeId)) {
+            throw new RouteIdException("Route with Id: " + routeId + " does not exist");
+        }
         Route route = routeRepo.getOne(routeId);
         route.setRouteDetail(getDetailRouteByRouteId(routeId));
         return route;

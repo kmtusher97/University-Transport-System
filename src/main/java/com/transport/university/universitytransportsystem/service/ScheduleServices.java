@@ -16,11 +16,7 @@ public class ScheduleServices {
     private ScheduleRepo scheduleRepo;
 
     public Schedule saveOrUpdate(Schedule schedule) {
-        try {
-            return scheduleRepo.save(schedule);
-        } catch (RuntimeException ex) {
-            throw ex;
-        }
+        return scheduleRepo.save(schedule);
     }
 
     public void delete(Long id) {
