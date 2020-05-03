@@ -2,16 +2,13 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Table, Button } from "react-bootstrap";
 
-import Appdata from "../AppData";
-import Axios from "axios";
-
 import BusTopMenuBar from "./BusTopMenuBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getAllBuses } from "../../actions/BusActions";
+import { getAllBuses, deleteBus } from "../../actions/BusActions";
 
 class Bus extends Component {
   constructor() {
@@ -27,41 +24,21 @@ class Bus extends Component {
       busList: [],
       pageNo: tmpPageNo
     };
+    this.deleteBusHandler = this.deleteBusHandler.bind(this);
   }
 
   componentDidMount = () => {
     this.props.getAllBuses();
   };
 
-  deleteBus = busId => {
-    // let url = `${Appdata.restApiBaseUrl}/bus/deleteById/${busId}`;
-    // Axios.delete(url, null)
-    //   .then(response => response.data)
-    //   .then(data => {
-    //     url = `${Appdata.restApiBaseUrl}/bus/all`;
-    //     Axios.get(url)
-    //       .then(response => response.data)
-    //       .then(data => {
-    //         this.setState({
-    //           busList: data
-    //         });
-    //         if (
-    //           this.state.pageNo <= 0 ||
-    //           this.state.pageNo * 30 - bus.buses.length > 30
-    //         ) {
-    //           this.setState({
-    //             busList: []
-    //           });
-    //         }
-    //       });
-    //   });
+  deleteBusHandler = busId => {
+    this.props.deleteBus(busId, this.props.history);
   };
 
   render() {
     const rowsPerPage = 30;
     const upperBound = this.state.pageNo * rowsPerPage;
     const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
-
     const { bus } = this.props;
 
     return (
@@ -108,7 +85,7 @@ class Bus extends Component {
                       <Button
                         size="sm"
                         variant="outline-danger"
-                        onClick={() => this.deleteBus(bus.busId)}
+                        onClick={() => this.deleteBusHandler(bus.busId)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
@@ -126,9 +103,10 @@ class Bus extends Component {
 
 Bus.protoType = {
   bus: PropTypes.object.isRequired,
-  getAllBuses: PropTypes.func.isRequired
+  getAllBuses: PropTypes.func.isRequired,
+  deleteBus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({ bus: state.bus });
 
-export default connect(mapStateToProps, { getAllBuses })(Bus);
+export default connect(mapStateToProps, { getAllBuses, deleteBus })(Bus);

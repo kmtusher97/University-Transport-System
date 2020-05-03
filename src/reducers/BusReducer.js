@@ -1,4 +1,4 @@
-import { GET_BUSES, GET_BUS } from "../actions/types";
+import { GET_BUSES, GET_BUS, DELETE_BUS } from "../actions/types";
 
 const initialState = {
   buses: [],
@@ -17,6 +17,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         bus: action.payload
+      }
+
+    case DELETE_BUS:
+      return {
+        ...state,
+        buses: state.buses.filter(
+          bus => bus.busId !== action.payload
+        )
       }
 
     default:

@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { GET_ERRORS, GET_BUSES, GET_BUS } from "./types";
+import { GET_ERRORS, GET_BUSES, GET_BUS, DELETE_BUS } from "./types";
 
 export const addBus = (bus, reqType, history) => async dispatch => {
   try {
@@ -19,22 +19,9 @@ export const addBus = (bus, reqType, history) => async dispatch => {
 
 export const getAllBuses = () => async dispatch => {
   const res = await Axios.get(`/api/bus/all`);
-  let buses = [];
-  res.data.map(bus => {
-    let tmpBus = {
-      busId: bus.busId,
-      number: bus.number,
-      oilTankCapacity: bus.oilTankCapacity,
-      gasCylinderCapacity: bus.gasCylinderCapacity,
-      isAvailable: bus.isAvailable,
-      schedules: [],
-      busReports: []
-    };
-    buses.push(tmpBus);
-  })
   dispatch({
     type: GET_BUSES,
-    payload: buses
+    payload: res.data
   });
 };
 
@@ -47,5 +34,21 @@ export const getBus = (busId, history) => async dispatch => {
     });
   } catch (err) {
     history.push("/bus");
+  }
+};
+
+export const deleteBus = (busId, history) => async dispatch => {
+  if (
+    window.confirm("Are you sure?")
+  ) {
+    try {
+      await Axios.delete(`/api/bus/${busId}`);
+      dispatch({
+        type: DELETE_BUS,
+        payload: busId
+      });
+    } catch (err) {
+      history.push("/bus");
+    }
   }
 };
