@@ -2,11 +2,9 @@ package com.transport.university.universitytransportsystem.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter
@@ -15,13 +13,15 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @Entity
-public class Announcement implements Serializable {
+public class Announcement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long announcementId;
 
+    @NotNull(message = "Date is required")
     private Date date;
 
+    @NotBlank(message = "Announcement can not be empty")
     private String announcement;
 }

@@ -38,7 +38,7 @@ public class BusController {
         return new ResponseEntity<>(busServices.addNewBus(bus), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deleteById/{busId}")
+    @DeleteMapping("/{busId}")
     public ResponseEntity<?> deleteBusByBusId(@PathVariable("busId") Integer busId) {
         busServices.deleteBusByBusId(busId);
         return new ResponseEntity<>("Bus with busId: " + busId + " was deleted", HttpStatus.OK);
@@ -49,16 +49,20 @@ public class BusController {
         return busServices.getAllBuses();
     }
 
-    @GetMapping("/GLOBAL/getById/{busId}")
+    @GetMapping("/GLOBAL/{busId}")
     public ResponseEntity<?> getBusByBusId(@PathVariable("busId") Integer busId) {
         return new ResponseEntity<>(busServices.getBusByBusId(busId), HttpStatus.OK);
     }
 
-    @GetMapping("/GLOBAL/getByNumber/{number}")
+    @GetMapping("/GLOBAL/get/{number}")
     public ResponseEntity<?> getBusByBusNumber(@PathVariable("number") String busNumber) {
         return new ResponseEntity<>(busServices.getBusByBusNumber(busNumber.toUpperCase()), HttpStatus.OK);
     }
 
+    @GetMapping("/GLOBAL/schedule/{busId}")
+    public ResponseEntity<?> getSchedules(@PathVariable("busId") Integer busId) {
+        return new ResponseEntity<>(busServices.getSchedules(busId), HttpStatus.OK);
+    }
 
     @GetMapping("/DRIVER/trip/finished/{busId}/{driverId}")
     public Bus markBusAsFinishedTrip(

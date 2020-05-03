@@ -42,13 +42,9 @@ public class ScheduleValidatorServices {
                 !driverServices.getDriver(schedule.getDriver().getDriverId()).equals(schedule.getDriver())) {
             errorMap.put("driver", "Invalid Driver");
         }
-        if (schedule.getStuff1() != null && (schedule.getStuff1().getStuffId() == null ||
-                !stuffServices.getStuffById(schedule.getStuff1().getStuffId()).equals(schedule.getStuff1()))) {
+        if (schedule.getStuff() != null && (schedule.getStuff().getStuffId() == null ||
+                !stuffServices.getStuffById(schedule.getStuff().getStuffId()).equals(schedule.getStuff()))) {
             errorMap.put("stuff1", "Invalid Stuff1");
-        }
-        if (schedule.getStuff2() != null && (schedule.getStuff2().getStuffId() == null ||
-                !stuffServices.getStuffById(schedule.getStuff2().getStuffId()).equals(schedule.getStuff2()))) {
-            errorMap.put("stuff2", "Invalid Stuff2");
         }
         if (errorMap.size() == 0) return null;
         return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);

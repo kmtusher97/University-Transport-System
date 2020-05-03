@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 
 @Getter
@@ -12,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Schedule implements Serializable {
+public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,26 +20,22 @@ public class Schedule implements Serializable {
     @NotNull(message = "Date is required")
     private Date date;
 
-    @OneToOne
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isComplete;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bus_id", referencedColumnName = "busId", nullable = false)
     private Bus bus;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "route_id", referencedColumnName = "routeId", nullable = false)
     private Route route;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "driver_id", referencedColumnName = "driverId", nullable = false)
     private Driver driver;
 
-    @OneToOne
-    @JoinColumn(name = "stuff1_id", referencedColumnName = "stuffId")
-    private Stuff stuff1;
-
-    @OneToOne
-    @JoinColumn(name = "stuff2_id", referencedColumnName = "stuffId")
-    private Stuff stuff2;
-
-    @Column(columnDefinition = "boolean default false")
-    private Boolean isComplete;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stuff_id", referencedColumnName = "stuffId")
+    private Stuff stuff;
 }

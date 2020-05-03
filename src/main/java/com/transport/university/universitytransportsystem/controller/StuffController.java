@@ -30,18 +30,5 @@ public class StuffController {
         return stuffServices.getAllStuffsExService();
     }
 
-    @GetMapping("/add/{userId}")
-    public Stuff addNewStuff(@PathVariable("userId") Integer userId) {
-        return stuffServices.addNewStuff(userId);
-    }
 
-    @GetMapping("/remove/{stuffId}")
-    public Stuff removeStuff(@PathVariable("stuffId") Integer stuffId) {
-        return stuffServices.removeStuff(stuffId);
-    }
-
-    @GetMapping("/reEmploy/{stuffId}")
-    public Stuff reEmployStuff(@PathVariable("stuffId") Integer stuffId) {
-        return stuffServices.reEmployStuff(stuffId);
-    }
 }

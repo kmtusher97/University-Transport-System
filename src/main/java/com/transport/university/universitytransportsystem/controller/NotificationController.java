@@ -20,28 +20,4 @@ public class NotificationController {
         return notificationServices.getNotificationById(id);
     }
 
-    @PostMapping("/add")
-    public Notification addNotification(@RequestBody Notification notification) {
-        return notificationServices.addNotification(notification);
-    }
-
-    @PostMapping("/update")
-    public Notification updateNotification(@RequestBody Notification notification) {
-        return notificationServices.updateNotification(notification);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteNotificationById(@PathVariable("id") Long id) {
-        notificationServices.deleteNotificationById(id);
-    }
-
-    @GetMapping("/GLOBAL/getLatest")
-    public List<Notification> getLatestNotifications() {
-        return notificationServices.getLatestNotifications();
-    }
-
-    @GetMapping("/GLOBAL/getAll/{n}")
-    public List<Notification> getNth30Notifications(@PathVariable("n") Long n) {
-        return notificationServices.getNth30Notifications(n);
-    }
 }

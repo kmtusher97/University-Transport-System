@@ -5,14 +5,13 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Stoppage implements Serializable {
+public class Stoppage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

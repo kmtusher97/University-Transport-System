@@ -26,4 +26,12 @@ public class BusReport {
 
     @Column(columnDefinition = "boolean default false", nullable = false)
     private Boolean solved;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "bus_id", referencedColumnName = "busId", nullable = false)
+    private Bus bus;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "driver_id", referencedColumnName = "driverId", nullable = false)
+    private Driver driver;
 }

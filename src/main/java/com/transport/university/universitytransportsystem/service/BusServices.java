@@ -4,6 +4,7 @@ import com.transport.university.universitytransportsystem.exceptions.bus.BusIdEx
 import com.transport.university.universitytransportsystem.exceptions.bus.BusNumberException;
 import com.transport.university.universitytransportsystem.model.Bus;
 import com.transport.university.universitytransportsystem.model.Driver;
+import com.transport.university.universitytransportsystem.model.Schedule;
 import com.transport.university.universitytransportsystem.repository.BusRepo;
 import com.transport.university.universitytransportsystem.repository.DriverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -74,5 +76,12 @@ public class BusServices {
         Bus bus = busRepo.getOne(busId);
         bus.setIsAvailable(true);
         return updateBus(bus);
+    }
+
+    public Set<Schedule> getSchedules(Integer busId) {
+        if (!busRepo.existsById(busId)) {
+            throw new BusIdException("Bus ID " + busId + " does not exits");
+        }
+        return busRepo.getOne(busId).getSchedules();
     }
 }
