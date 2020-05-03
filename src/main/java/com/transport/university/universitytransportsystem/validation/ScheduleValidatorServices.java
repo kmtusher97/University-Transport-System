@@ -35,7 +35,7 @@ public class ScheduleValidatorServices {
             errorMap.put("bus", "Invalid Bus");
         }
         if (schedule.getRoute().getRouteId() == null ||
-                !routeServices.getRouteById(schedule.getRoute().getRouteId()).equals(schedule.getRoute())) {
+                !routeServices.getRoute(schedule.getRoute().getRouteId()).equals(schedule.getRoute())) {
             errorMap.put("route", "Invalid Route");
         }
         if (schedule.getDriver().getDriverId() == null ||

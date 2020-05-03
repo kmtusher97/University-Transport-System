@@ -3,6 +3,7 @@ package com.transport.university.universitytransportsystem.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class Route implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer routeId;
 
+    @Column(unique = true)
+    @NotBlank(message = "Route is required")
     private String route;
 
     @Transient

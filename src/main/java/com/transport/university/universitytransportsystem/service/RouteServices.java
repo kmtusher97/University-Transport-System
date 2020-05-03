@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
+import com.transport.university.universitytransportsystem.exceptions.route.DuplicateRouteException;
 import com.transport.university.universitytransportsystem.exceptions.route.RouteIdException;
 import com.transport.university.universitytransportsystem.model.Route;
 import com.transport.university.universitytransportsystem.model.Stoppage;
@@ -31,7 +32,7 @@ public class RouteServices {
         return routeList;
     }
 
-    public Route getRouteById(Integer routeId) {
+    public Route getRoute(Integer routeId) {
         if (!routeRepo.existsById(routeId)) {
             throw new RouteIdException("Route with Id: " + routeId + " does not exist");
         }
@@ -40,35 +41,25 @@ public class RouteServices {
         return route;
     }
 
-    private Boolean isValidRoute(String route) {
-        String[] stoppages = route.split(",");
-        if (stoppages == null || stoppages.length == 0) return false;
-        for (String stoppage : stoppages) {
-            if (!stoppageRepo.existsById(Integer.parseInt(stoppage))) {
-                return false;
-            }
+    public Route saveOrUpdate(Route route) {
+        try {
+            return routeRepo.save(route);
+        } catch (Exception ex) {
+            throw new DuplicateRouteException("Route: " + route.getRoute() + " already exists");
         }
-        return true;
     }
 
-    public Route save(Route route) {
-        if (route.getRoute() == null) return null;
-        if (!isValidRoute(route.getRoute())) return null;
-        return routeRepo.save(route);
-    }
-
-    public Route update(Route route) {
-        if (route.getRouteId() == null || !routeRepo.existsById(route.getRouteId())) return null;
-        return save(route);
-    }
-
-    public void deleteRouteById(Integer routeId) {
-        if (routeId == null || !routeRepo.existsById(routeId)) return;
+    public void deleteRoute(Integer routeId) {
+        if (!routeRepo.existsById(routeId)) {
+            throw new RouteIdException("Route with Id: " + routeId + " does not exist");
+        }
         routeRepo.deleteById(routeId);
     }
 
     public List<Stoppage> getDetailRouteByRouteId(Integer routeId) {
-        if (!routeRepo.existsById(routeId)) return new ArrayList<>();
+        if (!routeRepo.existsById(routeId)) {
+            throw new RouteIdException("Route with Id: " + routeId + " does not exist");
+        }
         Route route = routeRepo.getOne(routeId);
         String[] stoppages = route.getRoute().split(",");
 
