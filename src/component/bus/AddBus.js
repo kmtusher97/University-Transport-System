@@ -6,120 +6,99 @@ import {
   Col,
   Button
 } from 'react-bootstrap';
-import AppData from '../AppData';
-import Axios from 'axios';
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addBus } from "../../actions/BusActions";
+
+import classnames from "classnames";
 
 class AddBus extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      bus: {
-        busId: this.props.location.busId,
-        number: "",
-        status: "",
-        oilTankCapacity: "",
-        oilInTank: 0,
-        gasCylinderCapacity: "",
-        gasInCylinder: 0,
-        isAvailable: false
-      },
-      formType: []
+      busId: "",
+      number: "",
+      oilTankCapacity: "",
+      gasCylinderCapacity: "",
+      isAvailable: false,
+      errors: {}
     };
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
 
-  componentDidMount = () => {
-    const pathNameComponents = window.location.pathname.split("/");
-    this.setState({
-      formType: pathNameComponents[2]
-    });
-
-    if (
-      this.state.bus.busId !== null &&
-      this.state.bus.busId !== undefined
-    ) {
-      let url = `${AppData.restApiBaseUrl}/bus/GLOBAL/getById/${this.state.bus.busId}`;
-      Axios.get(url)
-        .then(response => response.data)
-        .then(data => {
-          if (data !== null) {
-            this.setState({
-              bus: data
-            });
-          }
-        });
+  //life cycle hooks
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
     }
   };
 
   onChangeHandler = event => {
-    let tmpBus = this.state.bus;
-    tmpBus[event.target.name] = event.target.value;
-    this.setState({
-      bus: tmpBus
-    });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   onSubmitHandler = event => {
     event.preventDefault();
-    if (this.state.formType === "add") {
-      let url = `${AppData.restApiBaseUrl}/bus/add`;
-      Axios.post(url, this.state.bus)
-        .then(response => response.data)
-        .then(data => {
-          if (data === null || data === undefined) {
-            alert("Add Failed!!! Network error or this bus number already exists!!!");
-          } else {
-            window.location.replace(this.props.location.returnLink);
-          }
-        });
-    }
-    else if (this.state.formType === "edit") {
-      let url = `${AppData.restApiBaseUrl}/bus/update`;
-      Axios.post(url, this.state.bus)
-        .then(response => response.data)
-        .then(data => {
-          if (data === null || data === undefined) {
-            alert("Edit Failed!!!");
-          }
-          else {
-            window.location.replace(this.props.location.returnLink);
-          }
-        });
-    }
-    else {
-      alert("An Unexpected Error Occured!!!");
-    }
+    const newBus = {
+      busId: this.state.busId,
+      number: this.state.number,
+      oilTankCapacity: this.state.oilTankCapacity,
+      gasCylinderCapacity: this.state.gasCylinderCapacity,
+      isAvailable: this.state.isAvailable,
+    };
+    this.props.addBus(newBus, "add", this.props.history);
   };
 
   render() {
+    const { errors } = this.state;
+
     return (
       <Container style={{ padding: "5px" }}>
-        <Form>
+        <Form onSubmit={this.onSubmitHandler}>
           <Row>
             <Col md={8}>
               <Form.Group>
                 <Form.Label>Bus Number</Form.Label>
                 <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.number }
+                  )}
                   name="number"
                   type="text"
-                  required
-                  value={this.state.bus.number}
+                  value={this.state.number}
                   onChange={this.onChangeHandler}
                 />
+                {errors.number && (
+                  <div className="invalid-feedback">
+                    {errors.number}
+                  </div>
+                )}
               </Form.Group>
             </Col>
             <Col md={4}>
               <Form.Group>
                 <Form.Label>Is Available</Form.Label>
                 <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.isAvailable }
+                  )}
                   name="isAvailable"
                   as="select"
-                  custom
-                  value={this.state.bus.isAvailable}
+                  value={this.state.isAvailable}
                   onChange={this.onChangeHandler}
                 >
                   <option key={1} value="false" >No</option>
                   <option key={2} value="true">Yes</option>
                 </Form.Control>
+                {errors.isAvailable && (
+                  <div className="invalid-feedback">
+                    {errors.isAvailable}
+                  </div>
+                )}
               </Form.Group>
             </Col>
           </Row>
@@ -128,50 +107,40 @@ class AddBus extends Component {
               <Form.Group>
                 <Form.Label>Oil Tank capacity (Liters)</Form.Label>
                 <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.oilTankCapacity }
+                  )}
                   name="oilTankCapacity"
                   type="number"
-                  required
-                  value={this.state.bus.oilTankCapacity}
+                  value={this.state.oilTankCapacity}
                   onChange={this.onChangeHandler}
                 />
+                {errors.oilTankCapacity && (
+                  <div className="invalid-feedback">
+                    {errors.oilTankCapacity}
+                  </div>
+                )}
               </Form.Group>
             </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label>Oil In Tank (Liters)</Form.Label>
-                <Form.Control
-                  name="oilInTank"
-                  type="number"
-                  required
-                  value={this.state.bus.oilInTank}
-                  onChange={this.onChangeHandler}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
             <Col md={6}>
               <Form.Group>
                 <Form.Label>Gas Cylinder capacity (Liters)</Form.Label>
                 <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.gasCylinderCapacity }
+                  )}
                   name="gasCylinderCapacity"
                   type="number"
-                  required
-                  value={this.state.bus.gasCylinderCapacity}
+                  value={this.state.gasCylinderCapacity}
                   onChange={this.onChangeHandler}
                 />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label>Gas In Cylinder (Liters)</Form.Label>
-                <Form.Control
-                  name="gasInCylinder"
-                  type="number"
-                  required
-                  value={this.state.bus.gasInCylinder}
-                  onChange={this.onChangeHandler}
-                />
+                {errors.gasCylinderCapacity && (
+                  <div className="invalid-feedback">
+                    {errors.gasCylinderCapacity}
+                  </div>
+                )}
               </Form.Group>
             </Col>
           </Row>
@@ -180,7 +149,6 @@ class AddBus extends Component {
               <Button
                 type="submit"
                 variant="primary"
-                onClick={this.onSubmitHandler}
               >
                 Submit
               </Button>
@@ -201,4 +169,12 @@ class AddBus extends Component {
   }
 }
 
-export default AddBus;
+
+AddBus.propTypes = {
+  addBus: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({ errors: state.errors });
+
+export default connect(mapStateToProps, { addBus })(AddBus);
