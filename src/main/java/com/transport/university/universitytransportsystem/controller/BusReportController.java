@@ -2,11 +2,14 @@ package com.transport.university.universitytransportsystem.controller;
 
 import com.transport.university.universitytransportsystem.model.BusReport;
 import com.transport.university.universitytransportsystem.service.BusReportServices;
+import com.transport.university.universitytransportsystem.validation.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
@@ -16,32 +19,24 @@ public class BusReportController {
     @Autowired
     private BusReportServices busReportServices;
 
-    @GetMapping("/getAll")
-    public List<BusReport> getAllBusReport() {
-        return busReportServices.getAllBusReport();
-    }
+    @Autowired
+    private MapValidationErrorService errorService;
 
     @PostMapping("/DRIVER/add")
-    public BusReport addBusReport(@RequestBody BusReport busReport) {
-        return busReportServices.addBusReport(busReport);
+    public ResponseEntity<?> addOrUpdate(@Valid @RequestBody BusReport busReport, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+        return new ResponseEntity<>(busReportServices.saveOrUpdate(busReport), HttpStatus.CREATED);
     }
 
-    @GetMapping("/getByBusId/{busId}")
-    public List<BusReport> getBusReportByBusId(@PathVariable("busId") Integer busId) {
-        return busReportServices.getBusReportByBusId(busId);
+    @GetMapping("/DRIVER/{reportId}")
+    public BusReport get(@PathVariable("reportId") Long reportId) {
+        return busReportServices.get(reportId);
     }
 
-    @PostMapping("/getByDateInterval")
-    public List<BusReport> getBusReportsByDate(@RequestBody List<Date> dates) {
-        if (dates == null || dates.size() != 2) return null;
-        Date startDate = dates.get(0);
-        Date endDate = dates.get(1);
-        if (startDate.compareTo(endDate) == 1) return null;
-        return busReportServices.getBusReportsByDateInterval(startDate, endDate);
-    }
-
-    @DeleteMapping("/delete/{reportId}")
-    public void deleteReportById(@PathVariable("reportId") Long reportId) {
-        busReportServices.deleteByBusReportId(reportId);
+    @DeleteMapping("/{reportId}")
+    public ResponseEntity<?> delete(@PathVariable("reportId") Long reportId) {
+        busReportServices.delete(reportId);
+        return new  ResponseEntity<>("Bus Report with ID: " + reportId + " was deleted", HttpStatus.OK);
     }
 }

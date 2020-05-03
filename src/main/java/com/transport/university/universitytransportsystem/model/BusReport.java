@@ -3,7 +3,8 @@ package com.transport.university.universitytransportsystem.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter
@@ -11,21 +12,18 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class BusReport implements Serializable {
+public class BusReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long busReportId;
 
+    @NotNull(message = "Date is required")
     private Date date;
 
+    @NotBlank(message = "Report can not be empty")
     private String report;
 
-    @OneToOne
-    @JoinColumn(name = "bus_id", referencedColumnName = "busId", nullable = false)
-    private Bus bus;
-
-    @OneToOne
-    @JoinColumn(name = "driver_id", referencedColumnName = "driverId", nullable = false)
-    private Driver driver;
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean solved;
 }

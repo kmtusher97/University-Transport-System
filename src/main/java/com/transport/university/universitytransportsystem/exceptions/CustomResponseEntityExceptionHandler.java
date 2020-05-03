@@ -4,6 +4,8 @@ import com.transport.university.universitytransportsystem.exceptions.bus.BusIdEx
 import com.transport.university.universitytransportsystem.exceptions.bus.BusIdExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusNumberException;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusNumberExceptionResponse;
+import com.transport.university.universitytransportsystem.exceptions.busReport.BusReportIdException;
+import com.transport.university.universitytransportsystem.exceptions.busReport.BusReportIdExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.driver.DriverIdException;
 import com.transport.university.universitytransportsystem.exceptions.driver.DriverIdExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.route.DuplicateRouteException;
@@ -73,6 +75,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler
     public final ResponseEntity<Object> handleStuffIdException(StuffIdException ex, WebRequest request) {
         StuffIdExceptionResponse exceptionResponse = new StuffIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleBusReportIdException(BusReportIdException ex, WebRequest request) {
+        BusReportIdExceptionResponse exceptionResponse = new BusReportIdExceptionResponse(ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }
