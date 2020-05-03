@@ -4,10 +4,16 @@ import com.transport.university.universitytransportsystem.exceptions.bus.BusIdEx
 import com.transport.university.universitytransportsystem.exceptions.bus.BusIdExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusNumberException;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusNumberExceptionResponse;
+import com.transport.university.universitytransportsystem.exceptions.driver.DriverIdException;
+import com.transport.university.universitytransportsystem.exceptions.driver.DriverIdExceptionResponse;
+import com.transport.university.universitytransportsystem.exceptions.route.RouteIdException;
+import com.transport.university.universitytransportsystem.exceptions.route.RouteIdExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.schedule.ScheduleIdException;
 import com.transport.university.universitytransportsystem.exceptions.schedule.ScheduleIdExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.stoppage.StoppageIdentifierException;
 import com.transport.university.universitytransportsystem.exceptions.stoppage.StoppageIdentifierExceptionResponse;
+import com.transport.university.universitytransportsystem.exceptions.stuff.StuffIdException;
+import com.transport.university.universitytransportsystem.exceptions.stuff.StuffIdExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,8 +45,26 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler
-    public final  ResponseEntity<Object> handleScheduleNumberException(ScheduleIdException ex, WebRequest request) {
+    public final ResponseEntity<Object> handleRouteIdException(RouteIdException ex, WebRequest request) {
+        RouteIdExceptionResponse exceptionResponse = new RouteIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleScheduleIdException(ScheduleIdException ex, WebRequest request) {
         ScheduleIdExceptionResponse exceptionResponse = new ScheduleIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleDriverIdException(DriverIdException ex, WebRequest request) {
+        DriverIdExceptionResponse exceptionResponse = new DriverIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleStuffIdException(StuffIdException ex, WebRequest request) {
+        StuffIdExceptionResponse exceptionResponse = new StuffIdExceptionResponse(ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }
