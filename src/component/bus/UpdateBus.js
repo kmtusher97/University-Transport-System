@@ -1,19 +1,12 @@
-import React, { Component } from 'react';
-import {
-  Container,
-  Form,
-  Row,
-  Col,
-  Button
-} from 'react-bootstrap';
-
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { addBus } from "../../actions/BusActions";
-
+import React, { Component } from 'react'
+import { Container, Form, Col, Button, Row } from 'react-bootstrap';
 import classnames from "classnames";
+import { connect } from 'react-redux';
+import PropTypes from "prop-types";
+import { getBus, addBus } from "../../actions/BusActions"
 
-class AddBus extends Component {
+
+class UpdateBus extends Component {
   constructor() {
     super();
     this.state = {
@@ -28,11 +21,31 @@ class AddBus extends Component {
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
 
-  //life cycle hooks
+
+  componentDidMount = () => {
+    const { busId } = this.props.match.params;
+    this.props.getBus(busId, this.props.history);
+  };
+
   componentWillReceiveProps = nextProps => {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
+    const {
+      busId,
+      number,
+      oilTankCapacity,
+      gasCylinderCapacity,
+      isAvailable
+    } = nextProps.bus;
+
+    this.setState({
+      busId,
+      number,
+      oilTankCapacity,
+      gasCylinderCapacity,
+      isAvailable
+    });
   };
 
   onChangeHandler = event => {
@@ -41,14 +54,14 @@ class AddBus extends Component {
 
   onSubmitHandler = event => {
     event.preventDefault();
-    const newBus = {
+    const editedBus = {
       busId: this.state.busId,
       number: this.state.number,
       oilTankCapacity: this.state.oilTankCapacity,
       gasCylinderCapacity: this.state.gasCylinderCapacity,
       isAvailable: this.state.isAvailable
     };
-    this.props.addBus(newBus, "add", this.props.history);
+    this.props.addBus(editedBus, "update", this.props.history);
   };
 
   render() {
@@ -58,7 +71,7 @@ class AddBus extends Component {
       <Container style={{ padding: "5px" }}>
         <Form onSubmit={this.onSubmitHandler}>
           <Row style={{ padding: "15px" }}>
-            <strong>Add new bus</strong>
+            <strong>Edit </strong>
           </Row>
           <Row>
             <Col md={8}>
@@ -172,12 +185,16 @@ class AddBus extends Component {
   }
 }
 
-
-AddBus.propTypes = {
-  addBus: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+UpdateBus.propTypes = {
+  errors: PropTypes.object.isRequired,
+  bus: PropTypes.object.isRequired,
+  getBus: PropTypes.func.isRequired,
+  addBus: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({ errors: state.errors });
+const mapStateToProps = state => ({
+  errors: state.errors,
+  bus: state.bus.bus
+});
 
-export default connect(mapStateToProps, { addBus })(AddBus);
+export default connect(mapStateToProps, { getBus, addBus })(UpdateBus);

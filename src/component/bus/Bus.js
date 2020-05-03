@@ -9,6 +9,9 @@ import BusTopMenuBar from "./BusTopMenuBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getAllBuses } from "../../actions/BusActions";
 
 class Bus extends Component {
   constructor() {
@@ -27,47 +30,31 @@ class Bus extends Component {
   }
 
   componentDidMount = () => {
-    let url = `${Appdata.restApiBaseUrl}/bus/all`;
-    Axios.get(url)
-      .then(response => response.data)
-      .then(data => {
-        this.setState({
-          busList: data
-        });
-        if (
-          this.state.pageNo <= 0 ||
-          this.state.pageNo * 30 - this.state.busList.length > 30
-        ) {
-          this.setState({
-            busList: []
-          });
-        }
-      });
-
+    this.props.getAllBuses();
   };
 
   deleteBus = busId => {
-    let url = `${Appdata.restApiBaseUrl}/bus/deleteById/${busId}`;
-    Axios.delete(url, null)
-      .then(response => response.data)
-      .then(data => {
-        url = `${Appdata.restApiBaseUrl}/bus/all`;
-        Axios.get(url)
-          .then(response => response.data)
-          .then(data => {
-            this.setState({
-              busList: data
-            });
-            if (
-              this.state.pageNo <= 0 ||
-              this.state.pageNo * 30 - this.state.busList.length > 30
-            ) {
-              this.setState({
-                busList: []
-              });
-            }
-          });
-      });
+    // let url = `${Appdata.restApiBaseUrl}/bus/deleteById/${busId}`;
+    // Axios.delete(url, null)
+    //   .then(response => response.data)
+    //   .then(data => {
+    //     url = `${Appdata.restApiBaseUrl}/bus/all`;
+    //     Axios.get(url)
+    //       .then(response => response.data)
+    //       .then(data => {
+    //         this.setState({
+    //           busList: data
+    //         });
+    //         if (
+    //           this.state.pageNo <= 0 ||
+    //           this.state.pageNo * 30 - bus.buses.length > 30
+    //         ) {
+    //           this.setState({
+    //             busList: []
+    //           });
+    //         }
+    //       });
+    //   });
   };
 
   render() {
@@ -75,13 +62,15 @@ class Bus extends Component {
     const upperBound = this.state.pageNo * rowsPerPage;
     const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
 
+    const { bus } = this.props;
+
     return (
       <Row>
         <BusTopMenuBar
           data={{
             pageNo: this.state.pageNo,
-            pageCount: parseInt(this.state.busList.length / rowsPerPage) +
-              (this.state.busList.length % rowsPerPage > 0 ? 1 : 0)
+            pageCount: parseInt(bus.buses.length / rowsPerPage) +
+              (bus.buses.length % rowsPerPage > 0 ? 1 : 0)
           }}
         />
         <Col md={12} style={{ paddingTop: "10px" }}>
@@ -89,36 +78,24 @@ class Bus extends Component {
             <thead style={{ textAlign: "center", fontSize: "12px" }}>
               <tr>
                 <th>SL</th>
-                <th>Bus Id</th>
                 <th>Number</th>
                 <th>Oil Tank Capacity</th>
-                <th>Oil in Tank</th>
                 <th>Gas Cylinder Capacity</th>
-                <th>Gas in Cylinder</th>
                 <th>Is Available</th>
                 <th colSpan={2}>Action</th>
               </tr>
             </thead>
             <tbody style={{ textAlign: "center" }}>
-              {this.state.busList.map((bus, idx) => (
+              {bus.buses.map((bus, idx) => (
                 (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
                   <tr key={idx}>
                     <td>{idx + 1}</td>
-                    <td>{bus.busId}</td>
                     <td>{bus.number}</td>
                     <td>{bus.oilTankCapacity}</td>
-                    <td>{bus.oilInTank}</td>
                     <td>{bus.gasCylinderCapacity}</td>
-                    <td>{bus.gasInCylinder}</td>
                     <td>{bus.isAvailable === true ? "YES" : "NO"}</td>
                     <td>
-                      <Link
-                        to={{
-                          pathname: "/bus/edit/" + bus.busId,
-                          busId: bus.busId,
-                          returnLink: window.location.pathname
-                        }}
-                      >
+                      <Link to={"/bus/edit/" + bus.busId}>
                         <Button
                           size="sm"
                           variant="outline-success"
@@ -147,4 +124,11 @@ class Bus extends Component {
   }
 }
 
-export default Bus;
+Bus.protoType = {
+  bus: PropTypes.object.isRequired,
+  getAllBuses: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({ bus: state.bus });
+
+export default connect(mapStateToProps, { getAllBuses })(Bus);

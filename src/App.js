@@ -7,14 +7,15 @@ import { Row, Col } from "react-bootstrap";
 /**Componnts */
 import SideNavbar from "./component/SideNavbar";
 import Schedule from "./component/schedule/Schedule";
-import Bus from "./component/bus/Bus";
-import BusRoute from "./component/route/BusRoute";
 import AddSchedule from "./component/schedule/AddSchedule";
+import Bus from "./component/bus/Bus";
 import AddBus from "./component/bus/AddBus";
+import BusRoute from "./component/route/BusRoute";
 import AddBusRoute from "./component/route/AddBusRoute";
 import Stoppage from "./component/stoppage/Stoppage";
 import AddStoppage from "./component/stoppage/AddStoppage";
 import UpdateStoppage from "./component/stoppage/UpdateStoppage";
+import UpdateBus from "./component/bus/UpdateBus";
 
 /**Redux */
 import { Provider } from "react-redux";
@@ -58,7 +59,7 @@ function App() {
                 <Route exact path="/bus" component={Bus} />
                 <Route exact path="/bus/page/:pageNo" component={Bus} />
                 <Route exact path="/bus/add" component={AddBus} />
-                <Route exact path="/bus/edit/:busId" component={AddBus} />
+                <Route exact path="/bus/edit/:busId" component={UpdateBus} />
                 {
                   // routes for busRoute
                 }
