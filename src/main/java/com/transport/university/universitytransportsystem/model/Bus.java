@@ -28,7 +28,7 @@ public class Bus {
     @NotNull(message = "Oil Tank Capacity is required")
     private Double oilTankCapacity;
 
-    @NotNull(message = "Oil Tank Capacity is required")
+    @NotNull(message = "Gas Cylinder Capacity is required")
     private Double gasCylinderCapacity;
 
     @Column(columnDefinition = "boolean default false")
