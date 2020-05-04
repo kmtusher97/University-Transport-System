@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"routeDetail", "schedules"})
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "routeDetail", "schedules"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "schedules"})
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
