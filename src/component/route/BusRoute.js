@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { Table, Col, Row, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import AppData from "../AppData";
-import Axios from "axios";
 import BusRouteTopMenuBar from "./BusRouteTopMenuBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getBusRoutes } from "../../actions/BusRouteActions";
+import { getBusRoutes, deleteBusRoute } from "../../actions/BusRouteActions";
 
 class BusRoute extends Component {
   constructor() {
@@ -43,20 +41,7 @@ class BusRoute extends Component {
   };
 
   deleteRouteHandler = routeId => {
-    let url = `${AppData.restApiBaseUrl}/route/delete/${routeId}`;
-    Axios.delete(url, null)
-      .then(response => response.data)
-      .then(data => {
-        url = `${AppData.restApiBaseUrl}/route/GLOBAL/getAll`;
-        Axios.get(url)
-          .then(response => response.data)
-          .then(data => {
-            this.setState({
-              routeList: data
-            });
-          });
-
-      });
+    this.props.deleteBusRoute(routeId, this.props.history);
   };
 
   render() {
@@ -132,9 +117,10 @@ class BusRoute extends Component {
 
 BusRoute.propTypes = {
   busRoute: PropTypes.object.isRequired,
-  getBusRoutes: PropTypes.func.isRequired
+  getBusRoutes: PropTypes.func.isRequired,
+  deleteBusRoute: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({ busRoute: state.busRoute });
 
-export default connect(mapStateToProps, { getBusRoutes })(BusRoute);
+export default connect(mapStateToProps, { getBusRoutes, deleteBusRoute })(BusRoute);

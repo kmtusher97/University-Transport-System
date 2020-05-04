@@ -40,13 +40,17 @@ export const getBusRoute = (routeId, history) => async dispatch => {
 };
 
 export const deleteBusRoute = (routeId, history) => async dispatch => {
-  try {
-    await Axios.delete(`/api/route/${routeId}`);
-    dispatch({
-      type: DELETE_BUSROUTE,
-      payload: routeId
-    });
-  } catch (err) {
-    history.push("/route");
+  if (
+    window.confirm("Are you sure?")
+  ) {
+    try {
+      await Axios.delete(`/api/route/${routeId}`);
+      dispatch({
+        type: DELETE_BUSROUTE,
+        payload: routeId
+      });
+    } catch (err) {
+      history.push("/route");
+    }
   }
 };
