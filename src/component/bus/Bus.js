@@ -10,6 +10,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getAllBuses, deleteBus } from "../../actions/BusActions";
 
+const busNotAvailableStyle = {
+  backgroundColor: "#ebc6c6"
+};
+
 class Bus extends Component {
   constructor() {
     super();
@@ -65,7 +69,7 @@ class Bus extends Component {
             <tbody style={{ textAlign: "center" }}>
               {bus.buses.map((bus, idx) => (
                 (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
-                  <tr key={idx}>
+                  <tr key={idx} style={bus.isAvailable === false ? busNotAvailableStyle : null}>
                     <td>{idx + 1}</td>
                     <td>{bus.number}</td>
                     <td>{bus.oilTankCapacity}</td>
