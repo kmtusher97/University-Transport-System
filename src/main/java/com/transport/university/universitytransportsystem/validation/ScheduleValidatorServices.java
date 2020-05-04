@@ -44,7 +44,7 @@ public class ScheduleValidatorServices {
         }
         if (schedule.getStuff() != null && (schedule.getStuff().getStuffId() == null ||
                 !stuffServices.getStuffById(schedule.getStuff().getStuffId()).equals(schedule.getStuff()))) {
-            errorMap.put("stuff1", "Invalid Stuff1");
+            errorMap.put("stuff", "Invalid Stuff");
         }
         if (errorMap.size() == 0) return null;
         return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);

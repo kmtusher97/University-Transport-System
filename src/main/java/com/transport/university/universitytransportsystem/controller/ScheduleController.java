@@ -42,12 +42,12 @@ public class ScheduleController {
         return new ResponseEntity<>("Schedule with ID: " + id + " was deleted", HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/GLOBAL/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(scheduleServices.get(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/GLOBAL/all")
     public List<Schedule> getAll() {
         return scheduleServices.getAll();
     }
