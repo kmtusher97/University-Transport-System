@@ -10,12 +10,13 @@ import Schedule from "./component/schedule/Schedule";
 import AddSchedule from "./component/schedule/AddSchedule";
 import Bus from "./component/bus/Bus";
 import AddBus from "./component/bus/AddBus";
+import UpdateBus from "./component/bus/UpdateBus";
 import BusRoute from "./component/route/BusRoute";
 import AddBusRoute from "./component/route/AddBusRoute";
+import UpdateBusRoute from "./component/route/UpdateBusRoute";
 import Stoppage from "./component/stoppage/Stoppage";
 import AddStoppage from "./component/stoppage/AddStoppage";
 import UpdateStoppage from "./component/stoppage/UpdateStoppage";
-import UpdateBus from "./component/bus/UpdateBus";
 
 /**Redux */
 import { Provider } from "react-redux";
@@ -66,7 +67,7 @@ function App() {
                 <Route exact path="/route" component={BusRoute} />
                 <Route exact path="/route/page/:pageNo" component={BusRoute} />
                 <Route exact path="/route/add" component={AddBusRoute} />
-                <Route exact path="/route/edit/:routeId" component={AddBusRoute} />
+                <Route exact path="/route/edit/:routeId" component={UpdateBusRoute} />
                 {
                   // routes for stoppage
                 }
