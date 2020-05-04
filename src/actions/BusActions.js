@@ -19,9 +19,23 @@ export const addBus = (bus, reqType, history) => async dispatch => {
 
 export const getAllBuses = () => async dispatch => {
   const res = await Axios.get(`/api/bus/all`);
+  let buses = [];
+  for (let i = 0; i < res.data.length; i++) {
+    let bus = res.data[i];
+    let tmpbus = {
+      busId: bus.busId,
+      number: bus.number,
+      oilTankCapacity: bus.oilTankCapacity,
+      gasCylinderCapacity: bus.gasCylinderCapacity,
+      isAvailable: bus.isAvailable,
+      schedules: await Axios.get(`api/bus/GLOBAL/schedule/${bus.busId}`),
+      busReports: []
+    };
+    buses.push(tmpbus);
+  }
   dispatch({
     type: GET_BUSES,
-    payload: res.data
+    payload: buses
   });
 };
 
