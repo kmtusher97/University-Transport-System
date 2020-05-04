@@ -4,11 +4,15 @@ import StoppageReducer from "./StoppageReducer";
 import BusReducer from "./BusReducer";
 import ScheduleReducer from "./ScheduleReducer";
 import BusRouteReducer from "./BusRouteReducer";
+import DriverReducer from "./DriverReducer";
+import StuffReducer from "./StuffReducer";
 
 export default combineReducers({
   errors: ErrorReducer,
   stoppage: StoppageReducer,
   bus: BusReducer,
   busRoute: BusRouteReducer,
-  schedule: ScheduleReducer
+  schedule: ScheduleReducer,
+  driver: DriverReducer,
+  stuff: StuffReducer
 });

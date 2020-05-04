@@ -9,6 +9,7 @@ export const DELETE_STOPPAGE = "DELETE_STOPPAGE";
 export const GET_BUSES = "GET_BUSES";
 export const GET_BUS = "GET_BUS";
 export const DELETE_BUS = "DELETE_BUS";
+export const GET_AVAILABLE_BUSES = "GET_AVAILABLE_BUSES"
 
 // Schedule Services
 export const GET_SCHEDULE = "GET_SCHEDULE";
@@ -19,3 +20,11 @@ export const DELETE_SCHEDULE = "DELETE_SCHEDULE";
 export const GET_BUSROUTE = "GET_BUSROUTE";
 export const GET_BUSROUTES = "GET_BUSROUTES";
 export const DELETE_BUSROUTE = "DELETE_BUSROUTE";
+
+// Driver Services
+export const GET_DRIVER = "GET_DRIVER";
+export const GET_DRIVERS_INSERVICE = "GET_DRIVERS_INSERVICE";
+
+// Stuff Services
+export const GET_STUFF = "GET_STUFF";
+export const GET_STUFFS_INSERVICE = "GET_STUFFS_INSERVICE";

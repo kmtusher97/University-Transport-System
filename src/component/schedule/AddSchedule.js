@@ -1,97 +1,40 @@
 import React, { Component } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 
-import AppData from "../AppData";
-import Axios from "axios";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createSchedule } from "../../actions/ScheduleActions";
+import { getAllAvailableBuses } from "../../actions/BusActions";
+import { getBusRoutes } from "../../actions/BusRouteActions";
+import { getAllDriversInservice } from "../../actions/DriverActions";
+import { getAllStuffsInservice } from "../../actions/StuffActions";
+
+import classnames from "classnames";
+
 
 class AddSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      routeList: [],
-      busList: [],
-      driverList: [],
-      stuffList: [],
-      assignment: {
-        assignmentId: null,
-        date: null,
-        departureTime: null,
-        duration: null,
-        bus: {
-          busId: null
-        },
-        driver: {
-          driverId: null
-        },
-        stuff1: null,
-        stuff2: null,
-        route: {
-          routeId: null
-        }
-      },
-      pathComponents: null,
-      returnLocation: (
-        this.props.location.returnLocation === null ||
-        this.props.location.returnLocation === undefined
-      ) ? "/" : this.props.location.returnLocation
+      scheduleId: "",
+      date: "",
+      isComplete: false,
+      bus: "",
+      route: "",
+      driver: "",
+      stuff: "",
+      errors: {}
     };
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.onChangeSelectorHandler = this.onChangeSelectorHandler.bind(this);
+    this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
 
   componentDidMount = () => {
-    let url = `${AppData.restApiBaseUrl}/route//GLOBAL/getAll`;
-    Axios.get(url)
-      .then(response => response.data)
-      .then(data => {
-        this.setState({
-          routeList: data
-        });
-
-        url = `${AppData.restApiBaseUrl}/bus/all`;
-        Axios.get(url)
-          .then(response => response.data)
-          .then(data => {
-            this.setState({
-              busList: data
-            });
-            url = `${AppData.restApiBaseUrl}/driver/inService/all`;
-            Axios.get(url)
-              .then(response => response.data)
-              .then(data => {
-                this.setState({
-                  driverList: data
-                });
-                url = `${AppData.restApiBaseUrl}/stuff/inService/all`;
-                Axios.get(url)
-                  .then(response => response.data)
-                  .then(data => {
-                    this.setState({
-                      stuffList: data
-                    });
-
-                    this.setState({
-                      pathComponents: window.location.pathname.split("/")
-                    });
-
-                    if (
-                      this.state.pathComponents[2] === "edit" &&
-                      this.state.pathComponents[3] !== undefined &&
-                      this.state.pathComponents[3] !== null
-                    ) {
-                      url = `${AppData.restApiBaseUrl}/schedule/getById/${this.state.pathComponents[3]}`;
-                      Axios.get(url)
-                        .then(response => response.data)
-                        .then(data => {
-                          if (data !== null && data !== undefined) {
-                            this.setState({
-                              assignment: data
-                            });
-                          }
-                        });
-                    }
-                  });
-              });
-          });
-      });
+    this.props.getAllAvailableBuses();
+    this.props.getBusRoutes();
+    this.props.getAllDriversInservice();
+    this.props.getAllStuffsInservice();
   };
 
   showRoute = stoppageList => {
@@ -104,187 +47,87 @@ class AddSchedule extends Component {
     return routeString;
   };
 
-  onChangeHandlerDate = event => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.date = event.target.value;
-    this.setState({
-      assignment: tmpAssgnment
-    });
+  onChangeHandler = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
-  onChangeHandlerDepartureTime = event => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.departureTime = String(event.target.value) + ":00";
-    this.setState({
-      assignment: tmpAssgnment
-    });
-  };
-
-  onChangeHandlerRoute = event => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.route = { routeId: event.target.value };
-    this.setState({
-      assignment: tmpAssgnment
-    });
-  };
-
-  onChangeHandlerBus = event => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.bus.busId = event.target.value;
-    this.setState({
-      assignment: tmpAssgnment
-    });
-  };
-
-  onChangeHandlerDriver = event => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.driver.driverId = event.target.value;
-    this.setState({
-      assignment: tmpAssgnment
-    });
-  };
-
-  onChangeHandlerStuff1 = event => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.stuff1 = { stuffId: event.target.value };
-    this.setState({
-      assignment: tmpAssgnment
-    });
-  };
-
-  onChangeHandlerStuff2 = event => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.stuff2 = { stuffId: event.target.value };
-    this.setState({
-      assignment: tmpAssgnment
-    });
-  };
-
-  checkForm = () => {
-    let tmpAssgnment = this.state.assignment;
-    tmpAssgnment.duration = "01:00:00";
-    this.setState({
-      assignment: tmpAssgnment
-    });
-    if (this.state.assignment.date === null) {
-      alert("Select Date!!!");
-      return false;
+  onChangeSelectorHandler = (event, listName, fieldName) => {
+    if (parseInt(event.target.value) !== -1) {
+      this.setState({
+        [event.target.name]: this.props[listName].find(
+          element => (element[fieldName] === parseInt(event.target.value))
+        )
+      });
+    } else {
+      let tmp = { [fieldName]: "-1" };
+      this.setState({ [event.target.name]: tmp });
     }
-    if (this.state.assignment.departureTime === null) {
-      alert("Select Departure Time!!!");
-      return false;
-    }
-    if (this.state.assignment.route.routeId === null) {
-      alert("Select Route!!!");
-      return false;
-    }
-    if (this.state.assignment.bus.busId === null) {
-      alert("Select Bus!!!");
-      return false;
-    }
-    if (this.state.assignment.driver.driverId === null) {
-      alert("Select Driver!!!");
-      return false;
-    }
-    return true;
   };
 
-  addSchedule = event => {
+  onSubmitHandler = event => {
     event.preventDefault();
-    if (this.checkForm()) {
-      if (this.state.pathComponents[2] === "add") {
-        let url = `${AppData.restApiBaseUrl}/schedule/add`;
-        Axios.post(url, this.state.assignment)
-          .then(response => response.data)
-          .then(data => {
-            if (data === null) {
-              alert("Error!!!! Failed to add.");
-            } else {
-              window.location.replace("/schedule");
-            }
-          });
-      } else if (this.state.pathComponents[2] === "edit") {
-        let url = `${AppData.restApiBaseUrl}/schedule/update`;
-        Axios.post(url, this.state.assignment)
-          .then(response => response.data)
-          .then(data => {
-            if (data === null) {
-              alert("Error!!!! Failed to edit.");
-            } else {
-              window.location.replace(this.state.returnLocation);
-            }
-          });
-      }
-    }
-  };
-
-  getDateForInout = tmpDate => {
-    let date = new Date(tmpDate);
-    return String(
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1 < 10 ? "0" : "") +
-      (date.getMonth() + 1) +
-      "-" +
-      (date.getDate() < 10 ? "0" : "") +
-      date.getDate()
-    );
+    const newSchedule = {
+      scheduleId: this.state.scheduleId,
+      date: this.state.date,
+      isComplete: this.state.isComplete,
+      bus: this.state.bus,
+      route: this.state.route,
+      driver: this.state.driver,
+      stuff: this.state.stuff === "" ? undefined : this.state.stuff
+    };
+    this.props.createSchedule(newSchedule, this.props.history);
   };
 
   render() {
+    const { errors } = this.props;
+
     return (
       <Container style={{ paddingTop: "10px" }}>
-        <Form>
+        <Form onSubmit={this.onSubmitHandler}>
           <Row>
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Date</Form.Label>
-                <Form.Control
-                  type="date"
-                  required
-                  value={
-                    this.state.assignment.date !== null
-                      ? this.getDateForInout(this.state.assignment.date)
-                      : ""
-                  }
-                  onChange={this.onChangeHandlerDate}
+                <Form.Label>Date and Time</Form.Label>
+                <input
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.date }
+                  )}
+                  name="date"
+                  type="datetime-local"
+                  value={this.state.date}
+                  onChange={this.onChangeHandler}
                 />
+                {errors.date && (
+                  <div className="invalid-feedback">
+                    {errors.date}
+                  </div>
+                )}
               </Form.Group>
             </Col>
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Departure Time</Form.Label>
-                <Form.Control
-                  type="time"
-                  required
-                  value={
-                    this.state.assignment.departureTime !== null
-                      ? this.state.assignment.departureTime
-                      : ""
-                  }
-                  onChange={this.onChangeHandlerDepartureTime}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
+            <Col md={8}>
               <Form.Group>
                 <Form.Label>Route</Form.Label>
                 <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": (errors.route || errors.routeId) }
+                  )}
                   as="select"
-                  custom
-                  required
-                  value={
-                    this.state.assignment.route.routeId !== null
-                      ? this.state.assignment.route.routeId
-                      : ""
+                  name="route"
+                  value={this.state.route.routeId}
+                  onChange={
+                    (event) => this.onChangeSelectorHandler(event, "routes", "routeId")
                   }
-                  onChange={this.onChangeHandlerRoute}
                   style={{ fontSize: "12px" }}
                 >
-                  <option style={{ fontSize: "12px" }}>Select Route</option>
-                  {this.state.routeList.map((route, idx) => (
+                  <option
+                    value={-1}
+                    style={{ fontSize: "12px" }}
+                  >
+                    Select Route
+                  </option>
+                  {this.props.routes.map((route, idx) => (
                     <option
                       key={idx}
                       value={route.routeId}
@@ -297,140 +140,130 @@ class AddSchedule extends Component {
                     </option>
                   ))}
                 </Form.Control>
+                {(errors.route || errors.routeId) && (
+                  <div className="invalid-feedback">
+                    {(errors.route || errors.routeId)}
+                  </div>
+                )}
               </Form.Group>
             </Col>
           </Row>
           <Row>
-            <Col md={6}>
+            <Col md={4}>
               <Form.Group>
                 <Form.Label>Bus</Form.Label>
                 <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": (errors.bus || errors.busId) }
+                  )}
                   as="select"
-                  custom
-                  required
-                  value={
-                    this.state.assignment.bus.busId !== null
-                      ? this.state.assignment.bus.busId
-                      : ""
+                  name="bus"
+                  value={this.state.bus.busId}
+                  onChange={
+                    (event) => this.onChangeSelectorHandler(event, "availableBuses", "busId")
                   }
-                  onChange={this.onChangeHandlerBus}
                   style={{ fontSize: "12px" }}
                 >
-                  <option style={{ fontSize: "12px" }}>Select Bus</option>
-                  {this.state.busList.map((bus, idx) => (
+                  <option
+                    value={-1}
+                    style={{ fontSize: "12px" }}
+                  >
+                    Select Bus
+                  </option>
+                  {this.props.availableBuses.map((bus, idx) => (
                     <option
                       key={idx}
                       value={bus.busId}
                       style={{ fontSize: "12px" }}
                     >
-                      {"Bus " + bus.busId + ": " + bus.number}
+                      {"BusId: " + bus.busId + ", Number: " + bus.number}
                     </option>
                   ))}
                 </Form.Control>
+                {(errors.bus || errors.busId) && (
+                  <div className="invalid-feedback">
+                    {(errors.bus || errors.busId)}
+                  </div>
+                )}
               </Form.Group>
             </Col>
-
-            <Col md={6}>
+            <Col md={4}>
               <Form.Group>
                 <Form.Label>Driver</Form.Label>
                 <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": (errors.driver || errors.driverId) }
+                  )}
                   as="select"
-                  custom
-                  required
-                  value={
-                    this.state.assignment.driver.driverId !== null
-                      ? this.state.assignment.driver.driverId
-                      : ""
+                  name="driver"
+                  value={this.state.driver.driverId}
+                  onChange={
+                    (event) => this.onChangeSelectorHandler(event, "drivers", "driverId")
                   }
-                  onChange={this.onChangeHandlerDriver}
                   style={{ fontSize: "12px" }}
                 >
-                  <option style={{ fontSize: "12px" }}>Select Driver</option>
-                  {this.state.driverList.map((driver, idx) => (
+                  <option
+                    value={-1}
+                    style={{ fontSize: "12px" }}
+                  >
+                    Select Driver
+                  </option>
+                  {this.props.drivers.map((driver, idx) => (
                     <option
                       key={idx}
                       value={driver.driverId}
                       style={{ fontSize: "12px" }}
                     >
-                      {"Driver " +
-                        driver.driverId +
-                        ": " +
-                        driver.user.firstName +
-                        " " +
-                        driver.user.lastName}
+                      {"DriverId: " + driver.driverId + ", Name: " + driver.user.firstName + " " + driver.user.lastName}
                     </option>
                   ))}
                 </Form.Control>
+                {(errors.driver || errors.driverId) && (
+                  <div className="invalid-feedback">
+                    {(errors.driver || errors.driverId)}
+                  </div>
+                )}
               </Form.Group>
             </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
+            <Col md={4}>
               <Form.Group>
-                <Form.Label>Stuff 1</Form.Label>
+                <Form.Label>Stuff(Optional)</Form.Label>
                 <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": (errors.stuff || errors.stuffId) }
+                  )}
                   as="select"
-                  custom
-                  value={
-                    this.state.assignment.stuff1 !== null
-                      ? this.state.assignment.stuff1.stuffId
-                      : ""
+                  name="stuff"
+                  value={this.state.stuff.stuffId}
+                  onChange={
+                    (event) => this.onChangeSelectorHandler(event, "stuffs", "stuffId")
                   }
-                  onChange={this.onChangeHandlerStuff1}
                   style={{ fontSize: "12px" }}
                 >
-                  <option style={{ fontSize: "12px" }}>
-                    Select Stuff1 (Optional)
+                  <option
+                    value={-1}
+                    style={{ fontSize: "12px" }}
+                  >
+                    Select Stuff
                   </option>
-                  {this.state.stuffList.map((stuff, idx) => (
+                  {this.props.stuffs.map((stuff, idx) => (
                     <option
                       key={idx}
                       value={stuff.stuffId}
                       style={{ fontSize: "12px" }}
                     >
-                      {"Stuff1 " +
-                        stuff.stuffId +
-                        ": " +
-                        stuff.user.firstName +
-                        " " +
-                        stuff.user.lastName}
+                      {"StuffId: " + stuff.stuffId + ", Name: " + stuff.user.firstName + " " + stuff.user.lastName}
                     </option>
                   ))}
                 </Form.Control>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group>
-                <Form.Label>Stuff 2</Form.Label>
-                <Form.Control
-                  as="select"
-                  custom
-                  value={
-                    this.state.assignment.stuff2 !== null
-                      ? this.state.assignment.stuff2.stuffId
-                      : ""
-                  }
-                  onChange={this.onChangeHandlerStuff2}
-                  style={{ fontSize: "12px" }}
-                >
-                  <option style={{ fontSize: "12px" }}>
-                    Select Stuff1 (Optional)
-                  </option>
-                  {this.state.stuffList.map((stuff, idx) => (
-                    <option
-                      key={idx}
-                      value={stuff.stuffId}
-                      style={{ fontSize: "12px" }}
-                    >
-                      {"Stuff2 " +
-                        stuff.stuffId +
-                        ": " +
-                        stuff.user.firstName +
-                        " " +
-                        stuff.user.lastName}
-                    </option>
-                  ))}
-                </Form.Control>
+                {(errors.stuff || errors.stuffId) && (
+                  <div className="invalid-feedback">
+                    {(errors.stuff || errors.stuffId)}
+                  </div>
+                )}
               </Form.Group>
             </Col>
           </Row>
@@ -439,7 +272,6 @@ class AddSchedule extends Component {
               <Button
                 variant="primary"
                 type="submit"
-                onClick={this.addSchedule}
               >
                 Submit
               </Button>
@@ -461,4 +293,30 @@ class AddSchedule extends Component {
   }
 }
 
-export default AddSchedule;
+AddSchedule.propTypes = {
+  errors: PropTypes.object.isRequired,
+  createSchedule: PropTypes.func.isRequired,
+  getAllAvailableBuses: PropTypes.func.isRequired,
+  getBusRoutes: PropTypes.func.isRequired,
+  getAllDriversInservice: PropTypes.func.isRequired,
+  getAllStuffsInservice: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  errors: state.errors,
+  availableBuses: state.bus.availableBuses,
+  routes: state.busRoute.routes,
+  drivers: state.driver.drivers,
+  stuffs: state.stuff.stuffs
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    createSchedule,
+    getAllAvailableBuses,
+    getBusRoutes,
+    getAllDriversInservice,
+    getAllStuffsInservice
+  }
+)(AddSchedule);

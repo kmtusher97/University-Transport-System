@@ -1,5 +1,11 @@
 import Axios from "axios";
-import { GET_ERRORS, GET_BUSES, GET_BUS, DELETE_BUS } from "./types";
+import {
+  GET_ERRORS,
+  GET_BUSES,
+  GET_BUS,
+  DELETE_BUS,
+  GET_AVAILABLE_BUSES
+} from "./types";
 
 export const addBus = (bus, reqType, history) => async dispatch => {
   try {
@@ -65,4 +71,14 @@ export const deleteBus = (busId, history) => async dispatch => {
       history.push("/bus");
     }
   }
+};
+
+export const getAllAvailableBuses = () => async dispatch => {
+  const res = await Axios.get(`/api/bus/all`);
+  let tmpBuses = res.data;
+  tmpBuses = tmpBuses.filter(bus => bus.isAvailable !== false);
+  dispatch({
+    type: GET_AVAILABLE_BUSES,
+    payload: tmpBuses
+  });
 };
