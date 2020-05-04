@@ -7,6 +7,10 @@ import BusRouteTopMenuBar from "./BusRouteTopMenuBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getBusRoutes } from "../../actions/BusRouteActions";
+
 class BusRoute extends Component {
   constructor() {
     super();
@@ -18,21 +22,14 @@ class BusRoute extends Component {
     }
 
     this.state = {
-      routeList: [],
       pageNo: tmpPageNo
     };
+    this.showRoute = this.showRoute.bind(this);
+    this.deleteRouteHandler = this.deleteRouteHandler.bind(this);
   }
 
   componentDidMount = () => {
-    let url = `${AppData.restApiBaseUrl}/route/GLOBAL/getAll`;
-
-    Axios.get(url)
-      .then(response => response.data)
-      .then(data => {
-        this.setState({
-          routeList: data
-        });
-      });
+    this.props.getBusRoutes();
   };
 
   showRoute = stoppageList => {
@@ -45,7 +42,7 @@ class BusRoute extends Component {
     return routeString;
   };
 
-  deleteRoute = routeId => {
+  deleteRouteHandler = routeId => {
     let url = `${AppData.restApiBaseUrl}/route/delete/${routeId}`;
     Axios.delete(url, null)
       .then(response => response.data)
@@ -66,14 +63,15 @@ class BusRoute extends Component {
     const rowsPerPage = 20;
     const upperBound = this.state.pageNo * rowsPerPage;
     const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
+    const { busRoute } = this.props;
 
     return (
       <Row>
         <BusRouteTopMenuBar
           data={{
             pageNo: this.state.pageNo,
-            pageCount: parseInt(this.state.routeList.length / rowsPerPage) +
-              (this.state.routeList.length % rowsPerPage > 0 ? 1 : 0)
+            pageCount: parseInt(busRoute.routes.length / rowsPerPage) +
+              (busRoute.routes.length % rowsPerPage > 0 ? 1 : 0)
           }}
         />
         <Col md={12} style={{ paddingTop: "10px" }}>
@@ -93,7 +91,7 @@ class BusRoute extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.routeList.map((route, idx) => (
+              {busRoute.routes.map((route, idx) => (
                 (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
                   <tr key={idx}>
                     <td>{idx + 1}</td>
@@ -102,13 +100,7 @@ class BusRoute extends Component {
                       {this.showRoute(route.routeDetail)}
                     </td>
                     <td>
-                      <Link
-                        to={{
-                          pathname: "/route/edit/" + route.routeId,
-                          routeId: route.routeId,
-                          returnLink: window.location.pathname
-                        }}
-                      >
+                      <Link to={"/route/edit/" + route.routeId}>
                         <Button
                           size="sm"
                           variant="outline-success"
@@ -121,7 +113,7 @@ class BusRoute extends Component {
                       <Button
                         size="sm"
                         variant="outline-danger"
-                        onClick={() => this.deleteRoute(route.routeId)}
+                        onClick={() => this.deleteRouteHandler(route.routeId)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
@@ -137,4 +129,12 @@ class BusRoute extends Component {
   }
 }
 
-export default BusRoute;
+
+BusRoute.propTypes = {
+  busRoute: PropTypes.object.isRequired,
+  getBusRoutes: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({ busRoute: state.busRoute });
+
+export default connect(mapStateToProps, { getBusRoutes })(BusRoute);
