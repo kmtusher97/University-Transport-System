@@ -7,86 +7,43 @@ import {
   Button,
   ButtonGroup
 } from 'react-bootstrap';
-import Axios from 'axios';
-import AppData from '../AppData';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { addBusRoute } from '../../actions/BusRouteActions';
+import { getAllStoppages } from '../../actions/StoppageActions';
 
 class AddBusRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stoppageList: [],
-      route: {
-        routeId: this.props.location.routeId,
-        route: "",
-        routeDetail: []
-      },
+      routeId: "",
+      route: "",
+      routeDetail: [],
       stoppageSequence: [],
-      seletedStoppage: 0,
-      formType: ""
+      seletedStoppage: -1,
+      errors: {}
     };
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.addStoppageInRoute = this.addStoppageInRoute.bind(this);
+    this.deleteStoppageFromRoute = this.deleteStoppageFromRoute.bind(this);
+    this.submitFormHandler = this.submitFormHandler.bind(this);
   }
 
   componentDidMount = () => {
-    const pathNameComponents = window.location.pathname.split("/");
-    this.setState({
-      formType: pathNameComponents[2]
-    });
-
-    let url = `${AppData.restApiBaseUrl}/stoppage/GLOBAL/getAll`;
-    Axios.get(url)
-      .then(response => response.data)
-      .then(data => {
-        this.setState({
-          stoppageList: data
-        });
-
-        if (this.state.stoppageList.length > 0) {
-          this.setState({
-            seletedStoppage: this.state.stoppageList[0].stoppageId
-          });
-        }
-
-        if (
-          this.state.route.routeId !== null &&
-          this.state.route.routeId !== undefined
-        ) {
-          let url1 = `${AppData.restApiBaseUrl}/route/GLOBAL/get/${this.state.route.routeId}`;
-          Axios.get(url1)
-            .then(response => response.data)
-            .then(data => {
-              if (data !== null) {
-                let tmpRoute = data.route.split(",");
-                let tmpStoppageSequence = [];
-                tmpRoute.forEach(stoppageId => {
-                  this.state.stoppageList.forEach(stoppage => {
-                    if (stoppage.stoppageId === parseInt(stoppageId)) {
-                      tmpStoppageSequence.push(stoppage);
-                    }
-                  });
-                });
-
-                this.setState({
-                  route: data,
-                  stoppageSequence: tmpStoppageSequence
-                });
-              }
-            });
-        }
-      });
+    this.props.getAllStoppages();
   };
 
   onChangeHandler = event => {
-    this.setState({
-      seletedStoppage: event.target.value
-    });
+    this.setState({ seletedStoppage: event.target.value });
   };
 
-  addStoppageInRoute = event => {
+  addStoppageInRoute = (event, stoppages) => {
     event.preventDefault();
     let tmpStoppageSequence = this.state.stoppageSequence;
-    this.state.stoppageList.forEach(stoppage => {
+    stoppages.forEach(stoppage => {
       if (stoppage.stoppageId === parseInt(this.state.seletedStoppage)) {
         tmpStoppageSequence.push(stoppage);
       }
@@ -122,44 +79,21 @@ class AddBusRoute extends Component {
         tmpRoute += ",";
       }
     }
-    let newRoute = this.state.route;
-    newRoute.route = tmpRoute;
-    this.setState({
-      route: newRoute
-    });
-    let url = "";
-    if (this.state.formType === "add") {
-      url = `${AppData.restApiBaseUrl}/route/add`;
-    }
-    else if (this.state.formType === "edit") {
-      url = `${AppData.restApiBaseUrl}/route/update`;
-    }
-    else {
-      alert("An Unexpected Error Occured!!!");
-      return;
-    }
-    Axios.post(url, this.state.route)
-      .then(response => response.data)
-      .then(data => {
-        if (data === null || data === undefined) {
-          alert("Process Failed!!!");
-        }
-        else {
-          window.location.replace(this.props.location.returnLink);
-        }
-      });
+    const newBusRoute = {
+      routeId: this.state.routeId,
+      route: tmpRoute
+    };
+    this.props.addBusRoute(newBusRoute, this.props.history);
   };
 
   render() {
+    const { stoppage } = this.props;
+
     return (
       <Container style={{ padding: "5px" }}>
-        <Form>
+        <Form onSubmit={this.submitFormHandler}>
           <Row style={{ padding: "5px" }}>
-            <strong>
-              {(this.state.formType === "add")
-                ? "Add New Route"
-                : ("Edit Route " + this.state.route.routeId)}
-            </strong>
+            <strong>{"Add New Route"}</strong>
           </Row>
           <Row style={{ padding: "5px" }}>
             {this.state.stoppageSequence.map((stoppage, idx) => (
@@ -195,9 +129,15 @@ class AddBusRoute extends Component {
                   style={{ fontSize: "12px" }}
                   onChange={this.onChangeHandler}
                 >
-                  {this.state.stoppageList.map((stoppage, idx) => (
+                  <option
+                    style={{ fontSize: "12px" }}
+                    value={-1}
+                  >
+                    {"Select Stoppage"}
+                  </option>
+                  {stoppage.stoppages.map((stoppage, idx) => (
                     <option
-                      key={idx}
+                      key={idx + 1}
                       value={stoppage.stoppageId}
                       style={{ fontSize: "12px" }}
                     >
@@ -211,7 +151,7 @@ class AddBusRoute extends Component {
               <Button
                 size="sm"
                 variant="outline-success"
-                onClick={this.addStoppageInRoute}
+                onClick={(event) => this.addStoppageInRoute(event, stoppage.stoppages)}
               >
                 Add Stoppage
               </Button>
@@ -222,7 +162,6 @@ class AddBusRoute extends Component {
               type="submit"
               size="sm"
               variant="primary"
-              onClick={this.submitFormHandler}
             >
               Submit
             </Button>
@@ -233,4 +172,17 @@ class AddBusRoute extends Component {
   }
 }
 
-export default AddBusRoute;
+AddBusRoute.propTypes = {
+  errors: PropTypes.object.isRequired,
+  addBusRoute: PropTypes.func.isRequired,
+  getAllStoppages: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  errors: state.errors,
+  stoppage: state.stoppage
+});
+
+export default connect(
+  mapStateToProps, { addBusRoute, getAllStoppages }
+)(AddBusRoute);
