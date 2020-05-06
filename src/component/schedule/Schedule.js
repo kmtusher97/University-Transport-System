@@ -41,7 +41,7 @@ class Schedule extends Component {
   };
 
   render() {
-    const rowsPerPage = 30;
+    const rowsPerPage = 25;
     const upperBound = this.state.pageNo * rowsPerPage;
     const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
     const { schedule, busRoute } = this.props;
@@ -56,7 +56,7 @@ class Schedule extends Component {
           }}
         />
         <Row>
-          <Col md={12} ref={this.ref1}>
+          <Col md={12}>
             <Table size="sm" bordered striped hover>
               <thead style={{ textAlign: "center" }}>
                 <tr>
@@ -77,7 +77,7 @@ class Schedule extends Component {
                       style={schedule.isComplete === true ? completedScheduleStyle : null}
                     >
                       <td style={{ textAlign: "center" }}>
-                        {(this.state.pageNo - 1) * 30 + idx + 1}
+                        {idx + 1}
                       </td>
                       <td style={{ textAlign: "center" }}>
                         <ScheduleDateTime date={schedule.date} />

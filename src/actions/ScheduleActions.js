@@ -25,9 +25,11 @@ export const createSchedule = (schedule, history) => async dispatch => {
 
 export const getAllSchedules = () => async dispatch => {
   const res = await Axios.get(`/api/schedule/GLOBAL/all`);
+  let schedules = res.data;
+  schedules.sort(function (a, b) { return new Date(b.date) - new Date(a.date) });
   dispatch({
     type: GET_SCHEDULES,
-    payload: res.data
+    payload: schedules
   });
 };
 

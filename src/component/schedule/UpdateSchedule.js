@@ -350,8 +350,8 @@ class UpdateSchedule extends Component {
                   value={this.state.isComplete ? this.state.isComplete : ""}
                   onChange={this.onChangeHandler}
                 >
-                  <option value={true}>{"Yes"}</option>
                   <option value={false}>{"No"}</option>
+                  <option value={true} >{"Yes"}</option>
                 </Form.Control>
               </Form.Group>
             </Col>

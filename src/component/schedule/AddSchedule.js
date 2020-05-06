@@ -106,7 +106,6 @@ class AddSchedule extends Component {
       driver: this.state.driver ? this.state.driver : {},
       stuff: this.state.stuff ? this.state.stuff : null
     };
-    console.log(newSchedule);
     this.props.createSchedule(newSchedule, this.props.history);
   };
 
