@@ -10,6 +10,12 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getBusRoutes } from "../../actions/BusRouteActions";
 import { getAllSchedules, deleteSchedule } from "../../actions/ScheduleActions";
+import ScheduleDateTime from "./ScheduleDateTime";
+import ShowRoute from "./ShowRoute";
+
+const completedScheduleStyle = {
+  backgroundColor: "#ebc6c6"
+};
 
 class Schedule extends Component {
   constructor() {
@@ -19,33 +25,15 @@ class Schedule extends Component {
     if (pathNameComponents.length === 4) {
       tmpPageNo = parseInt(pathNameComponents[3]);
     }
-
     this.state = {
       pageNo: tmpPageNo
     };
-
-    this.showDate = this.showDate.bind(this);
-    this.showRoute = this.showRoute.bind(this);
     this.deleteScheduleHandler = this.deleteScheduleHandler.bind(this);
   }
 
   componentDidMount = () => {
     this.props.getAllSchedules();
     this.props.getBusRoutes();
-  };
-
-  showDate = dateToParse => {
-    let date = new Date(dateToParse);
-    let dateString = date.toDateString();
-    return dateString;
-  };
-
-  showRoute = route => {
-    if (route === undefined) return "";
-    let stoppageList = route.routeDetail;
-    let routeString = "", sz = stoppageList.length;
-    routeString = "(" + stoppageList[0].stoppageName + ", ....," + stoppageList[sz - 1].stoppageName + ")";
-    return routeString;
   };
 
   deleteScheduleHandler = scheduleId => {
@@ -84,32 +72,38 @@ class Schedule extends Component {
               <tbody>
                 {schedule.schedules.map((schedule, idx) => (
                   (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
-                    <tr key={idx}>
+                    <tr
+                      key={idx}
+                      style={schedule.isComplete === true ? completedScheduleStyle : null}
+                    >
                       <td style={{ textAlign: "center" }}>
                         {(this.state.pageNo - 1) * 30 + idx + 1}
                       </td>
                       <td style={{ textAlign: "center" }}>
-                        {this.showDate(schedule.date)}
+                        <ScheduleDateTime date={schedule.date} />
                       </td>
                       <td style={{ textAlign: "center" }}>
-                        {"RouteNo: " + schedule.route.routeId + " "
-                          + this.showRoute(
-                            busRoute.routes.find(
-                              route => route.routeId === schedule.route.routeId
-                            )
-                          )}
+                        <ShowRoute route={
+                          busRoute.routes.find(
+                            route => route.routeId === schedule.route.routeId
+                          )
+                        } />
                       </td>
                       <td style={{ textAlign: "center" }}>
-                        {"BusId: " + schedule.bus.busId + ", Number: " + schedule.bus.number}
+                        <div>{"BusNo: " + schedule.bus.busId}</div>
+                        <div style={{ fontSize: "11px" }}>{schedule.bus.number}</div>
                       </td>
                       <td style={{ textAlign: "center" }}>
-                        {"DriverId: " + schedule.driver.driverId + ", Name: " +
-                          schedule.driver.user.firstName + " " + schedule.driver.user.lastName}
+                        <div>{"DriverId: " + schedule.driver.driverId}</div>
+                        <div style={{ fontSize: "11px" }}>{"Name: " + schedule.driver.user.firstName + " " + schedule.driver.user.lastName}</div>
                       </td>
                       <td style={{ textAlign: "center" }}>
                         {schedule.stuff ?
-                          ("StuffId: " + schedule.stuff.stuffId + ", Name: " +
-                            schedule.stuff.user.firstName + " " + schedule.stuff.user.lastName) : null
+                          (<div>
+                            <div>{"StuffId: " + schedule.stuff.stuffId}</div>
+                            <div style={{ fontSize: "11px" }}>{"Name: " + schedule.stuff.user.firstName + " " + schedule.stuff.user.lastName}</div>
+                          </div>
+                          ) : null
                         }
                       </td>
                       <td style={{ textAlign: "center" }}>
