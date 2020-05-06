@@ -1,5 +1,10 @@
 import Axios from "axios";
-import { GET_ERRORS, GET_SCHEDULES, GET_SCHEDULE, DELETE_SCHEDULE } from "./types"
+import {
+  GET_ERRORS,
+  GET_SCHEDULES,
+  GET_SCHEDULE,
+  DELETE_SCHEDULE
+} from "./types"
 
 export const createSchedule = (schedule, history) => async dispatch => {
   try {
@@ -9,6 +14,7 @@ export const createSchedule = (schedule, history) => async dispatch => {
       type: GET_ERRORS,
       payload: {}
     });
+
   } catch (err) {
     dispatch({
       type: GET_ERRORS,
@@ -18,7 +24,7 @@ export const createSchedule = (schedule, history) => async dispatch => {
 };
 
 export const getAllSchedules = () => async dispatch => {
-  const res = await Axios.get(`/api/schedule/all`);
+  const res = await Axios.get(`/api/schedule/GLOBAL/all`);
   dispatch({
     type: GET_SCHEDULES,
     payload: res.data
@@ -27,7 +33,7 @@ export const getAllSchedules = () => async dispatch => {
 
 export const getSchedule = (scheduleId, history) => async dispatch => {
   try {
-    const res = await Axios.get(`/api/schedule/${scheduleId}`);
+    const res = await Axios.get(`/api/schedule/GLOBAL/${scheduleId}`);
     dispatch({
       type: GET_SCHEDULE,
       payload: res.data

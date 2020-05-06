@@ -25,6 +25,7 @@ class AddSchedule extends Component {
       stuff: "",
       errors: {}
     };
+    this.showRoute = this.showRoute.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onChangeSelectorHandler = this.onChangeSelectorHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -35,6 +36,12 @@ class AddSchedule extends Component {
     this.props.getBusRoutes();
     this.props.getAllDriversInservice();
     this.props.getAllStuffsInservice();
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   };
 
   showRoute = stoppageList => {
@@ -88,13 +95,13 @@ class AddSchedule extends Component {
             <Col md={4}>
               <Form.Group>
                 <Form.Label>Date and Time</Form.Label>
-                <input
+                <Form.Control
                   className={classnames(
                     "form-control from-control-lg",
                     { "is-invalid": errors.date }
                   )}
                   name="date"
-                  type="datetime-local"
+                  type="date"
                   value={this.state.date}
                   onChange={this.onChangeHandler}
                 />
