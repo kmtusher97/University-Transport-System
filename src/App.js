@@ -8,6 +8,7 @@ import { Row, Col } from "react-bootstrap";
 import SideNavbar from "./component/SideNavbar";
 import Schedule from "./component/schedule/Schedule";
 import AddSchedule from "./component/schedule/AddSchedule";
+import UpdateSchedule from "./component/schedule/UpdateSchedule";
 import Bus from "./component/bus/Bus";
 import AddBus from "./component/bus/AddBus";
 import UpdateBus from "./component/bus/UpdateBus";
@@ -53,7 +54,7 @@ function App() {
                 <Route exact path="/schedule" component={Schedule} />
                 <Route exact path="/schedule/add" component={AddSchedule} />
                 <Route exact path="/schedule/page/:pageNo" component={Schedule} />
-                <Route exact path="/schedule/edit/:scheduleId" component={AddSchedule} />
+                <Route exact path="/schedule/edit/:scheduleId" component={UpdateSchedule} />
                 {
                   // routes for bus
                 }

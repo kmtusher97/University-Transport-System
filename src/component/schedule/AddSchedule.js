@@ -86,7 +86,7 @@ class AddSchedule extends Component {
   };
 
   render() {
-    const { errors } = this.props;
+    const { errors } = this.state;
 
     return (
       <Container style={{ paddingTop: "10px" }}>
