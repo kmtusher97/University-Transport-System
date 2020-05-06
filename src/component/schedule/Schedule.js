@@ -30,8 +30,8 @@ class Schedule extends Component {
   }
 
   componentDidMount = () => {
-    this.props.getBusRoutes();
     this.props.getAllSchedules();
+    this.props.getBusRoutes();
   };
 
   showDate = dateToParse => {
@@ -40,7 +40,9 @@ class Schedule extends Component {
     return dateString;
   };
 
-  showRoute = stoppageList => {
+  showRoute = route => {
+    if (route === undefined) return "";
+    let stoppageList = route.routeDetail;
     let routeString = "", sz = stoppageList.length;
     routeString = "(" + stoppageList[0].stoppageName + ", ....," + stoppageList[sz - 1].stoppageName + ")";
     return routeString;
@@ -54,15 +56,15 @@ class Schedule extends Component {
     const rowsPerPage = 30;
     const upperBound = this.state.pageNo * rowsPerPage;
     const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
-    const { schedules, routes } = this.props;
+    const { schedule, busRoute } = this.props;
 
     return (
       <div>
         <ScheduleTopMenuBar
           data={{
             pageNo: this.state.pageNo,
-            pageCount: parseInt(schedules.length / rowsPerPage) +
-              (schedules.length % rowsPerPage > 0 ? 1 : 0)
+            pageCount: parseInt(schedule.schedules.length / rowsPerPage) +
+              (schedule.schedules.length % rowsPerPage > 0 ? 1 : 0)
           }}
         />
         <Row>
@@ -80,7 +82,7 @@ class Schedule extends Component {
                 </tr>
               </thead>
               <tbody>
-                {schedules.map((schedule, idx) => (
+                {schedule.schedules.map((schedule, idx) => (
                   (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
                     <tr key={idx}>
                       <td style={{ textAlign: "center" }}>
@@ -92,9 +94,9 @@ class Schedule extends Component {
                       <td style={{ textAlign: "center" }}>
                         {"RouteNo: " + schedule.route.routeId + " "
                           + this.showRoute(
-                            routes.find(
+                            busRoute.routes.find(
                               route => route.routeId === schedule.route.routeId
-                            ).routeDetail
+                            )
                           )}
                       </td>
                       <td style={{ textAlign: "center" }}>
@@ -139,16 +141,16 @@ class Schedule extends Component {
 }
 
 Schedule.propTypes = {
-  schedules: PropTypes.array.isRequired,
-  routes: PropTypes.array.isRequired,
+  schedule: PropTypes.object.isRequired,
+  busRoute: PropTypes.object.isRequired,
   getAllSchedules: PropTypes.func.isRequired,
   deleteSchedule: PropTypes.func.isRequired,
   getBusRoutes: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  schedules: state.schedule.schedules,
-  routes: state.busRoute.routes
+  schedule: state.schedule,
+  busRoute: state.busRoute
 });
 
 export default connect(
