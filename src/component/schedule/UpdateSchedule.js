@@ -15,6 +15,7 @@ class UpdateSchedule extends Component {
     this.state = {
       scheduleId: "",
       date: "",
+      time: "",
       isComplete: "",
       bus: {},
       route: {},
@@ -22,6 +23,8 @@ class UpdateSchedule extends Component {
       stuff: {},
       errors: {}
     };
+    this.getDateForInput = this.getDateForInput.bind(this);
+    this.parseTimeString = this.parseTimeString.bind(this);
     this.showRoute = this.showRoute.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onChangeSelectorHandler = this.onChangeSelectorHandler.bind(this);
@@ -50,16 +53,41 @@ class UpdateSchedule extends Component {
       driver,
       stuff
     } = nextProps.schedule;
-
+    let tmpDate = new Date(date);
     this.setState({
       scheduleId,
       date,
+      time: String(
+        (tmpDate.getHours() < 10 ? "0" : "") + tmpDate.getHours() + ":" +
+        (tmpDate.getMinutes() < 10 ? "0" : "") + tmpDate.getMinutes() + ":" +
+        (tmpDate.getSeconds() < 10 ? "0" : "") + tmpDate.getSeconds()),
       isComplete,
       bus,
       route,
       driver,
       stuff
     });
+  };
+
+  getDateForInput = tmpDate => {
+    let date = new Date(tmpDate);
+    return String(
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1 < 10 ? "0" : "") +
+      (date.getMonth() + 1) +
+      "-" +
+      (date.getDate() < 10 ? "0" : "") +
+      date.getDate()
+    );
+  };
+
+  parseTimeString = () => {
+    let timeFormat = this.state.time.split(':');
+    let tmpDate = new Date(this.state.date);
+    tmpDate.setHours(timeFormat[0]);
+    tmpDate.setMinutes(timeFormat[1]);
+    return tmpDate;
   };
 
   showRoute = stoppageList => {
@@ -91,17 +119,16 @@ class UpdateSchedule extends Component {
 
   onSubmitHandler = event => {
     event.preventDefault();
-    const newSchedule = {
+    const editedSchedule = {
       scheduleId: this.state.scheduleId,
-      date: this.state.date,
+      date: this.parseTimeString(),
       isComplete: this.state.isComplete,
-      bus: this.state.bus,
-      route: this.state.route,
-      driver: this.state.driver,
-      stuff: this.state.stuff
+      bus: this.state.bus ? this.state.bus : {},
+      route: this.state.route ? this.state.route : {},
+      driver: this.state.driver ? this.state.driver : {},
+      stuff: this.state.stuff ? this.state.stuff : null
     };
-    console.log(newSchedule);
-    this.props.createSchedule(newSchedule, this.props.history);
+    this.props.createSchedule(editedSchedule, this.props.history);
   };
 
   render() {
@@ -111,9 +138,9 @@ class UpdateSchedule extends Component {
       <Container style={{ paddingTop: "10px" }}>
         <Form onSubmit={this.onSubmitHandler}>
           <Row>
-            <Col md={4}>
+            <Col md={3}>
               <Form.Group>
-                <Form.Label>Date and Time</Form.Label>
+                <Form.Label>Date</Form.Label>
                 <Form.Control
                   className={classnames(
                     "form-control from-control-lg",
@@ -121,7 +148,7 @@ class UpdateSchedule extends Component {
                   )}
                   name="date"
                   type="date"
-                  value={this.state.date}
+                  value={this.state.date ? this.getDateForInput(this.state.date) : ""}
                   onChange={this.onChangeHandler}
                 />
                 {errors.date && (
@@ -131,7 +158,27 @@ class UpdateSchedule extends Component {
                 )}
               </Form.Group>
             </Col>
-            <Col md={8}>
+            <Col md={2}>
+              <Form.Group>
+                <Form.Label>Time</Form.Label>
+                <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.date }
+                  )}
+                  name="time"
+                  type="time"
+                  value={this.state.time ? this.state.time : ""}
+                  onChange={this.onChangeHandler}
+                />
+                {errors.date && (
+                  <div className="invalid-feedback">
+                    {errors.date}
+                  </div>
+                )}
+              </Form.Group>
+            </Col>
+            <Col md={7}>
               <Form.Group>
                 <Form.Label>Route</Form.Label>
                 <Form.Control
@@ -148,7 +195,7 @@ class UpdateSchedule extends Component {
                   style={{ fontSize: "12px" }}
                 >
                   <option
-                    value={""}
+                    value={{}}
                     style={{ fontSize: "12px" }}
                   >
                     Select Route
@@ -171,6 +218,141 @@ class UpdateSchedule extends Component {
                     {(errors.route || errors.routeId)}
                   </div>
                 )}
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Bus</Form.Label>
+                <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": (errors.bus || errors.busId) }
+                  )}
+                  as="select"
+                  name="bus"
+                  value={this.state.bus ? this.state.bus.busId : ""}
+                  onChange={
+                    (event) => this.onChangeSelectorHandler(event, "availableBuses", "busId")
+                  }
+                  style={{ fontSize: "12px" }}
+                >
+                  <option
+                    value={{}}
+                    style={{ fontSize: "12px" }}
+                  >
+                    Select Bus
+                  </option>
+                  {this.props.availableBuses.map((bus, idx) => (
+                    <option
+                      key={idx}
+                      value={bus.busId}
+                      style={{ fontSize: "12px" }}
+                    >
+                      {"BusId: " + bus.busId + ", Number: " + bus.number}
+                    </option>
+                  ))}
+                </Form.Control>
+                {(errors.bus || errors.busId) && (
+                  <div className="invalid-feedback">
+                    {(errors.bus || errors.busId)}
+                  </div>
+                )}
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Driver</Form.Label>
+                <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": (errors.driver || errors.driverId) }
+                  )}
+                  as="select"
+                  name="driver"
+                  value={this.state.driver ? this.state.driver.driverId : ""}
+                  onChange={
+                    (event) => this.onChangeSelectorHandler(event, "drivers", "driverId")
+                  }
+                  style={{ fontSize: "12px" }}
+                >
+                  <option
+                    value={{}}
+                    style={{ fontSize: "12px" }}
+                  >
+                    Select Driver
+                  </option>
+                  {this.props.drivers.map((driver, idx) => (
+                    <option
+                      key={idx}
+                      value={driver.driverId}
+                      style={{ fontSize: "12px" }}
+                    >
+                      {"DriverId: " + driver.driverId + ", Name: " + driver.user.firstName + " " + driver.user.lastName}
+                    </option>
+                  ))}
+                </Form.Control>
+                {(errors.driver || errors.driverId) && (
+                  <div className="invalid-feedback">
+                    {(errors.driver || errors.driverId)}
+                  </div>
+                )}
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Stuff(Optional)</Form.Label>
+                <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": (errors.stuff || errors.stuffId) }
+                  )}
+                  as="select"
+                  name="stuff"
+                  value={this.state.stuff ? this.state.stuff.stuffId : ""}
+                  onChange={
+                    (event) => this.onChangeSelectorHandler(event, "stuffs", "stuffId")
+                  }
+                  style={{ fontSize: "12px" }}
+                >
+                  <option
+                    value={{}}
+                    style={{ fontSize: "12px" }}
+                  >
+                    Select Stuff
+                  </option>
+                  {this.props.stuffs.map((stuff, idx) => (
+                    <option
+                      key={idx}
+                      value={stuff.stuffId}
+                      style={{ fontSize: "12px" }}
+                    >
+                      {"StuffId: " + stuff.stuffId + ", Name: " + stuff.user.firstName + " " + stuff.user.lastName}
+                    </option>
+                  ))}
+                </Form.Control>
+                {(errors.stuff || errors.stuffId) && (
+                  <div className="invalid-feedback">
+                    {(errors.stuff || errors.stuffId)}
+                  </div>
+                )}
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Is Complete?</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="isComplete"
+                  value={this.state.isComplete ? this.state.isComplete : ""}
+                  onChange={this.onChangeHandler}
+                >
+                  <option value={true}>{"Yes"}</option>
+                  <option value={false}>{"No"}</option>
+                </Form.Control>
               </Form.Group>
             </Col>
           </Row>

@@ -18,13 +18,16 @@ class AddSchedule extends Component {
     this.state = {
       scheduleId: "",
       date: "",
-      isComplete: false,
-      bus: "",
-      route: "",
-      driver: "",
+      time: "",
+      isComplete: "",
+      bus: {},
+      route: {},
+      driver: {},
       stuff: "",
       errors: {}
     };
+    this.getDateForInput = this.getDateForInput.bind(this);
+    this.parseTimeString = this.parseTimeString.bind(this);
     this.showRoute = this.showRoute.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onChangeSelectorHandler = this.onChangeSelectorHandler.bind(this);
@@ -42,6 +45,27 @@ class AddSchedule extends Component {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
+  };
+
+  getDateForInput = tmpDate => {
+    let date = new Date(tmpDate);
+    return String(
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1 < 10 ? "0" : "") +
+      (date.getMonth() + 1) +
+      "-" +
+      (date.getDate() < 10 ? "0" : "") +
+      date.getDate()
+    );
+  };
+
+  parseTimeString = () => {
+    let timeFormat = this.state.time.split(':');
+    let tmpDate = new Date(this.state.date);
+    tmpDate.setHours(timeFormat[0]);
+    tmpDate.setMinutes(timeFormat[1]);
+    return tmpDate;
   };
 
   showRoute = stoppageList => {
@@ -75,13 +99,14 @@ class AddSchedule extends Component {
     event.preventDefault();
     const newSchedule = {
       scheduleId: this.state.scheduleId,
-      date: this.state.date,
+      date: this.parseTimeString(),
       isComplete: this.state.isComplete,
-      bus: this.state.bus,
-      route: this.state.route,
-      driver: this.state.driver,
-      stuff: this.state.stuff === "" ? undefined : this.state.stuff
+      bus: this.state.bus ? this.state.bus : {},
+      route: this.state.route ? this.state.route : {},
+      driver: this.state.driver ? this.state.driver : {},
+      stuff: this.state.stuff ? this.state.stuff : null
     };
+    console.log(newSchedule);
     this.props.createSchedule(newSchedule, this.props.history);
   };
 
@@ -92,9 +117,9 @@ class AddSchedule extends Component {
       <Container style={{ paddingTop: "10px" }}>
         <Form onSubmit={this.onSubmitHandler}>
           <Row>
-            <Col md={4}>
+            <Col md={3}>
               <Form.Group>
-                <Form.Label>Date and Time</Form.Label>
+                <Form.Label>Date</Form.Label>
                 <Form.Control
                   className={classnames(
                     "form-control from-control-lg",
@@ -102,7 +127,7 @@ class AddSchedule extends Component {
                   )}
                   name="date"
                   type="date"
-                  value={this.state.date}
+                  value={this.state.date && this.getDateForInput(this.state.date)}
                   onChange={this.onChangeHandler}
                 />
                 {errors.date && (
@@ -112,7 +137,27 @@ class AddSchedule extends Component {
                 )}
               </Form.Group>
             </Col>
-            <Col md={8}>
+            <Col md={2}>
+              <Form.Group>
+                <Form.Label>Time</Form.Label>
+                <Form.Control
+                  className={classnames(
+                    "form-control from-control-lg",
+                    { "is-invalid": errors.date }
+                  )}
+                  name="time"
+                  type="time"
+                  value={this.state.time}
+                  onChange={this.onChangeHandler}
+                />
+                {errors.date && (
+                  <div className="invalid-feedback">
+                    {errors.date}
+                  </div>
+                )}
+              </Form.Group>
+            </Col>
+            <Col md={7}>
               <Form.Group>
                 <Form.Label>Route</Form.Label>
                 <Form.Control
@@ -122,14 +167,14 @@ class AddSchedule extends Component {
                   )}
                   as="select"
                   name="route"
-                  value={this.state.route.routeId}
+                  value={this.state.route ? this.state.route.routeId : ""}
                   onChange={
                     (event) => this.onChangeSelectorHandler(event, "routes", "routeId")
                   }
                   style={{ fontSize: "12px" }}
                 >
                   <option
-                    value={-1}
+                    value={{}}
                     style={{ fontSize: "12px" }}
                   >
                     Select Route
@@ -166,14 +211,14 @@ class AddSchedule extends Component {
                   )}
                   as="select"
                   name="bus"
-                  value={this.state.bus.busId}
+                  value={this.state.bus ? this.state.bus.busId : ""}
                   onChange={
                     (event) => this.onChangeSelectorHandler(event, "availableBuses", "busId")
                   }
                   style={{ fontSize: "12px" }}
                 >
                   <option
-                    value={-1}
+                    value={{}}
                     style={{ fontSize: "12px" }}
                   >
                     Select Bus
@@ -205,14 +250,14 @@ class AddSchedule extends Component {
                   )}
                   as="select"
                   name="driver"
-                  value={this.state.driver.driverId}
+                  value={this.state.driver ? this.state.driver.driverId : ""}
                   onChange={
                     (event) => this.onChangeSelectorHandler(event, "drivers", "driverId")
                   }
                   style={{ fontSize: "12px" }}
                 >
                   <option
-                    value={-1}
+                    value={{}}
                     style={{ fontSize: "12px" }}
                   >
                     Select Driver
@@ -244,14 +289,14 @@ class AddSchedule extends Component {
                   )}
                   as="select"
                   name="stuff"
-                  value={this.state.stuff.stuffId}
+                  value={this.state.stuff ? this.state.stuff.stuffId : ""}
                   onChange={
                     (event) => this.onChangeSelectorHandler(event, "stuffs", "stuffId")
                   }
                   style={{ fontSize: "12px" }}
                 >
                   <option
-                    value={-1}
+                    value={{}}
                     style={{ fontSize: "12px" }}
                   >
                     Select Stuff
