@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.service;
 
+import com.transport.university.universitytransportsystem.exceptions.notification.NotificationIdException;
 import com.transport.university.universitytransportsystem.model.Notification;
 import com.transport.university.universitytransportsystem.repository.NotificationRepo;
 import com.transport.university.universitytransportsystem.repository.UserRepo;
@@ -20,14 +21,16 @@ public class NotificationServices {
     @Autowired
     private UserRepo userRepo;
 
-    public Notification getNotificationById(Long id) {
-        if (!notificationRepo.existsById(id)) return null;
+    public Notification getNotification(Long id) {
+        if (!notificationRepo.existsById(id)) {
+            throw new NotificationIdException("Notification with ID: " + id + " does not exist");
+        }
         return notificationRepo.getOne(id);
     }
 
-    public List<Notification> getLatestNotifications() {
-        Long notificationCount = notificationRepo.count();
-        if (notificationCount == 0) return new ArrayList<>();
-        return notificationRepo.get10Notifications(Math.max(0, notificationCount - 30));
+    public List<Notification> getAll() {
+        return notificationRepo.findAll();
     }
+
+
 }
