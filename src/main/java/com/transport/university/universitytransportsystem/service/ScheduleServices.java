@@ -15,7 +15,11 @@ public class ScheduleServices {
     @Autowired
     private ScheduleRepo scheduleRepo;
 
+    @Autowired
+    private NotificationServices notificationServices;
+
     public Schedule saveOrUpdate(Schedule schedule) {
+        notificationServices.generateNotificationAboutSchedule(schedule);
         return scheduleRepo.save(schedule);
     }
 
