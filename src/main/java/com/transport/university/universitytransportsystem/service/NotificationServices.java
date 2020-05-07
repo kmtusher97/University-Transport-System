@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,6 +39,8 @@ public class NotificationServices {
 
     public void generateNotificationAboutSchedule(Schedule schedule) {
         String notificationString = "Date & Time: " + schedule.getDate().toString() + "\n" +
+                "Completed: " + ((schedule.getIsComplete() == null ||
+                schedule.getIsComplete() == false) ? "NO" : "YES") + "\n" +
                 "Bus No: " + schedule.getBus().getBusId() + "\n" +
                 "Bus Number: " + schedule.getBus().getNumber() + "\n" +
                 "Route No: " + schedule.getRoute().getRouteId() + "\n" +
@@ -48,7 +51,7 @@ public class NotificationServices {
         Notification notificationForDriver = new Notification(
                 null,
                 notificationString,
-                schedule.getDate(),
+                new Date(),
                 schedule.getDriver().getUser()
         );
         saveOrUpdate(notificationForDriver);
@@ -61,7 +64,7 @@ public class NotificationServices {
             Notification notificationForStuff = new Notification(
                     null,
                     notificationString,
-                    schedule.getDate(),
+                    new Date(),
                     schedule.getStuff().getUser()
             );
             saveOrUpdate(notificationForStuff);
