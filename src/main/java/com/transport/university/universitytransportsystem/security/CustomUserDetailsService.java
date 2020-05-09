@@ -2,6 +2,7 @@ package com.transport.university.universitytransportsystem.security;
 
 import com.transport.university.universitytransportsystem.model.User;
 import com.transport.university.universitytransportsystem.model.UserRoles;
+import com.transport.university.universitytransportsystem.repository.RoleRepo;
 import com.transport.university.universitytransportsystem.repository.UserRepo;
 import com.transport.university.universitytransportsystem.repository.UserRolesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRolesRepo userRolesRepo;
+
+    @Autowired
+    private RoleRepo roleRepo;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -63,6 +67,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public User registerNewUser(User newUser) {
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-        return userRepo.save(newUser);
+        User savedUser = userRepo.save(newUser);
+        UserRoles userRole = new UserRoles(null, savedUser, roleRepo.getOne(2)); // role 2 = ROLE_USER
+        userRolesRepo.save(userRole);
+        return savedUser;
     }
 }
