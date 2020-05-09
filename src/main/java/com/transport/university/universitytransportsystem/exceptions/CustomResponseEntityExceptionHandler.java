@@ -20,6 +20,8 @@ import com.transport.university.universitytransportsystem.exceptions.stoppage.St
 import com.transport.university.universitytransportsystem.exceptions.stoppage.StoppageIdentifierExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.stuff.StuffIdException;
 import com.transport.university.universitytransportsystem.exceptions.stuff.StuffIdExceptionResponse;
+import com.transport.university.universitytransportsystem.exceptions.user.UserEmailAlreadyExistsException;
+import com.transport.university.universitytransportsystem.exceptions.user.UserEmailAlreadyExistsExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -89,6 +91,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler
     public final ResponseEntity<Object> handleNotificationIdException(NotificationIdException ex, WebRequest request) {
         NotificationIdExceptionResponse exceptionResponse = new NotificationIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleDuplicationEmailException(UserEmailAlreadyExistsException ex, WebRequest request) {
+        UserEmailAlreadyExistsExceptionResponse exceptionResponse = new UserEmailAlreadyExistsExceptionResponse(ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

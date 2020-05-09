@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.security;
 
+import com.transport.university.universitytransportsystem.exceptions.user.UserEmailAlreadyExistsException;
 import com.transport.university.universitytransportsystem.model.User;
 import com.transport.university.universitytransportsystem.model.UserRoles;
 import com.transport.university.universitytransportsystem.repository.RoleRepo;
@@ -66,11 +67,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional
     public User registerNewUser(User newUser) {
-        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-        User savedUser = userRepo.save(newUser);
-        UserRoles userRole = new UserRoles(null, savedUser, roleRepo.getOne(2)); // role 2 = ROLE_USER
-        userRolesRepo.save(userRole);
-        return savedUser;
+        try {
+            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+            User savedUser = userRepo.save(newUser);
+            UserRoles userRole = new UserRoles(null, savedUser, roleRepo.getOne(2)); // role 2 = ROLE_USER
+            userRolesRepo.save(userRole);
+            return savedUser;
+        } catch (Exception ex) {
+            throw new UserEmailAlreadyExistsException(newUser.getEmail() + " already registered");
+        }
     }
 
     @Transactional
