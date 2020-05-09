@@ -72,4 +72,22 @@ public class CustomUserDetailsService implements UserDetailsService {
         userRolesRepo.save(userRole);
         return savedUser;
     }
+
+    @Transactional
+    public User registerNewDriver(User newDriver) {
+        newDriver.setPassword(bCryptPasswordEncoder.encode(newDriver.getPassword()));
+        User savedDriver = userRepo.save(newDriver);
+        UserRoles userRole = new UserRoles(null, savedDriver, roleRepo.getOne(3)); // role 3 = ROLE_DRIVER
+        userRolesRepo.save(userRole);
+        return savedDriver;
+    }
+
+    @Transactional
+    public User registerNewStuff(User newStuff) {
+        newStuff.setPassword(bCryptPasswordEncoder.encode(newStuff.getPassword()));
+        User savedStuff = userRepo.save(newStuff);
+        UserRoles userRole = new UserRoles(null, savedStuff, roleRepo.getOne(4)); // role 3 = ROLE_STUFF
+        userRolesRepo.save(userRole);
+        return savedStuff;
+    }
 }
