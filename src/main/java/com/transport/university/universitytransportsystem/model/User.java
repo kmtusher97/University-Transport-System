@@ -22,6 +22,7 @@ public class User {
     private Integer userId;
 
     @Email(message = "Provide a valid email")
+    @NotBlank(message = "Email is required")
     @Column(unique = true, nullable = false, updatable = false)
     private String email;
 

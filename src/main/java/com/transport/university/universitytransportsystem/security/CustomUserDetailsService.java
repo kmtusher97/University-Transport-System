@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,6 +27,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRolesRepo userRolesRepo;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
     private User getUserByEmail(String email) {
@@ -55,6 +58,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 getAuthorities(userRolesRepo.findByUser(userFromDB))
         );
+    }
 
+    @Transactional
+    public User registerNewUser(User newUser) {
+        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+        return userRepo.save(newUser);
     }
 }
