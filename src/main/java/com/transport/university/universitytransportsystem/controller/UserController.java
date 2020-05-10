@@ -29,4 +29,20 @@ public class UserController {
 
         return new ResponseEntity<>(userDetailsService.registerNewUser(user), HttpStatus.CREATED);
     }
+
+    @PostMapping("/register/driver")
+    public ResponseEntity<?> registerNewDriver(@Valid @RequestBody User user, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+
+        return new ResponseEntity<>(userDetailsService.registerNewDriver(user), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/register/stuff")
+    public ResponseEntity<?> registerNewStuff(@Valid @RequestBody User user, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+
+        return new ResponseEntity<>(userDetailsService.registerNewStuff(user), HttpStatus.CREATED);
+    }
 }

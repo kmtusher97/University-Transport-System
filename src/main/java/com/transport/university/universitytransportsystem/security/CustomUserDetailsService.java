@@ -1,11 +1,11 @@
 package com.transport.university.universitytransportsystem.security;
 
 import com.transport.university.universitytransportsystem.exceptions.user.UserEmailAlreadyExistsException;
+import com.transport.university.universitytransportsystem.model.Driver;
+import com.transport.university.universitytransportsystem.model.Stuff;
 import com.transport.university.universitytransportsystem.model.User;
 import com.transport.university.universitytransportsystem.model.UserRoles;
-import com.transport.university.universitytransportsystem.repository.RoleRepo;
-import com.transport.university.universitytransportsystem.repository.UserRepo;
-import com.transport.university.universitytransportsystem.repository.UserRolesRepo;
+import com.transport.university.universitytransportsystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,6 +34,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private DriverRepo driverRepo;
+
+    @Autowired
+    private StuffRepo stuffRepo;
+
 
     @Transactional
     private User getUserByEmail(String email) {
@@ -79,20 +86,40 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
-    public User registerNewDriver(User newDriver) {
-        newDriver.setPassword(bCryptPasswordEncoder.encode(newDriver.getPassword()));
-        User savedDriver = userRepo.save(newDriver);
-        UserRoles userRole = new UserRoles(null, savedDriver, roleRepo.getOne(3)); // role 3 = ROLE_DRIVER
-        userRolesRepo.save(userRole);
-        return savedDriver;
+    public Driver registerNewDriver(User newUser) {
+        try {
+            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+            User savedUser = userRepo.save(newUser);
+            UserRoles userRole = new UserRoles(null, savedUser, roleRepo.getOne(3)); // role 3 = ROLE_DRIVER
+            userRolesRepo.save(userRole);
+
+            Driver newDriver = new Driver();
+            newDriver.setIsInService(true);
+            newDriver.setRating(0);
+            newDriver.setUser(savedUser);
+            return driverRepo.save(newDriver);
+
+        } catch (Exception ex) {
+            throw new UserEmailAlreadyExistsException(newUser.getEmail() + " already registered");
+        }
     }
 
     @Transactional
-    public User registerNewStuff(User newStuff) {
-        newStuff.setPassword(bCryptPasswordEncoder.encode(newStuff.getPassword()));
-        User savedStuff = userRepo.save(newStuff);
-        UserRoles userRole = new UserRoles(null, savedStuff, roleRepo.getOne(4)); // role 3 = ROLE_STUFF
-        userRolesRepo.save(userRole);
-        return savedStuff;
+    public Stuff registerNewStuff(User newUser) {
+        try {
+            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+            User savedUser = userRepo.save(newUser);
+            UserRoles userRole = new UserRoles(null, savedUser, roleRepo.getOne(4)); // role 3 = ROLE_STUFF
+            userRolesRepo.save(userRole);
+
+            Stuff newStuff = new Stuff();
+            newStuff.setIsInService(true);
+            newStuff.setRating(0);
+            newStuff.setUser(savedUser);
+            return stuffRepo.save(newStuff);
+
+        } catch (Exception ex) {
+            throw new UserEmailAlreadyExistsException(newUser.getEmail() + " already registered");
+        }
     }
 }
