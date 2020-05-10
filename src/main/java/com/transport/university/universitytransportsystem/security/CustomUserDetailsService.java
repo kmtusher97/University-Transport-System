@@ -1,10 +1,7 @@
 package com.transport.university.universitytransportsystem.security;
 
 import com.transport.university.universitytransportsystem.exceptions.user.UserEmailAlreadyExistsException;
-import com.transport.university.universitytransportsystem.model.Driver;
-import com.transport.university.universitytransportsystem.model.Stuff;
-import com.transport.university.universitytransportsystem.model.User;
-import com.transport.university.universitytransportsystem.model.UserRoles;
+import com.transport.university.universitytransportsystem.model.*;
 import com.transport.university.universitytransportsystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -121,5 +118,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         } catch (Exception ex) {
             throw new UserEmailAlreadyExistsException(newUser.getEmail() + " already registered");
         }
+    }
+
+    public List<Notification> getAllNotifications(Integer userId) {
+        if (!userRepo.existsById(userId)) {
+            return new ArrayList<>();
+        }
+        return userRepo.getOne(userId).getNotifications();
     }
 }

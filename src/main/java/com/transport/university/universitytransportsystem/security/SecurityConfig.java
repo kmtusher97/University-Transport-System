@@ -61,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/api/**/GLOBAL/**"
                     ).permitAll()
                     .antMatchers("/api/**/DRIVER/**").hasAuthority("ROLE_DRIVER")
+                    .antMatchers("/api/user/notification/**")
+                    .hasAnyAuthority("ROLE_USER", "ROLE_DRIVER", "ROLE_STUFF")
                     .antMatchers("/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()

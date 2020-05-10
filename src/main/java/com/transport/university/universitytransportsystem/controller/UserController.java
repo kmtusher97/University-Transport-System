@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.controller;
 
+import com.transport.university.universitytransportsystem.model.Notification;
 import com.transport.university.universitytransportsystem.model.User;
 import com.transport.university.universitytransportsystem.security.CustomUserDetailsService;
 import com.transport.university.universitytransportsystem.validation.MapValidationErrorService;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -44,5 +46,10 @@ public class UserController {
         if (errorMap != null) return errorMap;
 
         return new ResponseEntity<>(userDetailsService.registerNewStuff(user), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/notification/{userId}")
+    public List<Notification> getAllNotifications(@PathVariable("userId") Integer userId) {
+        return userDetailsService.getAllNotifications(userId);
     }
 }
