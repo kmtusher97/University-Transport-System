@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getAll } from '../../actions/AnnouncementActions';
-import { Container, Jumbotron } from 'react-bootstrap';
+import { getAll, deleteAnnouncement } from '../../actions/AnnouncementActions';
+import { Container, Jumbotron, Button } from 'react-bootstrap';
+import Announcement from './Announcement';
+import { Link } from 'react-router-dom';
 
 class Notice extends Component {
   constructor() {
@@ -14,13 +16,31 @@ class Notice extends Component {
     this.props.getAll();
   };
 
-  delete = announcementId => { };
+  delete = announcementId => {
+    this.props.deleteAnnouncement(announcementId, this.props.history);
+  };
 
   render() {
+    const { announcement } = this.props;
+
     return (
       <Container style={{ padding: "10px" }}>
+        <div className='col-md-2' style={{ padding: '10px' }}>
+          <Link to={'/notice/add'}>
+            <Button
+              size='sm'
+              variant='primary'
+            >Add Notice</Button>
+          </Link>
+        </div>
         <Jumbotron style={{ height: "500px", overflow: "auto" }}>
-
+          {announcement.announcements.map((announcement, idx) => (
+            <Announcement
+              key={idx}
+              data={announcement}
+              delete={this.delete}
+            />
+          ))}
         </Jumbotron>
       </Container>
     )
@@ -28,7 +48,8 @@ class Notice extends Component {
 }
 
 Notice.propType = {
-  getAll: PropTypes.func.isRequired
+  getAll: PropTypes.func.isRequired,
+  deleteAnnouncement: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -37,5 +58,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAll }
+  { getAll, deleteAnnouncement }
 )(Notice);

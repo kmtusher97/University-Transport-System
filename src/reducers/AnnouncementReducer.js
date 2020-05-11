@@ -1,4 +1,4 @@
-import { GET_ANNOUNCEMENTS } from '../actions/types';
+import { GET_ANNOUNCEMENTS, DELETE_ANNOUNCEMENT } from '../actions/types';
 
 const initialState = {
   announcements: []
@@ -10,6 +10,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         announcements: action.payload
+      }
+
+    case DELETE_ANNOUNCEMENT:
+      return {
+        ...state,
+        announcements: state.announcements.filter(
+          announcement => announcement.announcementId !== action.payload
+        )
       }
 
     default:
