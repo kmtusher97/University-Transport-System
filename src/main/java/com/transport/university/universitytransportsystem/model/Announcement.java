@@ -23,5 +23,6 @@ public class Announcement {
     private Date date;
 
     @NotBlank(message = "Announcement can not be empty")
+	@Column(columnDefinition = "TEXT")
     private String announcement;
 }

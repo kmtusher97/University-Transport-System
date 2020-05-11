@@ -37,7 +37,7 @@ public class AnnouncementController {
     }
 
     @GetMapping("/GLOBAL/all")
-    public List<Announcement> getAll(@PathVariable("n") Long n) {
+    public List<Announcement> getAll() {
         return announcementServices.getAll();
     }
 
