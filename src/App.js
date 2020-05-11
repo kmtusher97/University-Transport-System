@@ -21,6 +21,7 @@ import UpdateStoppage from "./component/stoppage/UpdateStoppage";
 import Driver from "./component/driverAndStuff/Driver";
 import Stuff from "./component/driverAndStuff/Stuff";
 import AddDriverOrStuff from "./component/driverAndStuff/AddDriverOrStuff";
+import Notice from "./component/notice/Notice";
 
 /**Redux */
 import { Provider } from "react-redux";
@@ -95,7 +96,7 @@ function App() {
                 {
                   // routess for notice
                 }
-                <Route exact path="/notice" />
+                <Route exact path="/notice" component={Notice} />
 
               </div>
             </Col>
