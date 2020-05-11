@@ -31,12 +31,12 @@ public class AnnouncementController {
         return new ResponseEntity<>(announcementServices.saveOrUpdate(announcement), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/GLOBAL/{id}")
     public ResponseEntity<?> get(@PathVariable("id") Long id) {
         return new ResponseEntity<>(announcementServices.get(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/GLOBAL/all")
     public List<Announcement> getAll(@PathVariable("n") Long n) {
         return announcementServices.getAll();
     }
