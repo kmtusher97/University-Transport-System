@@ -16,7 +16,7 @@ export const addNewDriverOrStuff = (user, reqType, history) => async dispatch =>
       type: GET_ERRORS,
       payload: {}
     });
-    history.push(reqType);
+    history.push(`/${reqType}`);
 
   } catch (err) {
     dispatch({
