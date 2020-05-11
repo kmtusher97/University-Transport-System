@@ -2,9 +2,14 @@ package com.transport.university.universitytransportsystem.controller;
 
 import com.transport.university.universitytransportsystem.model.Announcement;
 import com.transport.university.universitytransportsystem.service.AnnouncementServices;
+import com.transport.university.universitytransportsystem.validation.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin
@@ -15,28 +20,30 @@ public class AnnouncementController {
     @Autowired
     private AnnouncementServices announcementServices;
 
+    @Autowired
+    private MapValidationErrorService errorService;
+
     @PostMapping("/add")
-    public Announcement addAnnouncement(@RequestBody Announcement announcement) {
-        return announcementServices.addAnnouncement(announcement);
+    public ResponseEntity<?> create(@Valid @RequestBody Announcement announcement, BindingResult result) {
+        ResponseEntity<?> errorMap = errorService.mapValidationService(result);
+        if (errorMap != null) return errorMap;
+
+        return new ResponseEntity<>(announcementServices.saveOrUpdate(announcement), HttpStatus.CREATED);
     }
 
-    @PostMapping("/update")
-    public Announcement updateAnnouncement(@RequestBody Announcement announcement) {
-        return announcementServices.updateAnnouncement(announcement);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(announcementServices.get(id), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
-    public Announcement getAnnouncementById(@PathVariable("id") Long id) {
-        return announcementServices.getAnnouncementById(id);
+    @GetMapping("/all")
+    public List<Announcement> getAll(@PathVariable("n") Long n) {
+        return announcementServices.getAll();
     }
 
-    @GetMapping("/getAll/{n}")
-    public List<Announcement> getNth30AnnouncementsFromBack(@PathVariable("n") Long n) {
-        return announcementServices.getNth30AnnouncementsFromBack(n);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteAnnouncementById(@PathVariable("id") Long id) {
-        announcementServices.deleteAnnouncementById(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        announcementServices.delete(id);
+        return new ResponseEntity<>("Announcement with ID: " + id + " was deleted", HttpStatus.OK);
     }
 }

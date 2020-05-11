@@ -1,12 +1,12 @@
 package com.transport.university.universitytransportsystem.service;
 
+import com.transport.university.universitytransportsystem.exceptions.announcement.AnnouncementNotFoundException;
 import com.transport.university.universitytransportsystem.model.Announcement;
 import com.transport.university.universitytransportsystem.repository.AnnouncementRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,34 +17,25 @@ public class AnnouncementServices {
     private AnnouncementRepo announcementRepo;
 
 
-    public Announcement addAnnouncement(Announcement announcement) {
-        if (announcement.getAnnouncement() == null || announcement.getDate() == null) return null;
+    public Announcement saveOrUpdate(Announcement announcement) {
         return announcementRepo.save(announcement);
     }
 
-    public Announcement updateAnnouncement(Announcement announcement) {
-        if (announcement.getAnnouncementId() == null ||
-                !announcementRepo.existsById(announcement.getAnnouncementId())) return null;
-        return addAnnouncement(announcement);
-    }
-
-    public Announcement getAnnouncementById(Long id) {
-        if (announcementRepo.existsById(id)) {
-            return announcementRepo.getOne(id);
+    public Announcement get(Long id) {
+        if (!announcementRepo.existsById(id)) {
+            throw new AnnouncementNotFoundException("Announcement with ID: " + id + " doesn't exist");
         }
-        return null;
+        return announcementRepo.getOne(id);
     }
 
-    public void deleteAnnouncementById(Long id) {
-        if (announcementRepo.existsById(id)) {
-            announcementRepo.deleteById(id);
+    public void delete(Long id) {
+        if (!announcementRepo.existsById(id)) {
+            throw new AnnouncementNotFoundException("Announcement with ID: " + id + " doesn't exist");
         }
+        announcementRepo.deleteById(id);
     }
 
-    public List<Announcement> getNth30AnnouncementsFromBack(Long n) {
-        Long announcementCount = announcementRepo.count();
-        if (announcementCount == 0 || n <= 0) return new ArrayList<>();
-        return announcementRepo.getNth30AnnouncementsFromBack(Math.max(0, announcementCount - (n * 30)));
-
+    public List<Announcement> getAll() {
+        return announcementRepo.findAll();
     }
 }

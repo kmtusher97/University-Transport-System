@@ -1,5 +1,7 @@
 package com.transport.university.universitytransportsystem.exceptions;
 
+import com.transport.university.universitytransportsystem.exceptions.announcement.AnnouncementNotFoundException;
+import com.transport.university.universitytransportsystem.exceptions.announcement.AnnouncementNotFoundExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusIdException;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusIdExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusNumberException;
@@ -91,6 +93,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler
     public final ResponseEntity<Object> handleNotificationIdException(NotificationIdException ex, WebRequest request) {
         NotificationIdExceptionResponse exceptionResponse = new NotificationIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleAnnouncementNotFoundException(AnnouncementNotFoundException ex, WebRequest request) {
+        AnnouncementNotFoundExceptionResponse exceptionResponse = new AnnouncementNotFoundExceptionResponse(ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
