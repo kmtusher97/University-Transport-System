@@ -18,6 +18,9 @@ import UpdateBusRoute from "./component/route/UpdateBusRoute";
 import Stoppage from "./component/stoppage/Stoppage";
 import AddStoppage from "./component/stoppage/AddStoppage";
 import UpdateStoppage from "./component/stoppage/UpdateStoppage";
+import Driver from "./component/driverAndStuff/Driver";
+import Stuff from "./component/driverAndStuff/Stuff";
+import AddDriverOrStuff from "./component/driverAndStuff/AddDriverOrStuff";
 
 /**Redux */
 import { Provider } from "react-redux";
@@ -76,6 +79,15 @@ function App() {
                 <Route exact path="/stoppage/page/:pageNo" component={Stoppage} />
                 <Route exact path="/stoppage/add" component={AddStoppage} />
                 <Route exact path="/stoppage/edit/:stoppageId" component={UpdateStoppage} />
+                {
+                  // routes for driver and stuff
+                }
+                <Route exact path="/driver" component={Driver} />
+                <Route exact path="/driver/page/:pageNo" component={Driver} />
+                <Route exact path="/stuff" component={Stuff} />
+                <Route exact path="/stuff/page/:pageNo" component={Stuff} />
+                <Route exact path="/driver/add" component={AddDriverOrStuff} />
+                <Route exact path="/stuff/add" component={AddDriverOrStuff} />
                 {
                   // routes for feedback
                 }

@@ -28,6 +28,8 @@ class SideNavbar extends Component {
         <Nav.Link href="/bus">Bus</Nav.Link>
         <Nav.Link href="/stoppage">Stoppage</Nav.Link>
         <Nav.Link href="/route">Route</Nav.Link>
+        <Nav.Link href="/driver">Driver</Nav.Link>
+        <Nav.Link href="/stuff">Stuff</Nav.Link>
         <Nav.Link href="/feedback">Feedback</Nav.Link>
         <Nav.Link href="/notice">Notice</Nav.Link>
       </Nav>
