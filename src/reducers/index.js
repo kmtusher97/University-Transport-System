@@ -7,6 +7,7 @@ import BusRouteReducer from "./BusRouteReducer";
 import DriverReducer from "./DriverReducer";
 import StuffReducer from "./StuffReducer";
 import AnnouncementReducer from "./AnnouncementReducer";
+import FeedbackReducer from "./FeedbackReducer";
 
 export default combineReducers({
   errors: ErrorReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
   schedule: ScheduleReducer,
   driver: DriverReducer,
   stuff: StuffReducer,
-  announcement: AnnouncementReducer
+  announcement: AnnouncementReducer,
+  feedback: FeedbackReducer
 });

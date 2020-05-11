@@ -34,3 +34,7 @@ export const DELETE_STUFF = "DELETE_STUFF";
 // Announcement Services
 export const GET_ANNOUNCEMENTS = "GET_ANNOUNCEMENTS";
 export const DELETE_ANNOUNCEMENT = "DELETE_ANNOUNCEMENT";
+
+// Feedback Services
+export const GET_FEEDBACKS = "GET_FEEDBACKS";
+export const DELETE_FEEDBACK = "DELETE_FEEDBACK";
