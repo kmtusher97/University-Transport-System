@@ -33,7 +33,7 @@ class Notice extends Component {
             >Add Notice</Button>
           </Link>
         </div>
-        <Jumbotron style={{ height: "500px", overflow: "auto" }}>
+        <Jumbotron style={{ height: "1250px", overflow: "auto" }}>
           {announcement.announcements.map((announcement, idx) => (
             <Announcement
               key={idx}

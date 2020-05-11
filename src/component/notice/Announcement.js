@@ -6,11 +6,6 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 class Announcement extends Component {
   render() {
-    let announcementText = this.props.data.announcement.split('/n').map(para => {
-      return <p>{para}</p>
-    });
-    //console.log(announcementText);
-
     return (
       <Container style={{ paddingBottom: '10px' }}>
         <Card>
@@ -20,9 +15,11 @@ class Announcement extends Component {
             </Card.Title>
           </Card.Header>
           <Card.Body>
-            <Card.Text>
-              {this.props.data.announcement}
-            </Card.Text>
+            {this.props.data.announcement.split('\n').map((paragraph, i) => (
+              <Card.Text key={i}>
+                {paragraph}
+              </Card.Text>
+            ))}
           </Card.Body>
           <Card.Footer>
             <div className='col-md-1' style={{ float: 'right' }}>
