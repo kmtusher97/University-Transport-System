@@ -22,6 +22,7 @@ import Driver from "./component/driverAndStuff/Driver";
 import Stuff from "./component/driverAndStuff/Stuff";
 import AddDriverOrStuff from "./component/driverAndStuff/AddDriverOrStuff";
 import Notice from "./component/notice/Notice";
+import AddAnnouncement from "./component/notice/AddAnnouncement";
 
 /**Redux */
 import { Provider } from "react-redux";
@@ -97,6 +98,7 @@ function App() {
                   // routess for notice
                 }
                 <Route exact path="/notice" component={Notice} />
+                <Route exact path="/notice/add" component={AddAnnouncement} />
 
               </div>
             </Col>
