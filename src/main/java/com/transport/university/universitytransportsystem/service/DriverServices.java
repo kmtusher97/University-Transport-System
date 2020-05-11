@@ -39,4 +39,13 @@ public class DriverServices {
         }
         return driverRepo.getOne(driverId);
     }
+
+    public void removerDriver(Integer driverId) {
+        if (!driverRepo.existsById(driverId)) {
+            throw new DriverIdException("Driver with ID: " + driverId + " doesn't exists");
+        }
+        Driver driver = driverRepo.getOne(driverId);
+        driver.setIsInService(false);
+        driverRepo.save(driver);
+    }
 }

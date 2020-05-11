@@ -39,4 +39,13 @@ public class StuffServices {
         }
         return stuffRepo.getOne(id);
     }
+
+    public void removeStuff(Integer stuffId) {
+        if (!stuffRepo.existsById(stuffId)) {
+            throw new StuffIdException("Stuff with ID: " + stuffId + " does not exist");
+        }
+        Stuff stuff = stuffRepo.getOne(stuffId);
+        stuff.setIsInService(false);
+        stuffRepo.save(stuff);
+    }
 }
