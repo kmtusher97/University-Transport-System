@@ -30,3 +30,7 @@ export const DELETE_DRIVER = "DELETE_DRIVER";
 export const GET_STUFF = "GET_STUFF";
 export const GET_STUFFS_INSERVICE = "GET_STUFFS_INSERVICE";
 export const DELETE_STUFF = "DELETE_STUFF";
+
+// Announcement Services
+export const GET_ANNOUNCEMENTS = "GET_ANNOUNCEMENTS";
+export const DELETE_ANNOUNCEMENT = "DELETE_ANNOUNCEMENT";
