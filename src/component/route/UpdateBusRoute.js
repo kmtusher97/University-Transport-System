@@ -116,7 +116,7 @@ class UpdateBusRoute extends Component {
             <strong>{"Edit Route"}</strong>
           </Row>
           <Row style={{ padding: "5px" }}>
-            {this.state.stoppageSequence.map((stoppage, idx) => (
+            {this.state.stoppageSequence && this.state.stoppageSequence.map((stoppage, idx) => (
               <ButtonGroup
                 size="sm"
                 key={idx}
