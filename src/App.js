@@ -23,6 +23,7 @@ import Stuff from "./component/driverAndStuff/Stuff";
 import AddDriverOrStuff from "./component/driverAndStuff/AddDriverOrStuff";
 import Notice from "./component/notice/Notice";
 import AddAnnouncement from "./component/notice/AddAnnouncement";
+import Feedback from "./component/feedback/Feedback";
 
 /**Redux */
 import { Provider } from "react-redux";
@@ -93,7 +94,7 @@ function App() {
                 {
                   // routes for feedback
                 }
-                <Route exact path="/feedback" />
+                <Route exact path="/feedback" component={Feedback} />
                 {
                   // routess for notice
                 }

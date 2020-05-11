@@ -1,7 +1,7 @@
 import { GET_FEEDBACKS, DELETE_FEEDBACK } from '../actions/types';
 
 const initialState = {
-  feadbacks: []
+  feedbacks: []
 };
 
 export default function (state = initialState, action) {
@@ -9,14 +9,14 @@ export default function (state = initialState, action) {
     case GET_FEEDBACKS:
       return {
         ...state,
-        feadbacks: action.payload
+        feedbacks: action.payload
       }
 
     case DELETE_FEEDBACK:
       return {
         ...state,
-        feadbacks: state.feadbacks.filter(
-          feadback => feadback.feadbackId !== action.payload
+        feedbacks: state.feedbacks.filter(
+          feedback => feedback.feedbackId !== action.payload
         )
       }
 
