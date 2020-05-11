@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getAllDriversInservice } from '../../actions/DriverActions';
+import { getAllDriversInservice, deleteDriver } from '../../actions/DriverActions';
 import { Row, Col, Table, Button } from 'react-bootstrap';
 import TopBar from './TopBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,10 +19,15 @@ class Driver extends Component {
       pageNo: tmpPageNo,
       type: pathNameComponents[1]
     };
+    this.deleteDriver = this.deleteDriver.bind(this);
   }
 
   componentDidMount = () => {
     this.props.getAllDriversInservice();
+  };
+
+  deleteDriver = driverId => {
+    this.props.deleteDriver(driverId, this.props.history);
   };
 
   render() {
@@ -73,6 +78,7 @@ class Driver extends Component {
                         <Button
                           size="sm"
                           variant="outline-danger"
+                          onClick={() => this.deleteDriver(driver.driverId)}
                         >
                           <FontAwesomeIcon icon={faTrash} />
                         </Button>
@@ -91,12 +97,13 @@ class Driver extends Component {
 
 Driver.propTypes = {
   driver: PropTypes.object.isRequired,
-  getAllDriversInservice: PropTypes.func.isRequired
+  getAllDriversInservice: PropTypes.func.isRequired,
+  deleteDriver: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({ driver: state.driver });
 
 export default connect(
   mapStateToProps,
-  { getAllDriversInservice }
+  { getAllDriversInservice, deleteDriver }
 )(Driver);

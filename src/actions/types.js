@@ -24,7 +24,9 @@ export const DELETE_BUSROUTE = "DELETE_BUSROUTE";
 // Driver Services
 export const GET_DRIVER = "GET_DRIVER";
 export const GET_DRIVERS_INSERVICE = "GET_DRIVERS_INSERVICE";
+export const DELETE_DRIVER = "DELETE_DRIVER";
 
 // Stuff Services
 export const GET_STUFF = "GET_STUFF";
 export const GET_STUFFS_INSERVICE = "GET_STUFFS_INSERVICE";
+export const DELETE_STUFF = "DELETE_STUFF";

@@ -1,4 +1,4 @@
-import { GET_STUFFS_INSERVICE } from '../actions/types';
+import { GET_STUFFS_INSERVICE, DELETE_STUFF } from '../actions/types';
 
 const initialState = {
   stuffs: [],
@@ -11,6 +11,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         stuffs: action.payload
+      }
+
+    case DELETE_STUFF:
+      return {
+        ...state,
+        stuffs: state.stuffs.filter(
+          stuff => stuff.stuffId !== action.payload
+        )
       }
 
     default:

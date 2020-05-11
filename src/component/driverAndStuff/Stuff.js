@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getAllStuffsInservice } from '../../actions/StuffActions';
+import { getAllStuffsInservice, deleteStuff } from '../../actions/StuffActions';
 import { Row, Col, Table, Button } from 'react-bootstrap';
 import TopBar from './TopBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,11 +19,16 @@ class Stuff extends Component {
       pageNo: tmpPageNo,
       type: pathNameComponents[1]
     };
+    this.deleteStuff = this.deleteStuff.bind(this);
   }
 
   componentDidMount = () => {
     this.props.getAllStuffsInservice();
   };
+
+  deleteStuff = stuffId => {
+    this.props.deleteStuff(stuffId, this.props.history);
+  }
 
   render() {
     const rowsPerPage = 30;
@@ -73,6 +78,7 @@ class Stuff extends Component {
                         <Button
                           size="sm"
                           variant="outline-danger"
+                          onClick={() => this.deleteStuff(stuff.stuffId)}
                         >
                           <FontAwesomeIcon icon={faTrash} />
                         </Button>
@@ -91,12 +97,13 @@ class Stuff extends Component {
 
 Stuff.propTypes = {
   stuff: PropTypes.object.isRequired,
-  getAllStuffsInservice: PropTypes.func.isRequired
+  getAllStuffsInservice: PropTypes.func.isRequired,
+  deleteStuff: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({ stuff: state.stuff });
 
 export default connect(
   mapStateToProps,
-  { getAllStuffsInservice }
+  { getAllStuffsInservice, deleteStuff }
 )(Stuff);

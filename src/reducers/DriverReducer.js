@@ -1,4 +1,4 @@
-import { GET_DRIVERS_INSERVICE } from '../actions/types';
+import { GET_DRIVERS_INSERVICE, DELETE_DRIVER } from '../actions/types';
 
 const initialState = {
   drivers: [],
@@ -11,6 +11,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         drivers: action.payload
+      }
+
+    case DELETE_DRIVER:
+      return {
+        ...state,
+        drivers: state.drivers.filter(
+          driver => driver.driverId !== action.payload
+        )
       }
 
     default:
