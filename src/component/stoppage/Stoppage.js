@@ -57,7 +57,6 @@ class Stoppage extends Component {
             <thead>
               <tr>
                 <th>SL</th>
-                <th>Stoppage Id</th>
                 <th>Name</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
@@ -69,7 +68,6 @@ class Stoppage extends Component {
                 (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
                   <tr key={idx}>
                     <td>{idx + 1}</td>
-                    <td>{stoppage.stoppageId}</td>
                     <td>{stoppage.stoppageName}</td>
                     <td>{stoppage.latitude}</td>
                     <td>{stoppage.longitude}</td>
