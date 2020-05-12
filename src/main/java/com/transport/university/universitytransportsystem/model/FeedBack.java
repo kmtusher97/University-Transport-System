@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,11 +17,12 @@ public class FeedBack {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedbackId;
 
-    @NotBlank(message = "Description is required")
-    private String description;
+    @NotNull(message = "Date is required")
+    private Date date;
 
-    @Column(columnDefinition = "boolean default true")
-    private Boolean feedbackType;
+    @NotBlank(message = "Description is required")
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
