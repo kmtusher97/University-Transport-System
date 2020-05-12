@@ -33,4 +33,13 @@ public class BusReportServices {
         }
         return busReportRepo.getOne(reportId);
     }
+
+    public void markAsSolved(Long reportId) {
+        if (!busReportRepo.existsById(reportId)) {
+            throw new BusReportIdException("Bus Report with ID: " + reportId + " does not exist");
+        }
+        BusReport report = busReportRepo.getOne(reportId);
+        report.setSolved(true);
+        busReportRepo.save(report);
+    }
 }

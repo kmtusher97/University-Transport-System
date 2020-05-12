@@ -64,6 +64,11 @@ public class BusController {
         return new ResponseEntity<>(busServices.getSchedules(busId), HttpStatus.OK);
     }
 
+    @GetMapping("/busReport/{busId}")
+    public ResponseEntity<?> getBusReports(@PathVariable("busId") Integer busId) {
+        return new ResponseEntity<>(busServices.getBusReports(busId), HttpStatus.OK);
+    }
+
     @GetMapping("/DRIVER/trip/finished/{busId}/{driverId}")
     public Bus markBusAsFinishedTrip(
             @PathVariable("busId") Integer busId,

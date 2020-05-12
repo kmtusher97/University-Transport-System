@@ -43,28 +43,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers(
-                            "/",
-                            "/favicon.ico",
-                            "/**/*.png",
-                            "/**/*.gif",
-                            "/**/*.svg",
-                            "/**/*.jpg",
-                            "/**/*.html",
-                            "/**/*.css",
-                            "/**/*.js",
-                            "/**/*.json"
-                    ).permitAll()
-                    .antMatchers(
-                            "/authenticate",
-                            "/api/user/register",
-                            "/api/**/GLOBAL/**"
-                    ).permitAll()
-                    .antMatchers("/api/**/DRIVER/**").hasAuthority("ROLE_DRIVER")
-                    .antMatchers("/api/user/notification/**")
-                    .hasAnyAuthority("ROLE_USER", "ROLE_DRIVER", "ROLE_STUFF")
-                    .antMatchers("/**").hasAuthority("ROLE_ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/", "/**").permitAll()
+//                    .antMatchers(
+//                            "/",
+//                            "/favicon.ico",
+//                            "/**/*.png",
+//                            "/**/*.gif",
+//                            "/**/*.svg",
+//                            "/**/*.jpg",
+//                            "/**/*.html",
+//                            "/**/*.css",
+//                            "/**/*.js",
+//                            "/**/*.json"
+//                    ).permitAll()
+//                    .antMatchers(
+//                            "/authenticate",
+//                            "/api/user/register",
+//                            "/api/**/GLOBAL/**"
+//                    ).permitAll()
+//                    .antMatchers("/api/**/DRIVER/**").hasAuthority("ROLE_DRIVER")
+//                    .antMatchers("/api/user/notification/**")
+//                    .hasAnyAuthority("ROLE_USER", "ROLE_DRIVER", "ROLE_STUFF")
+//                    .antMatchers("/**").hasAuthority("ROLE_ADMIN")
+//                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

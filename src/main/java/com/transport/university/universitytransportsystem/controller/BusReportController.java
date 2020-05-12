@@ -39,4 +39,10 @@ public class BusReportController {
         busReportServices.delete(reportId);
         return new  ResponseEntity<>("Bus Report with ID: " + reportId + " was deleted", HttpStatus.OK);
     }
+
+    @GetMapping("/markAsSolved/{reportId}")
+    public ResponseEntity<?> markAsSolved(@PathVariable("reportId") Long reportId) {
+        busReportServices.markAsSolved(reportId);
+        return new  ResponseEntity<>("Bus Report with ID: " + reportId + " was marked as solved", HttpStatus.OK);
+    }
 }

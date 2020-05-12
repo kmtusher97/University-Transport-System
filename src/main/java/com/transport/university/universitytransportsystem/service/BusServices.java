@@ -3,6 +3,7 @@ package com.transport.university.universitytransportsystem.service;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusIdException;
 import com.transport.university.universitytransportsystem.exceptions.bus.BusNumberException;
 import com.transport.university.universitytransportsystem.model.Bus;
+import com.transport.university.universitytransportsystem.model.BusReport;
 import com.transport.university.universitytransportsystem.model.Driver;
 import com.transport.university.universitytransportsystem.model.Schedule;
 import com.transport.university.universitytransportsystem.repository.BusRepo;
@@ -83,5 +84,12 @@ public class BusServices {
             throw new BusIdException("Bus ID " + busId + " does not exits");
         }
         return busRepo.getOne(busId).getSchedules();
+    }
+
+    public Set<BusReport> getBusReports(Integer busId) {
+        if (!busRepo.existsById(busId)) {
+            throw new BusIdException("Bus ID " + busId + " does not exits");
+        }
+        return busRepo.getOne(busId).getBusReports();
     }
 }
