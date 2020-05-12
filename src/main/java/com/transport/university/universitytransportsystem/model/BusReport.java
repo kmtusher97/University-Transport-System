@@ -22,6 +22,7 @@ public class BusReport {
     private Date date;
 
     @NotBlank(message = "Report can not be empty")
+    @Column(columnDefinition = "TEXT")
     private String report;
 
     @Column(columnDefinition = "boolean default false", nullable = false)

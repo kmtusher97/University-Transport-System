@@ -19,6 +19,7 @@ public class Notification {
     private Long notificationId;
 
     @NotBlank(message = "Notification body is required")
+    @Column(columnDefinition = "TEXT")
     private String notification;
 
     @NotNull(message = "Date is required")
