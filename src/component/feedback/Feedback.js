@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getAllFeedbacks, deleteFeedback } from '../../actions/FeedbackActions';
+import { getAllFeedbacks, deleteFeedback, replyFeedback } from '../../actions/FeedbackActions';
 import { Container, Jumbotron } from 'react-bootstrap';
 import FeedbackItem from './FeedbackItem';
 
@@ -9,6 +9,7 @@ class Feedback extends Component {
   constructor() {
     super();
     this.deleteFeedback = this.deleteFeedback.bind(this);
+    this.sendFeedbackReply = this.sendFeedbackReply.bind(this);
   }
 
   componentDidMount = () => {
@@ -17,6 +18,15 @@ class Feedback extends Component {
 
   deleteFeedback = feedbackId => {
     this.props.deleteFeedback(feedbackId, this.props.history);
+  };
+
+  sendFeedbackReply = (replyMessage, user) => {
+    const newNotification = {
+      date: (new Date()).toISOString(),
+      notification: replyMessage,
+      user: user
+    };
+    this.props.replyFeedback(newNotification);
   };
 
   render() {
@@ -30,6 +40,7 @@ class Feedback extends Component {
               key={idx}
               data={feedback}
               deleteFeedback={this.deleteFeedback}
+              sendFeedbackReply={this.sendFeedbackReply}
             />
           ))}
         </Jumbotron>
@@ -41,7 +52,8 @@ class Feedback extends Component {
 Feedback.propType = {
   feedback: PropTypes.func.isRequired,
   getAllFeedbacks: PropTypes.func.isRequired,
-  deleteFeedback: PropTypes.func.isRequired
+  deleteFeedback: PropTypes.func.isRequired,
+  replyFeedback: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -52,6 +64,7 @@ export default connect(
   mapStateToProps,
   {
     getAllFeedbacks,
-    deleteFeedback
+    deleteFeedback,
+    replyFeedback
   }
 )(Feedback);
