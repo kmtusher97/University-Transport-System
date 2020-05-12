@@ -2,7 +2,9 @@ import {
   GET_BUSES,
   GET_BUS,
   DELETE_BUS,
-  GET_AVAILABLE_BUSES
+  GET_AVAILABLE_BUSES,
+  MARK_BUSREPORT_AS_SOLVED,
+  DELETE_BUSREPORT
 } from "../actions/types";
 
 const initialState = {
@@ -37,6 +39,36 @@ export default function (state = initialState, action) {
       return {
         ...state,
         availableBuses: action.payload
+      }
+
+    case MARK_BUSREPORT_AS_SOLVED:
+      return {
+        ...state,
+        buses: state.buses.map(
+          bus => {
+            if (bus.busId === action.payload.busId) {
+              bus.busReports = bus.busReports.filter(
+                busReport => busReport.busReportId !== action.payload.busReportId
+              );
+            }
+            return bus;
+          }
+        )
+      }
+
+    case DELETE_BUSREPORT:
+      return {
+        ...state,
+        buses: state.buses.map(
+          bus => {
+            if (bus.busId === action.payload.busId) {
+              bus.busReports = bus.busReports.filter(
+                busReport => busReport.busReportId !== action.payload.busReportId
+              );
+            }
+            return bus;
+          }
+        )
       }
 
     default:

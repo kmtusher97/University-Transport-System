@@ -10,6 +10,8 @@ export const GET_BUSES = "GET_BUSES";
 export const GET_BUS = "GET_BUS";
 export const DELETE_BUS = "DELETE_BUS";
 export const GET_AVAILABLE_BUSES = "GET_AVAILABLE_BUSES"
+export const MARK_BUSREPORT_AS_SOLVED = "MARK_BUSREPORT_AS_SOLVED"
+export const DELETE_BUSREPORT = "DELETE_BUSREPORT"
 
 // Schedule Services
 export const GET_SCHEDULE = "GET_SCHEDULE";

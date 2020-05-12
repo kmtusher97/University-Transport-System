@@ -8,7 +8,13 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getAllBuses, deleteBus } from "../../actions/BusActions";
+import {
+  getAllBuses,
+  deleteBus,
+  markBusReportAsSolved,
+  deleteBusReportFromBus
+} from "../../actions/BusActions";
+import BusReports from "./BusReports";
 
 const busNotAvailableStyle = {
   backgroundColor: "#ebc6c6"
@@ -17,18 +23,18 @@ const busNotAvailableStyle = {
 class Bus extends Component {
   constructor() {
     super();
-
     let tmpPageNo = 1;
     const pathNameComponents = window.location.pathname.split("/");
     if (pathNameComponents.length === 4) {
       tmpPageNo = parseInt(pathNameComponents[3]);
     }
-
     this.state = {
-      busList: [],
-      pageNo: tmpPageNo
+      pageNo: tmpPageNo,
+      show: false
     };
     this.deleteBusHandler = this.deleteBusHandler.bind(this);
+    this.markBusReportAsSolved = this.markBusReportAsSolved.bind(this);
+    this.deleteBusReportHandler = this.deleteBusReportHandler.bind(this);
   }
 
   componentDidMount = () => {
@@ -37,6 +43,14 @@ class Bus extends Component {
 
   deleteBusHandler = busId => {
     this.props.deleteBus(busId, this.props.history);
+  };
+
+  markBusReportAsSolved = (busId, busReportId) => {
+    this.props.markBusReportAsSolved(busId, busReportId, this.props.history);
+  };
+
+  deleteBusReportHandler = (busId, busReportId) => {
+    this.props.deleteBusReportFromBus(busId, busReportId, this.props.history);
   };
 
   render() {
@@ -71,7 +85,51 @@ class Bus extends Component {
                 (idx + 1 >= lowerBound && idx + 1 <= upperBound) ? (
                   <tr key={idx} style={bus.isAvailable === false ? busNotAvailableStyle : null}>
                     <td>{idx + 1}</td>
-                    <td>{bus.number}</td>
+                    <td>
+                      <Row>
+                        <Col md={2}></Col>
+                        <Col md={8}>
+                          {bus.number}
+                        </Col>
+                        <Col md={2}>
+                          {bus.busReports.length > 0 && (
+                            <div>
+                              <Button
+                                size="sm"
+                                variant="danger"
+                                style={{ borderRadius: "30px", fontWeight: "800" }}
+                                onClick={() => this.setState({ show: true })}
+                              >
+                                {bus.busReports.length}
+                              </Button>
+                              <BusReports
+                                show={this.state.show}
+                                bus={{
+                                  busId: bus.busId,
+                                  number: bus.number
+                                }}
+                                busReports={bus.busReports.map(busReport => {
+                                  let tmpBusReport = {
+                                    busReportId: busReport.busReportId,
+                                    date: busReport.date,
+                                    report: busReport.report,
+                                    driver: {
+                                      driverId: busReport.driver.driverId,
+                                      fullName: busReport.driver.user.firstName + ' ' + busReport.driver.user.firstName,
+                                      email: busReport.driver.user.email
+                                    }
+                                  };
+                                  return tmpBusReport;
+                                })}
+                                onHideHandler={() => this.setState({ show: false })}
+                                markBusReportAsSolved={this.markBusReportAsSolved}
+                                deleteBusReportHandler={this.deleteBusReportHandler}
+                              />
+                            </div>
+                          )}
+                        </Col>
+                      </Row>
+                    </td>
                     <td>{bus.oilTankCapacity}</td>
                     <td>{bus.gasCylinderCapacity}</td>
                     <td>{bus.isAvailable === true ? "YES" : "NO"}</td>
@@ -108,9 +166,18 @@ class Bus extends Component {
 Bus.protoType = {
   bus: PropTypes.object.isRequired,
   getAllBuses: PropTypes.func.isRequired,
-  deleteBus: PropTypes.func.isRequired
+  deleteBus: PropTypes.func.isRequired,
+  markBusReportAsSolved: PropTypes.func.isRequired,
+  deleteBusReportFromBus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({ bus: state.bus });
 
-export default connect(mapStateToProps, { getAllBuses, deleteBus })(Bus);
+export default connect(
+  mapStateToProps,
+  {
+    getAllBuses,
+    deleteBus,
+    markBusReportAsSolved,
+    deleteBusReportFromBus
+  })(Bus);

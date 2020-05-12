@@ -4,7 +4,9 @@ import {
   GET_BUSES,
   GET_BUS,
   DELETE_BUS,
-  GET_AVAILABLE_BUSES
+  GET_AVAILABLE_BUSES,
+  MARK_BUSREPORT_AS_SOLVED,
+  DELETE_BUSREPORT
 } from "./types";
 
 export const addBus = (bus, reqType, history) => async dispatch => {
@@ -34,8 +36,10 @@ export const getAllBuses = () => async dispatch => {
       oilTankCapacity: bus.oilTankCapacity,
       gasCylinderCapacity: bus.gasCylinderCapacity,
       isAvailable: bus.isAvailable,
-      schedules: await Axios.get(`api/bus/GLOBAL/schedule/${bus.busId}`),
-      busReports: []
+      schedules: (await Axios.get(`/api/bus/GLOBAL/schedule/${bus.busId}`)).data,
+      busReports: (await Axios.get(`/api/bus/busReport/${bus.busId}`)).data.filter(
+        busReport => busReport.solved === false
+      )
     };
     buses.push(tmpbus);
   }
@@ -81,4 +85,38 @@ export const getAllAvailableBuses = () => async dispatch => {
     type: GET_AVAILABLE_BUSES,
     payload: tmpBuses
   });
+};
+
+export const markBusReportAsSolved = (busId, busReportId, history) => async dispatch => {
+  if (
+    window.confirm("Are you sure?")
+  ) {
+    try {
+      await Axios.get(`/api/busReport/markAsSolved/${busReportId}`);
+      dispatch({
+        type: MARK_BUSREPORT_AS_SOLVED,
+        payload: { busId: busId, busReportId: busReportId }
+      });
+
+    } catch (err) {
+      history.push("/bus");
+    }
+  }
+};
+
+export const deleteBusReportFromBus = (busId, busReportId, history) => async dispatch => {
+  if (
+    window.confirm("Are you sure?")
+  ) {
+    try {
+      await Axios.delete(`/api/busReport/${busReportId}`);
+      dispatch({
+        type: DELETE_BUSREPORT,
+        payload: { busId: busId, busReportId: busReportId }
+      });
+
+    } catch (err) {
+      history.push("/bus");
+    }
+  }
 };
