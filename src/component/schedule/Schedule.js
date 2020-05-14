@@ -41,7 +41,7 @@ class Schedule extends Component {
   };
 
   render() {
-    const rowsPerPage = 25;
+    const rowsPerPage = 30;
     const upperBound = this.state.pageNo * rowsPerPage;
     const lowerBound = (this.state.pageNo - 1) * rowsPerPage + (this.state.pageNo > 1 ? 1 : 0);
     const { schedule, busRoute } = this.props;
@@ -55,7 +55,7 @@ class Schedule extends Component {
               (schedule.schedules.length % rowsPerPage > 0 ? 1 : 0)
           }}
         />
-        <Row>
+        <Row style={{ height: "1300px", overflow: "auto" }}>
           <Col md={12}>
             <Table size="sm" bordered striped hover>
               <thead style={{ textAlign: "center" }}>
