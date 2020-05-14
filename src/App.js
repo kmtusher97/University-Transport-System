@@ -28,6 +28,7 @@ import Feedback from "./component/feedback/Feedback";
 /**Redux */
 import { Provider } from "react-redux";
 import store from "./Store";
+import BusRequisition from "./component/bus/BusRequisition";
 
 
 function App() {
@@ -68,6 +69,8 @@ function App() {
                 <Route exact path="/bus/page/:pageNo" component={Bus} />
                 <Route exact path="/bus/add" component={AddBus} />
                 <Route exact path="/bus/edit/:busId" component={UpdateBus} />
+                <Route exact path="/bus/requisition" component={BusRequisition} />
+                <Route exact path="/bus/requisition/page/:pageNo" component={BusRequisition} />
                 {
                   // routes for busRoute
                 }

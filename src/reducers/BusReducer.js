@@ -4,13 +4,15 @@ import {
   DELETE_BUS,
   GET_AVAILABLE_BUSES,
   MARK_BUSREPORT_AS_SOLVED,
-  DELETE_BUSREPORT
+  DELETE_BUSREPORT,
+  GET_BUS_REQUISITIONS
 } from "../actions/types";
 
 const initialState = {
   buses: [],
   availableBuses: [],
-  bus: {}
+  bus: {},
+  busRequsitions: []
 };
 
 export default function (state = initialState, action) {
@@ -69,6 +71,12 @@ export default function (state = initialState, action) {
             return bus;
           }
         )
+      }
+
+    case GET_BUS_REQUISITIONS:
+      return {
+        ...state,
+        busRequsitions: action.payload
       }
 
     default:

@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
-import { Col, Button, ButtonGroup } from 'react-bootstrap';
+import React, { Component } from 'react'
+import { Col, ButtonGroup, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-class BusTopMenuBar extends Component {
+class BusRequisitionTopBar extends Component {
+  constructor() {
+    super();
+    this.goToPageNo = this.goToPageNo.bind(this);
+  }
+
   goToPageNo = (event, pageNo) => {
-    window.location.replace(`/bus/page/${pageNo}`);
+    window.location.replace(`/bus/requisition/page/${pageNo}`);
   };
 
   render() {
@@ -79,43 +84,24 @@ class BusTopMenuBar extends Component {
       );
     }
 
+
     return (
       <React.Fragment>
-        <Col md={2} style={{ padding: "5px", paddingLeft: "15px" }}>
-          <Link
-            to={{
-              pathname: "/bus/add",
-              busId: null,
-              returnLink: window.location.pathname
-            }}
-          >
+        <Col md={3} style={{ padding: "5px", paddingLeft: "15px" }}>
+          <Link to={'/bus/requisition/add'}>
             <Button size="sm" variant="outline-primary">
-              Add Bus
+              Add Rquisition
             </Button>
           </Link>
         </Col>
-        <Col md={2} style={{ padding: "5px", paddingLeft: "15px" }}>
-          <Link
-            to={"/bus/requisition"}
-          >
-            <Button
-              size="sm"
-              variant="outline-info"
-            >
-              Requisition
-            </Button>
-          </Link>
-        </Col>
-        <Col md={8} style={{ padding: "5px", paddingRight: "15px" }}>
+        <Col md={9} style={{ padding: "5px", paddingRight: "15px" }}>
           <ButtonGroup size="sm" style={{ float: "right" }}>
             {buttons}
           </ButtonGroup>
         </Col>
       </React.Fragment>
-
     )
   }
 }
 
-
-export default BusTopMenuBar;
+export default BusRequisitionTopBar;

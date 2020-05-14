@@ -6,7 +6,8 @@ import {
   DELETE_BUS,
   GET_AVAILABLE_BUSES,
   MARK_BUSREPORT_AS_SOLVED,
-  DELETE_BUSREPORT
+  DELETE_BUSREPORT,
+  GET_BUS_REQUISITIONS
 } from "./types";
 
 export const addBus = (bus, reqType, history) => async dispatch => {
@@ -119,4 +120,14 @@ export const deleteBusReportFromBus = (busId, busReportId, history) => async dis
       history.push("/bus");
     }
   }
+};
+
+export const getAllBusRequisitions = () => async dispatch => {
+  const res = await Axios.get('/api/requisition/all');
+  let busRequisitions = res.data;
+  busRequisitions.sort(function (a, b) { return new Date(b.endDateTime) - new Date(a.endDateTime) });
+  dispatch({
+    type: GET_BUS_REQUISITIONS,
+    payload: busRequisitions
+  });
 };
