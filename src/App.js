@@ -1,41 +1,42 @@
-import React, { Component } from "react";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter, Route } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
+import React, { Component } from 'react';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Row, Col } from 'react-bootstrap';
 
 /**Componnts */
-import SideNavbar from "./component/SideNavbar";
-import Schedule from "./component/schedule/Schedule";
-import AddSchedule from "./component/schedule/AddSchedule";
-import UpdateSchedule from "./component/schedule/UpdateSchedule";
-import Bus from "./component/bus/Bus";
-import AddBus from "./component/bus/AddBus";
-import UpdateBus from "./component/bus/UpdateBus";
-import BusRequisition from "./component/bus/BusRequisition";
-import CreateBusRequisition from "./component/bus/CreateBusRequisition";
-import BusRoute from "./component/route/BusRoute";
-import AddBusRoute from "./component/route/AddBusRoute";
-import UpdateBusRoute from "./component/route/UpdateBusRoute";
-import Stoppage from "./component/stoppage/Stoppage";
-import AddStoppage from "./component/stoppage/AddStoppage";
-import UpdateStoppage from "./component/stoppage/UpdateStoppage";
-import Driver from "./component/driverAndStuff/Driver";
-import Stuff from "./component/driverAndStuff/Stuff";
-import AddDriverOrStuff from "./component/driverAndStuff/AddDriverOrStuff";
-import Notice from "./component/notice/Notice";
-import AddAnnouncement from "./component/notice/AddAnnouncement";
-import Feedback from "./component/feedback/Feedback";
-import Login from "./component/Login";
+import SideNavbar from './component/SideNavbar';
+import Schedule from './component/schedule/Schedule';
+import AddSchedule from './component/schedule/AddSchedule';
+import UpdateSchedule from './component/schedule/UpdateSchedule';
+import Bus from './component/bus/Bus';
+import AddBus from './component/bus/AddBus';
+import UpdateBus from './component/bus/UpdateBus';
+import BusRequisition from './component/bus/BusRequisition';
+import CreateBusRequisition from './component/bus/CreateBusRequisition';
+import BusRoute from './component/route/BusRoute';
+import AddBusRoute from './component/route/AddBusRoute';
+import UpdateBusRoute from './component/route/UpdateBusRoute';
+import Stoppage from './component/stoppage/Stoppage';
+import AddStoppage from './component/stoppage/AddStoppage';
+import UpdateStoppage from './component/stoppage/UpdateStoppage';
+import Driver from './component/driverAndStuff/Driver';
+import Stuff from './component/driverAndStuff/Stuff';
+import AddDriverOrStuff from './component/driverAndStuff/AddDriverOrStuff';
+import Notice from './component/notice/Notice';
+import AddAnnouncement from './component/notice/AddAnnouncement';
+import Feedback from './component/feedback/Feedback';
+import Login from './component/Login';
 
 /**Redux */
-import { Provider } from "react-redux";
-import store from "./Store";
+import { Provider } from 'react-redux';
+import store from './Store';
 
 import jwt_decode from 'jwt-decode';
 import setJWTTokenToHeader from './security/setJWTTokenToHeader';
-import { SET_CURRENT_USER } from "./actions/types";
+import { SET_CURRENT_USER } from './actions/types';
 import { logout } from './actions/SecurityActions';
+import SecureRoute from './security/SecureRoute';
 
 const jwtToken = localStorage.jwtToken;
 
@@ -97,54 +98,55 @@ class App extends Component {
                   {
                     // routes for schedule
                   }
-                  <Route exact path="/schedule" component={Schedule} />
-                  <Route exact path="/schedule/add" component={AddSchedule} />
-                  <Route exact path="/schedule/page/:pageNo" component={Schedule} />
-                  <Route exact path="/schedule/edit/:scheduleId" component={UpdateSchedule} />
-                  {
-                    // routes for bus
-                  }
-                  <Route exact path="/bus" component={Bus} />
-                  <Route exact path="/bus/page/:pageNo" component={Bus} />
-                  <Route exact path="/bus/add" component={AddBus} />
-                  <Route exact path="/bus/edit/:busId" component={UpdateBus} />
-                  <Route exact path="/bus/requisition" component={BusRequisition} />
-                  <Route exact path="/bus/requisition/page/:pageNo" component={BusRequisition} />
-                  <Route exact path="/bus/requisition/add" component={CreateBusRequisition} />
-                  <Route exact path="/bus/requisition/edit/:requisitionId" component={CreateBusRequisition} />
-                  {
-                    // routes for busRoute
-                  }
-                  <Route exact path="/route" component={BusRoute} />
-                  <Route exact path="/route/page/:pageNo" component={BusRoute} />
-                  <Route exact path="/route/add" component={AddBusRoute} />
-                  <Route exact path="/route/edit/:routeId" component={UpdateBusRoute} />
-                  {
-                    // routes for stoppage
-                  }
-                  <Route exact path="/stoppage" component={Stoppage} />
-                  <Route exact path="/stoppage/page/:pageNo" component={Stoppage} />
-                  <Route exact path="/stoppage/add" component={AddStoppage} />
-                  <Route exact path="/stoppage/edit/:stoppageId" component={UpdateStoppage} />
-                  {
-                    // routes for driver and stuff
-                  }
-                  <Route exact path="/driver" component={Driver} />
-                  <Route exact path="/driver/page/:pageNo" component={Driver} />
-                  <Route exact path="/stuff" component={Stuff} />
-                  <Route exact path="/stuff/page/:pageNo" component={Stuff} />
-                  <Route exact path="/driver/add" component={AddDriverOrStuff} />
-                  <Route exact path="/stuff/add" component={AddDriverOrStuff} />
-                  {
-                    // routes for feedback
-                  }
-                  <Route exact path="/feedback" component={Feedback} />
-                  {
-                    // routess for notice
-                  }
-                  <Route exact path="/notice" component={Notice} />
-                  <Route exact path="/notice/add" component={AddAnnouncement} />
-
+                  <Switch>
+                    <SecureRoute exact path="/schedule" component={Schedule} />
+                    <SecureRoute exact path="/schedule/add" component={AddSchedule} />
+                    <SecureRoute exact path="/schedule/page/:pageNo" component={Schedule} />
+                    <SecureRoute exact path="/schedule/edit/:scheduleId" component={UpdateSchedule} />
+                    {
+                      // routes for bus
+                    }
+                    <SecureRoute exact path="/bus" component={Bus} />
+                    <SecureRoute exact path="/bus/page/:pageNo" component={Bus} />
+                    <SecureRoute exact path="/bus/add" component={AddBus} />
+                    <SecureRoute exact path="/bus/edit/:busId" component={UpdateBus} />
+                    <SecureRoute exact path="/bus/requisition" component={BusRequisition} />
+                    <SecureRoute exact path="/bus/requisition/page/:pageNo" component={BusRequisition} />
+                    <SecureRoute exact path="/bus/requisition/add" component={CreateBusRequisition} />
+                    <SecureRoute exact path="/bus/requisition/edit/:requisitionId" component={CreateBusRequisition} />
+                    {
+                      // routes for busRoute
+                    }
+                    <SecureRoute exact path="/route" component={BusRoute} />
+                    <SecureRoute exact path="/route/page/:pageNo" component={BusRoute} />
+                    <SecureRoute exact path="/route/add" component={AddBusRoute} />
+                    <SecureRoute exact path="/route/edit/:routeId" component={UpdateBusRoute} />
+                    {
+                      // routes for stoppage
+                    }
+                    <SecureRoute exact path="/stoppage" component={Stoppage} />
+                    <SecureRoute exact path="/stoppage/page/:pageNo" component={Stoppage} />
+                    <SecureRoute exact path="/stoppage/add" component={AddStoppage} />
+                    <SecureRoute exact path="/stoppage/edit/:stoppageId" component={UpdateStoppage} />
+                    {
+                      // routes for driver and stuff
+                    }
+                    <SecureRoute exact path="/driver" component={Driver} />
+                    <SecureRoute exact path="/driver/page/:pageNo" component={Driver} />
+                    <SecureRoute exact path="/stuff" component={Stuff} />
+                    <SecureRoute exact path="/stuff/page/:pageNo" component={Stuff} />
+                    <SecureRoute exact path="/driver/add" component={AddDriverOrStuff} />
+                    <SecureRoute exact path="/stuff/add" component={AddDriverOrStuff} />
+                    {
+                      // routes for feedback
+                    }
+                    <SecureRoute exact path="/feedback" component={Feedback} />
+                    {
+                      // routess for notice
+                    }
+                    <SecureRoute exact path="/notice" component={Notice} />
+                    <SecureRoute exact path="/notice/add" component={AddAnnouncement} />
+                  </Switch>
                 </div>
               </Col>
             </Row>
