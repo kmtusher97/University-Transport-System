@@ -46,3 +46,6 @@ export const DELETE_FEEDBACK = "DELETE_FEEDBACK";
 
 // User Services
 export const GET_USERS = "GET_USERS";
+
+// Security Services
+export const SET_CURRENT_USER = "SET_CURRENT_USER";

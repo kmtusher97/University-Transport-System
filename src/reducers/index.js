@@ -9,6 +9,7 @@ import StuffReducer from "./StuffReducer";
 import AnnouncementReducer from "./AnnouncementReducer";
 import FeedbackReducer from "./FeedbackReducer";
 import UserReducer from "./UserReducer";
+import SecurityReducer from "./SecurityReducer";
 
 export default combineReducers({
   errors: ErrorReducer,
@@ -20,5 +21,6 @@ export default combineReducers({
   stuff: StuffReducer,
   announcement: AnnouncementReducer,
   feedback: FeedbackReducer,
-  user: UserReducer
+  user: UserReducer,
+  security: SecurityReducer
 });
