@@ -18,7 +18,7 @@ public class BusAvailabilityModifier {
     @Autowired
     private BusServices busServices;
 
-    @Scheduled(fixedDelay = 5 * 60 * 1000, initialDelay = 60 * 1000)
+    @Scheduled(fixedDelay = 30 * 60 * 1000, initialDelay = 60 * 1000)
     public void updateBusStatusForRequisitions() {
         System.out.println("Updating Bus status. Date & Time:" + (new Date()).toString());
         requisitionServices.getAllActiveRequisitions().forEach(
