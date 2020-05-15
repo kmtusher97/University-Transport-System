@@ -12,6 +12,8 @@ import UpdateSchedule from "./component/schedule/UpdateSchedule";
 import Bus from "./component/bus/Bus";
 import AddBus from "./component/bus/AddBus";
 import UpdateBus from "./component/bus/UpdateBus";
+import BusRequisition from "./component/bus/BusRequisition";
+import CreateBusRequisition from "./component/bus/CreateBusRequisition";
 import BusRoute from "./component/route/BusRoute";
 import AddBusRoute from "./component/route/AddBusRoute";
 import UpdateBusRoute from "./component/route/UpdateBusRoute";
@@ -28,7 +30,6 @@ import Feedback from "./component/feedback/Feedback";
 /**Redux */
 import { Provider } from "react-redux";
 import store from "./Store";
-import BusRequisition from "./component/bus/BusRequisition";
 
 
 function App() {
@@ -71,6 +72,8 @@ function App() {
                 <Route exact path="/bus/edit/:busId" component={UpdateBus} />
                 <Route exact path="/bus/requisition" component={BusRequisition} />
                 <Route exact path="/bus/requisition/page/:pageNo" component={BusRequisition} />
+                <Route exact path="/bus/requisition/add" component={CreateBusRequisition} />
+                <Route exact path="/bus/requisition/edit/:requisitionId" component={CreateBusRequisition} />
                 {
                   // routes for busRoute
                 }

@@ -7,7 +7,8 @@ import {
   GET_AVAILABLE_BUSES,
   MARK_BUSREPORT_AS_SOLVED,
   DELETE_BUSREPORT,
-  GET_BUS_REQUISITIONS
+  GET_BUS_REQUISITIONS,
+  GET_BUS_REQUISITION
 } from "./types";
 
 export const addBus = (bus, reqType, history) => async dispatch => {
@@ -130,4 +131,34 @@ export const getAllBusRequisitions = () => async dispatch => {
     type: GET_BUS_REQUISITIONS,
     payload: busRequisitions
   });
+};
+
+
+export const createBusRequisitions = (busRequisition, history) => async dispatch => {
+  try {
+    await Axios.post('/api/requisition/add', busRequisition);
+    history.push('/bus/requisition');
+    dispatch({
+      type: GET_ERRORS,
+      payload: {}
+    });
+
+  } catch (err) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    });
+  }
+};
+
+export const getBusRequisition = (busRequisitionId, history) => async dispatch => {
+  try {
+    const res = await Axios.get(`/api/requisition/${busRequisitionId}`);
+    dispatch({
+      type: GET_BUS_REQUISITION,
+      payload: res.data
+    });
+  } catch (err) {
+    history.push('/bus/requisition');
+  }
 };

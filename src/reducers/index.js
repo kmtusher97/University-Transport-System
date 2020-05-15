@@ -8,6 +8,7 @@ import DriverReducer from "./DriverReducer";
 import StuffReducer from "./StuffReducer";
 import AnnouncementReducer from "./AnnouncementReducer";
 import FeedbackReducer from "./FeedbackReducer";
+import UserReducer from "./UserReducer";
 
 export default combineReducers({
   errors: ErrorReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
   driver: DriverReducer,
   stuff: StuffReducer,
   announcement: AnnouncementReducer,
-  feedback: FeedbackReducer
+  feedback: FeedbackReducer,
+  user: UserReducer
 });
