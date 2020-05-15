@@ -30,9 +30,15 @@ import Feedback from "./component/feedback/Feedback";
 /**Redux */
 import { Provider } from "react-redux";
 import store from "./Store";
-
+import Login from "./component/Login";
 
 function App() {
+  const MainDivStyle = {
+    border: "1px solid gray",
+    borderRadius: "5px",
+    height: "1350px"
+  };
+
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -46,19 +52,27 @@ function App() {
           }}
         >
           <Row>
-            <Col md={2}>
-              <SideNavbar />
-            </Col>
+            {
+              window.location.pathname !== '/' && window.location.pathname !== '/login' &&
+              (<Col md={2}>
+                <SideNavbar />
+              </Col>)
+            }
             <Col
-              md={10}
-              style={{
-                border: "1px solid gray",
-                borderRadius: "5px",
-                height: "1350px"
-              }}
+              md={(window.location.pathname !== '/' && window.location.pathname !== '/login') ? 10 : 12}
+              style={
+                (window.location.pathname !== '/' && window.location.pathname !== '/login') ? MainDivStyle : null
+              }
             >
               <div role="main">
-
+                {
+                  // public routes
+                }
+                <Route exact path="/" component={Login} />
+                <Route exact path="/login" component={Login} />
+                {
+                  // routes for schedule
+                }
                 <Route exact path="/schedule" component={Schedule} />
                 <Route exact path="/schedule/add" component={AddSchedule} />
                 <Route exact path="/schedule/page/:pageNo" component={Schedule} />
