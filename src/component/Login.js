@@ -19,7 +19,7 @@ class Login extends Component {
 
   componentWillReceiveProps = nextProps => {
     if (nextProps.security.isValidToken) {
-      this.props.history.push("/schedule");
+      window.location.href = "/schedule";
     }
   };
 
