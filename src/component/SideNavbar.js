@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { Nav } from "react-bootstrap";
+import { Nav, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
+import { logout } from "../actions/SecurityActions";
+import { connect } from "react-redux";
 
 class SideNavbar extends Component {
   constructor(props) {
@@ -7,7 +11,18 @@ class SideNavbar extends Component {
     this.state = {
       pathnameComponents: window.location.pathname.split("/")
     };
+    this.processLogout = this.processLogout.bind(this);
   }
+
+  processLogout = event => {
+    if (
+      window.confirm("Do you want to logout?")
+    ) {
+      this.props.logout();
+      window.location.href = "/";
+    }
+  };
+
   render() {
     return (
       <Nav
@@ -32,9 +47,20 @@ class SideNavbar extends Component {
         <Nav.Link href="/stuff">Stuff</Nav.Link>
         <Nav.Link href="/notice">Notice</Nav.Link>
         <Nav.Link href="/feedback">Feedback</Nav.Link>
+        <br />
+        <Button
+          size="sm"
+          variant="outline-danger"
+          onClick={this.processLogout}
+        >
+          <span>
+            <FontAwesomeIcon icon={faPowerOff} />
+          </span>
+          {"  Logout"}
+        </Button>
       </Nav>
     );
   }
 }
 
-export default SideNavbar;
+export default connect(null, { logout })(SideNavbar);
