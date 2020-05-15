@@ -17,6 +17,12 @@ class Login extends Component {
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
   }
 
+  componentDidMount = () => {
+    if (this.props.security.isValidToken) {
+      this.props.history.push("/schedule");
+    }
+  };
+
   componentWillReceiveProps = nextProps => {
     if (nextProps.security.isValidToken) {
       window.location.href = "/schedule";
@@ -108,6 +114,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+  security: PropTypes.object.isRequired,
   login: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired
 };

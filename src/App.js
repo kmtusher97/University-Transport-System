@@ -35,6 +35,7 @@ import store from "./Store";
 import jwt_decode from 'jwt-decode';
 import setJWTTokenToHeader from './security/setJWTTokenToHeader';
 import { SET_CURRENT_USER } from "./actions/types";
+import { logout } from './actions/SecurityActions';
 
 const jwtToken = localStorage.jwtToken;
 
@@ -48,6 +49,7 @@ if (jwtToken) {
 
   const currentTime = Date.now() / 1000;
   if (decodeJwtToken.exp < currentTime) {
+    store.dispatch(logout());
     window.location.href = "/";
   }
 }
@@ -75,15 +77,15 @@ class App extends Component {
           >
             <Row>
               {
-                window.location.pathname !== '/' && window.location.pathname !== '/login' &&
+                jwtToken &&
                 (<Col md={2}>
                   <SideNavbar />
                 </Col>)
               }
               <Col
-                md={(window.location.pathname !== '/' && window.location.pathname !== '/login') ? 10 : 12}
+                md={jwtToken ? 10 : 12}
                 style={
-                  (window.location.pathname !== '/' && window.location.pathname !== '/login') ? MainDivStyle : null
+                  jwtToken ? MainDivStyle : null
                 }
               >
                 <div role="main">
