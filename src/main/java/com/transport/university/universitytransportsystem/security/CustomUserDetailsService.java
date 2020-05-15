@@ -13,9 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -106,7 +104,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         try {
             newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
             User savedUser = userRepo.save(newUser);
-            UserRoles userRole = new UserRoles(null, savedUser, roleRepo.getOne(4)); // role 3 = ROLE_STUFF
+            UserRoles userRole = new UserRoles(null, savedUser, roleRepo.getOne(4)); // role 4 = ROLE_STUFF
             userRolesRepo.save(userRole);
 
             Stuff newStuff = new Stuff();
@@ -125,5 +123,13 @@ public class CustomUserDetailsService implements UserDetailsService {
             return new ArrayList<>();
         }
         return userRepo.getOne(userId).getNotifications();
+    }
+
+    public Set<User> getAllActiveUsersByUserRole() {
+        Set<User> users = new HashSet<>();
+        userRolesRepo.findByRole(roleRepo.getOne(2)).stream().forEach(userRoles -> {
+            users.add(userRoles.getUser());
+        });
+        return users;
     }
 }

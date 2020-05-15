@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -51,5 +52,10 @@ public class UserController {
     @GetMapping("/notification/{userId}")
     public List<Notification> getAllNotifications(@PathVariable("userId") Integer userId) {
         return userDetailsService.getAllNotifications(userId);
+    }
+
+    @GetMapping("/all")
+    public Set<User> getAllActiveUsersByUserRole() {
+        return userDetailsService.getAllActiveUsersByUserRole();
     }
 }

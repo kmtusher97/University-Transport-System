@@ -14,6 +14,8 @@ import com.transport.university.universitytransportsystem.exceptions.feedback.Fe
 import com.transport.university.universitytransportsystem.exceptions.feedback.FeedbackNotFoundExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.notification.NotificationIdException;
 import com.transport.university.universitytransportsystem.exceptions.notification.NotificationIdExceptionResponse;
+import com.transport.university.universitytransportsystem.exceptions.requisition.RequisitionNotFoundException;
+import com.transport.university.universitytransportsystem.exceptions.requisition.RequisitionNotFoundExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.route.DuplicateRouteException;
 import com.transport.university.universitytransportsystem.exceptions.route.DuplicateRouteExceptionResponse;
 import com.transport.university.universitytransportsystem.exceptions.route.RouteIdException;
@@ -107,6 +109,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler
     public final ResponseEntity<Object> handleFeedbackNotFoundException(FeedbackNotFoundException ex, WebRequest request) {
         FeedbackNotFoundExceptionResponse exceptionResponse = new FeedbackNotFoundExceptionResponse(ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleRequisitionNotFoundException(RequisitionNotFoundException ex, WebRequest request) {
+        RequisitionNotFoundExceptionResponse exceptionResponse = new RequisitionNotFoundExceptionResponse(ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 

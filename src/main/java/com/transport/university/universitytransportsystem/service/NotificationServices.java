@@ -2,6 +2,7 @@ package com.transport.university.universitytransportsystem.service;
 
 import com.transport.university.universitytransportsystem.exceptions.notification.NotificationIdException;
 import com.transport.university.universitytransportsystem.model.Notification;
+import com.transport.university.universitytransportsystem.model.Requisition;
 import com.transport.university.universitytransportsystem.model.Schedule;
 import com.transport.university.universitytransportsystem.repository.NotificationRepo;
 import com.transport.university.universitytransportsystem.repository.UserRepo;
@@ -69,5 +70,27 @@ public class NotificationServices {
             );
             saveOrUpdate(notificationForStuff);
         }
+    }
+
+    public void generateNotificationAboutRequisition(Requisition requisition) {
+        String notificationString = "Starting Date & Time: " + requisition.getStartDateTime().toString() + "\n" +
+                "Finishing Date & Time: " + requisition.getEndDateTime().toString() + "\n" +
+                "Bus No: " + requisition.getBus().getBusId() + "\n" +
+                "Bus Number: " + requisition.getBus().getNumber() + "\n" +
+                "User Name: " + requisition.getUser().getFirstName() + " " + requisition.getUser().getLastName() + "\n" +
+                "User MobileNo: " + requisition.getUser().getMobileNo() + "\n" +
+                "Driver Name: " + requisition.getDriver().getUser().getFirstName() + " " +
+                requisition.getDriver().getUser().getLastName() + "\n" +
+                "Driver MobileNo: " + requisition.getDriver().getUser().getMobileNo();
+
+        Notification notification = new Notification(
+                null,
+                notificationString,
+                new Date(),
+                requisition.getUser()
+        );
+        saveOrUpdate(notification); // for user
+        notification.setUser(requisition.getDriver().getUser());
+        saveOrUpdate(notification); // for driver
     }
 }
