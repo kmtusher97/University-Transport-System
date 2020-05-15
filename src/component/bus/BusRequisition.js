@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Container, Row, Table, Col, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getAllBusRequisitions } from '../../actions/BusActions';
+import { getAllBusRequisitions, deleteBusRequisition } from '../../actions/BusActions';
 import BusRequisitionTopBar from './BusRequisitionTopBar';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,10 +23,15 @@ class BusRequisition extends Component {
     this.state = {
       pageNo: tmpPageNo
     };
+    this.deleteBusRequisition = this.deleteBusRequisition.bind(this);
   }
 
   componentDidMount = () => {
     this.props.getAllBusRequisitions();
+  };
+
+  deleteBusRequisition = requisitionId => {
+    this.props.deleteBusRequisition(requisitionId, this.props.history);
   };
 
   render() {
@@ -120,6 +125,7 @@ class BusRequisition extends Component {
                       <Button
                         size="sm"
                         variant="outline-danger"
+                        onClick={() => this.deleteBusRequisition(busRequsition.requisitionId)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
@@ -137,7 +143,8 @@ class BusRequisition extends Component {
 }
 
 BusRequisition.propTypes = {
-  getAllBusRequisitions: PropTypes.func.isRequired
+  getAllBusRequisitions: PropTypes.func.isRequired,
+  deleteBusRequisition: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -146,5 +153,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAllBusRequisitions }
+  { getAllBusRequisitions, deleteBusRequisition }
 )(BusRequisition);

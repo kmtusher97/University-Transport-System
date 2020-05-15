@@ -60,7 +60,7 @@ class CreateBusRequisition extends Component {
         requisitionId,
         startDateTime: (startDateTime ? (startDateTime.split(':00.000+0000')[0]) : ""),
         endDateTime: (endDateTime ? (endDateTime.split(':00.000+0000')[0]) : ""),
-        isExpired,
+        isExpired: (isExpired ? isExpired : false),
         user,
         bus,
         driver
@@ -96,6 +96,7 @@ class CreateBusRequisition extends Component {
       bus: this.state.bus ? this.state.bus : {},
       driver: this.state.driver ? this.state.driver : {}
     };
+    console.log(newBusRequisition);
     this.props.createBusRequisitions(newBusRequisition, this.props.history);
   };
 

@@ -6,7 +6,8 @@ import {
   MARK_BUSREPORT_AS_SOLVED,
   DELETE_BUSREPORT,
   GET_BUS_REQUISITIONS,
-  GET_BUS_REQUISITION
+  GET_BUS_REQUISITION,
+  DELETE_BUS_REQUISITION
 } from "../actions/types";
 
 const initialState = {
@@ -85,6 +86,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         busRequsition: action.payload
+      }
+
+    case DELETE_BUS_REQUISITION:
+      return {
+        ...state,
+        busRequsitions: state.busRequsitions.filter(
+          busRequsition => busRequsition.requisitionId !== action.payload
+        )
       }
 
     default:

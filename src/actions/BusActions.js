@@ -8,7 +8,8 @@ import {
   MARK_BUSREPORT_AS_SOLVED,
   DELETE_BUSREPORT,
   GET_BUS_REQUISITIONS,
-  GET_BUS_REQUISITION
+  GET_BUS_REQUISITION,
+  DELETE_BUS_REQUISITION
 } from "./types";
 
 export const addBus = (bus, reqType, history) => async dispatch => {
@@ -160,5 +161,21 @@ export const getBusRequisition = (busRequisitionId, history) => async dispatch =
     });
   } catch (err) {
     history.push('/bus/requisition');
+  }
+};
+
+export const deleteBusRequisition = (busRequisitionId, history) => async dispatch => {
+  if (
+    window.confirm("Are  you sure")
+  ) {
+    try {
+      await Axios.delete(`/api/requisition/${busRequisitionId}`);
+      dispatch({
+        type: DELETE_BUS_REQUISITION,
+        payload: busRequisitionId
+      });
+    } catch (err) {
+      history.push('/bus/requisition');
+    }
   }
 };
