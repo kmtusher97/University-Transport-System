@@ -29,6 +29,7 @@ class CreateBusRequisition extends Component {
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onChangeSelectorHandler = this.onChangeSelectorHandler.bind(this);
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    this.parseDateToString = this.parseDateToString.bind(this);
   }
 
   componentDidMount = () => {
@@ -45,7 +46,7 @@ class CreateBusRequisition extends Component {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
-    if (nextProps.busRequsition) {
+    if (this.state.type === "edit" && nextProps.busRequsition) {
       const {
         requisitionId,
         startDateTime,
@@ -58,14 +59,23 @@ class CreateBusRequisition extends Component {
 
       this.setState({
         requisitionId,
-        startDateTime: (startDateTime ? (startDateTime.split(':00.000+0000')[0]) : ""),
-        endDateTime: (endDateTime ? (endDateTime.split(':00.000+0000')[0]) : ""),
+        startDateTime: this.parseDateToString(startDateTime),
+        endDateTime: this.parseDateToString(endDateTime),
         isExpired: (isExpired ? isExpired : false),
         user,
         bus,
         driver
       });
     }
+  };
+
+  parseDateToString = dateStr => {
+    let date = new Date(dateStr);
+    return date.getFullYear() + "-" +
+      (date.getMonth() < 10 ? "0" : "") + date.getMonth() + "-" +
+      (date.getDate() < 10 ? "0" : "") + date.getDate() + "T" +
+      (date.getHours() < 10 ? "0" : "") + date.getHours() + ":" +
+      (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
   };
 
   onChangeHandler = event => {
@@ -87,16 +97,25 @@ class CreateBusRequisition extends Component {
 
   onSubmitHandler = event => {
     event.preventDefault();
+    let tmpDate = new Date(this.state.startDateTime);
+    let tmpStartDateTime = tmpDate;
+    tmpStartDateTime.setHours(tmpDate.getHours());
+    tmpStartDateTime.setMinutes(tmpDate.getMinutes());
+
+    tmpDate = new Date(this.state.endDateTime);
+    let tmpEndDateTime = tmpDate;
+    tmpEndDateTime.setHours(tmpDate.getHours());
+    tmpEndDateTime.setMinutes(tmpDate.getMinutes());
+
     const newBusRequisition = {
       requisitionId: this.state.requisitionId,
-      startDateTime: this.state.startDateTime + (this.state.startDateTime ? ":00.000+0000" : ""),
-      endDateTime: this.state.endDateTime + (this.state.endDateTime ? ":00.000+0000" : ""),
+      startDateTime: tmpStartDateTime,
+      endDateTime: tmpEndDateTime,
       isExpired: this.state.isExpired,
       user: this.state.user ? this.state.user : {},
       bus: this.state.bus ? this.state.bus : {},
       driver: this.state.driver ? this.state.driver : {}
     };
-    console.log(newBusRequisition);
     this.props.createBusRequisitions(newBusRequisition, this.props.history);
   };
 
