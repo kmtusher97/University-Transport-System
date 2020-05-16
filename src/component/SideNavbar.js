@@ -1,9 +1,19 @@
 import React, { Component } from "react";
 import { Nav, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { logout } from "../actions/SecurityActions";
 import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPowerOff,
+  faCalendarCheck,
+  faBus,
+  faBullhorn,
+  faHandPaper,
+  faUsers,
+  faUsersCog,
+  faRoute,
+  faMapMarkerAlt
+} from "@fortawesome/free-solid-svg-icons";
 
 class SideNavbar extends Component {
   constructor(props) {
@@ -36,17 +46,43 @@ class SideNavbar extends Component {
         style={{
           padding: "10px",
           border: "1px solid gray",
-          borderRadius: "5px"
+          borderRadius: "5px",
+          fontSize: "14px",
+          fontWeight: "500"
         }}
       >
-        <Nav.Link href="/schedule">Schedule</Nav.Link>
-        <Nav.Link href="/bus">Bus</Nav.Link>
-        <Nav.Link href="/stoppage">Stoppage</Nav.Link>
-        <Nav.Link href="/route">Route</Nav.Link>
-        <Nav.Link href="/driver">Driver</Nav.Link>
-        <Nav.Link href="/stuff">Stuff</Nav.Link>
-        <Nav.Link href="/notice">Notice</Nav.Link>
-        <Nav.Link href="/feedback">Feedback</Nav.Link>
+        <Nav.Link href="/schedule">
+          <FontAwesomeIcon icon={faCalendarCheck} />
+          {" Schedule"}
+        </Nav.Link>
+        <Nav.Link href="/bus">
+          <FontAwesomeIcon icon={faBus} />
+          {" Bus"}
+        </Nav.Link>
+        <Nav.Link href="/stoppage">
+          <FontAwesomeIcon icon={faMapMarkerAlt} />
+          {" Stoppage"}
+        </Nav.Link>
+        <Nav.Link href="/route">
+          <FontAwesomeIcon icon={faRoute} />
+          {" Route"}
+        </Nav.Link>
+        <Nav.Link href="/driver">
+          <FontAwesomeIcon icon={faUsersCog} />
+          {" Driver"}
+        </Nav.Link>
+        <Nav.Link href="/stuff">
+          <FontAwesomeIcon icon={faUsers} />
+          {" Stuff"}
+        </Nav.Link>
+        <Nav.Link href="/notice">
+          <FontAwesomeIcon icon={faBullhorn} />
+          {" Notice"}
+        </Nav.Link>
+        <Nav.Link href="/feedback">
+          <FontAwesomeIcon icon={faHandPaper} />
+          {" Feedback"}
+        </Nav.Link>
         <br />
         <Button
           size="sm"
