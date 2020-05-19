@@ -28,4 +28,18 @@ public class MapValidationErrorService {
         errorMap.put(idName, idName + " is required while updating.");
         return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
     }
+
+    public ResponseEntity<?> invalidEmailPasswordForLogin() {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("username", "Invalid email or password");
+        errorMap.put("password", "Invalid email or password");
+        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<?> notAdminCredentialError() {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("username", "Not an Admin Email");
+        errorMap.put("password", "Not the password for Admin");
+        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+    }
 }
