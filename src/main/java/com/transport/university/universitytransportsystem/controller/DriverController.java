@@ -32,4 +32,9 @@ public class DriverController {
         driverServices.removerDriver(driverId);
         return new ResponseEntity<>("Driver with ID: " + driverId + " was deleted", HttpStatus.OK);
     }
+
+    @GetMapping("/GLOBAL/schedules/{driverId}")
+    public ResponseEntity<?> getSchedules(@PathVariable("driverId") Integer driverId) {
+        return new ResponseEntity<>(driverServices.getSchedules(driverId), HttpStatus.OK);
+    }
 }

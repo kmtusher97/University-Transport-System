@@ -2,13 +2,14 @@ package com.transport.university.universitytransportsystem.service;
 
 import com.transport.university.universitytransportsystem.exceptions.driver.DriverIdException;
 import com.transport.university.universitytransportsystem.model.Driver;
-import com.transport.university.universitytransportsystem.model.User;
+import com.transport.university.universitytransportsystem.model.Schedule;
 import com.transport.university.universitytransportsystem.repository.DriverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -47,5 +48,15 @@ public class DriverServices {
         Driver driver = driverRepo.getOne(driverId);
         driver.setIsInService(false);
         driverRepo.save(driver);
+    }
+
+    public List<Schedule> getSchedules(Integer driverId) {
+        if (!driverRepo.existsById(driverId)) {
+            throw new DriverIdException("Driver with ID: " + driverId + " doesn't exists");
+        }
+        return driverRepo.getOne(driverId).getSchedules()
+                .stream()
+                .filter(schedule -> schedule.getIsComplete() == false)
+                .collect(Collectors.toList());
     }
 }

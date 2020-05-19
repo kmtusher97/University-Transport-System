@@ -19,6 +19,7 @@ public class ScheduleServices {
     private NotificationServices notificationServices;
 
     public Schedule saveOrUpdate(Schedule schedule) {
+        if (schedule.getIsComplete() == null) schedule.setIsComplete(false);
         notificationServices.generateNotificationAboutSchedule(schedule);
         return scheduleRepo.save(schedule);
     }

@@ -118,6 +118,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
+    @Transactional
     public List<Notification> getAllNotifications(Integer userId) {
         if (!userRepo.existsById(userId)) {
             return new ArrayList<>();
@@ -125,6 +126,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userRepo.getOne(userId).getNotifications();
     }
 
+    @Transactional
     public Set<User> getAllActiveUsersByUserRole() {
         Set<User> users = new HashSet<>();
         userRolesRepo.findByRole(roleRepo.getOne(2)).stream().forEach(userRoles -> {
