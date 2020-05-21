@@ -1,6 +1,7 @@
 package com.transport.university.universitytransportsystem.security;
 
 import com.transport.university.universitytransportsystem.exceptions.user.UserEmailAlreadyExistsException;
+import com.transport.university.universitytransportsystem.exceptions.user.UserEmailNotFoundException;
 import com.transport.university.universitytransportsystem.model.*;
 import com.transport.university.universitytransportsystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -35,6 +37,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private StuffRepo stuffRepo;
+
+    @Autowired
+    private JWTUtility jwtUtility;
 
 
     @Transactional
@@ -133,5 +138,24 @@ public class CustomUserDetailsService implements UserDetailsService {
             users.add(userRoles.getUser());
         });
         return users;
+    }
+
+    @Transactional
+    public User getUserByEmailByAuthentication(String email, HttpServletRequest request) {
+        String username = null;
+        String jwtToken = null;
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+            username = jwtUtility.extractUserName(jwtToken);
+        }
+        if (username == null || !username.equals(email)) {
+            throw new UserEmailNotFoundException("You are unauthorized to have user with email: " + email);
+        }
+        if (!userRepo.existsByEmail(email)) {
+            throw new UserEmailNotFoundException("User with " + email + " does not exists");
+        }
+        return userRepo.findByEmail(email);
     }
 }

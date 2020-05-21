@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
@@ -57,5 +58,11 @@ public class UserController {
     @GetMapping("/all")
     public Set<User> getAllActiveUsersByUserRole() {
         return userDetailsService.getAllActiveUsersByUserRole();
+    }
+
+
+    @GetMapping("/GLOBAL/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable("email") String email, HttpServletRequest request) {
+        return new ResponseEntity<>(userDetailsService.getUserByEmailByAuthentication(email, request), HttpStatus.OK);
     }
 }
