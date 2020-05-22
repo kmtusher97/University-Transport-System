@@ -1,4 +1,4 @@
-# University-Transport-System-Admin-React-App
+# University-Transport-System
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
