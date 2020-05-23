@@ -1,5 +1,6 @@
 package com.transport.university.universitytransportsystem.security;
 
+import com.transport.university.universitytransportsystem.exceptions.driver.DriverIdException;
 import com.transport.university.universitytransportsystem.exceptions.user.UserEmailAlreadyExistsException;
 import com.transport.university.universitytransportsystem.exceptions.user.UserEmailNotFoundException;
 import com.transport.university.universitytransportsystem.model.*;
@@ -157,5 +158,34 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UserEmailNotFoundException("User with " + email + " does not exists");
         }
         return userRepo.findByEmail(email);
+    }
+
+    @Transactional
+    public Driver getDriverByEmailByAuthentication(String email, HttpServletRequest request) {
+        String username = null;
+        String jwtToken = null;
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+            username = jwtUtility.extractUserName(jwtToken);
+        }
+        if (username == null || !username.equals(email)) {
+            throw new UserEmailNotFoundException("You are unauthorized to have driver with email: " + email);
+        }
+        if (!userRepo.existsByEmail(email)) {
+            throw new UserEmailNotFoundException("Driver with " + email + " does not exists");
+        }
+        UserDetails userDetails = loadUserByUsername(email);
+        Boolean isDriver = false;
+        for (GrantedAuthority authority: userDetails.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_DRIVER")) {
+                isDriver = true;
+            }
+        }
+        if (!isDriver) {
+            throw new DriverIdException("Driver not found");
+        }
+        return driverRepo.findByUser(userRepo.findByEmail(email));
     }
 }

@@ -65,4 +65,9 @@ public class UserController {
     public ResponseEntity<?> getUserByEmail(@PathVariable("email") String email, HttpServletRequest request) {
         return new ResponseEntity<>(userDetailsService.getUserByEmailByAuthentication(email, request), HttpStatus.OK);
     }
+
+    @GetMapping("/DRIVER/{email}")
+    public ResponseEntity<?> getDriverByEmail(@PathVariable("email") String email, HttpServletRequest request) {
+        return new ResponseEntity<>(userDetailsService.getDriverByEmailByAuthentication(email, request), HttpStatus.OK);
+    }
 }
