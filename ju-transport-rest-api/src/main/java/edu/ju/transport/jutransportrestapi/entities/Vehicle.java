@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class Vehicle implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vehicleId;
 
     @Column(length = 50, unique = true, nullable = false)
