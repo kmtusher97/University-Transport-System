@@ -27,11 +27,11 @@ public class UserController {
     private CustomUserDetailsService userDetailsService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerNewUser(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<?> registerNewUser(@Valid @RequestBody User user, @RequestParam String userRole, BindingResult result) {
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);
         if (errorMap != null) return errorMap;
 
-        return new ResponseEntity<>(userDetailsService.registerNewUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userDetailsService.registerNewUser(user, userRole), HttpStatus.CREATED);
     }
 
     @PostMapping("/register/driver")

@@ -74,11 +74,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
-    public User registerNewUser(User newUser) {
+    public User registerNewUser(User newUser, String rqUserRole) {
         try {
             newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
             User savedUser = userRepo.save(newUser);
-            UserRoles userRole = new UserRoles(null, savedUser, roleRepo.getOne(2)); // role 2 = ROLE_USER
+            UserRoles userRole;
+            if (rqUserRole != null && rqUserRole.equals("admin")) {
+                userRole = new UserRoles(null, savedUser, roleRepo.getOne(1)); // role 2 = ROLE_ADMIN
+            }
+            else {
+                userRole = new UserRoles(null, savedUser, roleRepo.getOne(2)); // role 2 = ROLE_USER
+            }
             userRolesRepo.save(userRole);
             return savedUser;
         } catch (Exception ex) {
