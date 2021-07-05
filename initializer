@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "registering admin"
+
+curl "http://localhost:8080/api/user/register?userRole=admin" \
+-H "Accept: application/json" \
+-H "Content-Type:application/json" \
+--data @<(cat <<EOF
+{
+    "lastName": "Admin",
+    "firstName": "Admin",
+    "password": "123456",
+    "mobileNo": "01234567891",
+    "email": "admin@uts.com"
+}
+EOF
+)
