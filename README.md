@@ -7,8 +7,13 @@
 
 # University-Transport-System . ![version](https://img.shields.io/badge/version-v2.1-brightgreen)
 
-> ## Build and run . ![docker](https://img.shields.io/badge/docker%20build-passing-green)
+> ## Build and Run . ![docker](https://img.shields.io/badge/docker%20build-passing-green)
 
 > `$ git clone https://github.com/kmtusher97/University-Transport-System.git` <br>
 > `$ cd University-Transport-System` <br>
-> `$ docker-compose up -d` 
+> `$ docker-compose up -d` <br>
+
+> ## Initialize Admin Data
+
+> `$ chmod +x initializer`<br>
+> `$ ./initializer` <br>
