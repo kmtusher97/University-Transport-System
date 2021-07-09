@@ -11,8 +11,7 @@ services:
             - uts-mysql-db
         ports: 
             - 3000:3000
-        volumes: 
-            - /app/node_modules
+        volumes:
             - uts-frontend:/app
         stdin_open: true
 
@@ -27,7 +26,6 @@ services:
             - 8080:8080
         volumes: 
             - uts-backend-target:/app/target
-
 
     uts-mysql-db:
         image: mysql:5.7
